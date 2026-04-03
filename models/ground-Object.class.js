@@ -1,6 +1,6 @@
 class groundObjects extends MovableObject {
-   width = 720; //gleich wie canvas
-   height = 480; //gleich wie canvas
+   width = gameSettings.canvasWidth;
+   height = gameSettings.canvasHeight;
 
    constructor(imagePath) {
       super();

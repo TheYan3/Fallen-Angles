@@ -55,7 +55,7 @@ class world {
    setCloudPosition() {
       this.clouds[0].x = 0;
       this.clouds[0].y = 0;
-      this.clouds[0].width = 720;
+      this.clouds[0].width = gameSettings.canvasWidth;
    }
    addObjectsToMap(object) {
       object.forEach((o) => {

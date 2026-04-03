@@ -1,8 +1,8 @@
 class sky {
    x = 0;
    y = 0;
-   width = 720; //gleich wie canvas
-   height = 480; //gleich wie canvas
+   width = gameSettings.canvasWidth;
+   height = gameSettings.canvasHeight;
    img;
 
    constructor() {
