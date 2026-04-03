@@ -4,5 +4,7 @@ class reaper extends MovableObject {
       this.loadImage(
          "img/Enemy/Reaper/Reaper_Man_1/PNG/PNG Sequences/Idle/0_Reaper_Man_Idle_000.png",
       );
+
+      this.x = 300 + Math.random() * 500;
    }
 }

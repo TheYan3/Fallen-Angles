@@ -4,5 +4,7 @@ class golem extends MovableObject {
       this.loadImage(
          "img/Enemy/Golem/Golem_1/PNG/PNG Sequences/Idle/0_Golem_Idle_000.png",
       );
+
+      this.x = 300 + Math.random() * 500;
    }
 }
