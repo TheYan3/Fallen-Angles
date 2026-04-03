@@ -2,16 +2,15 @@ class world {
    character = new player();
    enemies = [new golem(), new minotaur(), new reaper()];
    ctx;
+   //canvas;
 
    constructor(canvas) {
       this.ctx = canvas.getContext("2d");
-
-      // Draw immediately if the image is already cached, otherwise wait for it.
-      if (this.character.img.complete) {
-         this.draw();
-      } else {
-         this.character.img.onload = () => this.draw();
-      }
+      //this.canvas = canvas;
+      this.enemies.forEach((enemy) => {
+         enemy.x = 300 + Math.random() * 500;
+      });
+      this.draw();
    }
 
    draw() {
@@ -23,5 +22,18 @@ class world {
          this.character.width,
          this.character.height,
       );
+      this.enemies.forEach((enemy) => {
+         this.ctx.save();
+         this.ctx.scale(-1, 1);
+         this.ctx.drawImage(
+            enemy.img,
+            -enemy.x - enemy.width,
+            enemy.y,
+            enemy.width,
+            enemy.height,
+         );
+         this.ctx.restore();
+      });
+      requestAnimationFrame(this.draw.bind(this));
    }
 }
