@@ -27,10 +27,11 @@ class reaper extends MovableObject {
       this.loadImage(
          "img/Enemy/Reaper/Reaper_Man_1/PNG/PNG Sequences/Idle/0_Reaper_Man_Idle_000.png",
       );
-
+      this.speed = gameSettings.gameSpeed * 0.7;
       this.x = 300 + Math.random() * 500;
       this.loadImages(this.IMAGES_WAITING);
       this.animation();
+      this.moveLeft();
    }
 
    animation() {

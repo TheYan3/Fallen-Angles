@@ -6,6 +6,7 @@ class MovableObject {
    width = 100;
    imageCache = {};
    otherDirection = false;
+   speed = gameSettings.gameSpeed * 0.2;
 
    loadImage(path) {
       this.img = new Image();
@@ -25,6 +26,8 @@ class MovableObject {
    }
 
    moveLeft() {
-      this.x -= 0.15;
+      setInterval(() => {
+         this.x -= this.speed;
+      }, 1000 / 60);
    }
 }

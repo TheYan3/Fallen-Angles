@@ -26,10 +26,11 @@ class golem extends MovableObject {
       this.loadImage(
          "img/Enemy/Golem/Golem_1/PNG/PNG Sequences/Idle/0_Golem_Idle_000.png",
       );
-
+      this.speed = gameSettings.gameSpeed * 0.3;
       this.x = 300 + Math.random() * 500;
       this.loadImages(this.IMAGES_WAITING);
       this.animation();
+      this.moveLeft();
    }
 
    animation() {

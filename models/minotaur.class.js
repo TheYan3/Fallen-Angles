@@ -21,10 +21,11 @@ class minotaur extends MovableObject {
       this.loadImage(
          "img/Enemy/Minotaur/PNG/Minotaur_01/PNG Sequences/Idle/Minotaur_01_Idle_000.png",
       );
-
+      this.speed = gameSettings.gameSpeed * 1.1;
       this.x = 300 + Math.random() * 500;
       this.loadImages(this.IMAGES_WAITING);
       this.animation();
+      this.moveLeft();
    }
 
    animation() {
