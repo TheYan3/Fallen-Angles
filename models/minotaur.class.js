@@ -17,6 +17,7 @@ class minotaur extends MovableObject {
 
    constructor() {
       super();
+      this.otherDirection = true;
       this.loadImage(
          "img/Enemy/Minotaur/PNG/Minotaur_01/PNG Sequences/Idle/Minotaur_01_Idle_000.png",
       );

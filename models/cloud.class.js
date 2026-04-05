@@ -1,13 +1,12 @@
 class cloud extends MovableObject {
    width = 500;
    height = 300;
+   speed = gameSettings.gameSpeed * 1.2;
 
-   constructor(imagePath, index, cloudCount) {
+   constructor(imagePath, shouldMove = true) {
       super();
       this.loadImage(imagePath);
-      this.cloudCount = cloudCount;
-      this.index = index;
-      this.shouldMove = index !== 0;
+      this.shouldMove = shouldMove;
       this.randomizePosition();
       this.animation();
    }
@@ -15,7 +14,7 @@ class cloud extends MovableObject {
    animation() {
       setInterval(() => {
          if (this.shouldMove) {
-            this.x -= 0.2;
+            this.x -= this.speed;
          }
          if (this.x < -this.width) {
             this.randomizePosition();
@@ -25,7 +24,7 @@ class cloud extends MovableObject {
    }
 
    randomizePosition() {
-      this.x = this.index + Math.random();
-      this.y = Math.random() * (gameSettings.canvasHeight / 2 - this.height);
+      this.x = Math.random() * gameSettings.canvasWidth;
+      this.y = Math.random() * (gameSettings.canvasHeight / 2 - this.height / 2);
    }
 }
