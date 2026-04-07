@@ -2,10 +2,9 @@ class cloud extends MovableObject {
    width = 500;
    height = 300;
 
-   constructor(imagePath, shouldMove = true) {
+   constructor(imagePath) {
       super();
       this.loadImage(imagePath);
-      this.shouldMove = shouldMove;
       this.randomizePosition();
       this.moveLeft();
    }
@@ -18,9 +17,7 @@ class cloud extends MovableObject {
 
    moveLeft() {
       setInterval(() => {
-         if (this.shouldMove) {
-            this.x -= this.speed;
-         }
+         this.x -= this.speed;
          if (this.x < -this.width) {
             this.randomizePosition();
             this.x = gameSettings.canvasWidth;
