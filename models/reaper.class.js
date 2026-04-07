@@ -19,7 +19,21 @@ class reaper extends MovableObject {
       "img/Enemy/Reaper/Reaper_Man_1/PNG/PNG Sequences/Idle/0_Reaper_Man_Idle_016.png",
       "img/Enemy/Reaper/Reaper_Man_1/PNG/PNG Sequences/Idle/0_Reaper_Man_Idle_017.png",
    ];
-   currentImage = 0;
+   IMAGES_ATTACKING = [
+      "img/Enemy/Reaper/Reaper_Man_1/PNG/PNG Sequences/Slashing/0_Reaper_Man_Slashing_000.png",
+      "img/Enemy/Reaper/Reaper_Man_1/PNG/PNG Sequences/Slashing/0_Reaper_Man_Slashing_001.png",
+      "img/Enemy/Reaper/Reaper_Man_1/PNG/PNG Sequences/Slashing/0_Reaper_Man_Slashing_002.png",
+      "img/Enemy/Reaper/Reaper_Man_1/PNG/PNG Sequences/Slashing/0_Reaper_Man_Slashing_003.png",
+      "img/Enemy/Reaper/Reaper_Man_1/PNG/PNG Sequences/Slashing/0_Reaper_Man_Slashing_004.png",
+      "img/Enemy/Reaper/Reaper_Man_1/PNG/PNG Sequences/Slashing/0_Reaper_Man_Slashing_005.png",
+      "img/Enemy/Reaper/Reaper_Man_1/PNG/PNG Sequences/Slashing/0_Reaper_Man_Slashing_006.png",
+      "img/Enemy/Reaper/Reaper_Man_1/PNG/PNG Sequences/Slashing/0_Reaper_Man_Slashing_007.png",
+      "img/Enemy/Reaper/Reaper_Man_1/PNG/PNG Sequences/Slashing/0_Reaper_Man_Slashing_008.png",
+      "img/Enemy/Reaper/Reaper_Man_1/PNG/PNG Sequences/Slashing/0_Reaper_Man_Slashing_009.png",
+      "img/Enemy/Reaper/Reaper_Man_1/PNG/PNG Sequences/Slashing/0_Reaper_Man_Slashing_010.png",
+      "img/Enemy/Reaper/Reaper_Man_1/PNG/PNG Sequences/Slashing/0_Reaper_Man_Slashing_011.png",
+   ];
+   animationSpeed = 5000 / 60;
 
    constructor() {
       super();
@@ -30,16 +44,8 @@ class reaper extends MovableObject {
       this.speed = gameSettings.gameSpeed * 0.7;
       this.x = 300 + Math.random() * 500;
       this.loadImages(this.IMAGES_WAITING);
+      this.loadImages(this.IMAGES_ATTACKING);
       this.animation();
       this.moveLeft();
-   }
-
-   animation() {
-      setInterval(() => {
-         let path = this.IMAGES_WAITING[this.currentImage];
-         this.img = this.imageCache[path];
-         this.currentImage =
-            (this.currentImage + 1) % this.IMAGES_WAITING.length;
-      }, 5000 / 60);
    }
 }

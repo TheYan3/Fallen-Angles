@@ -18,23 +18,41 @@ class player extends MovableObject {
       "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Idle/0_Fallen_Angels_Idle_015.png",
       "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Idle/0_Fallen_Angels_Idle_016.png",
    ];
-   currentImage = 0;
+   IMAGES_ATTACKING = [
+      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Slashing/0_Fallen_Angels_Slashing_000.png",
+      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Slashing/0_Fallen_Angels_Slashing_001.png",
+      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Slashing/0_Fallen_Angels_Slashing_002.png",
+      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Slashing/0_Fallen_Angels_Slashing_003.png",
+      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Slashing/0_Fallen_Angels_Slashing_004.png",
+      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Slashing/0_Fallen_Angels_Slashing_005.png",
+      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Slashing/0_Fallen_Angels_Slashing_006.png",
+      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Slashing/0_Fallen_Angels_Slashing_007.png",
+      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Slashing/0_Fallen_Angels_Slashing_008.png",
+      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Slashing/0_Fallen_Angels_Slashing_009.png",
+      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Slashing/0_Fallen_Angels_Slashing_010.png",
+      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Slashing/0_Fallen_Angels_Slashing_011.png",
+   ];
+   IMAGES_WALKING = [];
 
-   constructor() {
-      super().loadImage(
+   world;
+   keyboard;
+
+   constructor(keyboard) {
+      super();
+      this.keyboard = keyboard;
+      this.loadImage(
          "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Idle/0_Fallen_Angels_Idle_000.png",
       );
       this.loadImages(this.IMAGES_WAITING);
+      this.loadImages(this.IMAGES_ATTACKING);
       this.animation();
    }
 
-   animation() {
-      setInterval(() => {
-         let path = this.IMAGES_WAITING[this.currentImage];
-         this.img = this.imageCache[path];
-         this.currentImage =
-            (this.currentImage + 1) % this.IMAGES_WAITING.length;
-      }, 4000 / 60);
+   moveRight() {
+      if (this.keyboard.RIGHT) {
+         animation();
+         this.x += this.speed;
+      }
    }
 
    jump() {

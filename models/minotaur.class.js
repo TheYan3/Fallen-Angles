@@ -13,7 +13,20 @@ class minotaur extends MovableObject {
       "img/Enemy/Minotaur/PNG/Minotaur_01/PNG Sequences/Idle/Minotaur_01_Idle_010.png",
       "img/Enemy/Minotaur/PNG/Minotaur_01/PNG Sequences/Idle/Minotaur_01_Idle_011.png",
    ];
-   currentImage = 0;
+   IMAGES_ATTACKING = [
+      "img/Enemy/Minotaur/PNG/Minotaur_01/PNG Sequences/Attacking/Minotaur_01_Attacking_000.png",
+      "img/Enemy/Minotaur/PNG/Minotaur_01/PNG Sequences/Attacking/Minotaur_01_Attacking_001.png",
+      "img/Enemy/Minotaur/PNG/Minotaur_01/PNG Sequences/Attacking/Minotaur_01_Attacking_002.png",
+      "img/Enemy/Minotaur/PNG/Minotaur_01/PNG Sequences/Attacking/Minotaur_01_Attacking_003.png",
+      "img/Enemy/Minotaur/PNG/Minotaur_01/PNG Sequences/Attacking/Minotaur_01_Attacking_004.png",
+      "img/Enemy/Minotaur/PNG/Minotaur_01/PNG Sequences/Attacking/Minotaur_01_Attacking_005.png",
+      "img/Enemy/Minotaur/PNG/Minotaur_01/PNG Sequences/Attacking/Minotaur_01_Attacking_006.png",
+      "img/Enemy/Minotaur/PNG/Minotaur_01/PNG Sequences/Attacking/Minotaur_01_Attacking_007.png",
+      "img/Enemy/Minotaur/PNG/Minotaur_01/PNG Sequences/Attacking/Minotaur_01_Attacking_008.png",
+      "img/Enemy/Minotaur/PNG/Minotaur_01/PNG Sequences/Attacking/Minotaur_01_Attacking_009.png",
+      "img/Enemy/Minotaur/PNG/Minotaur_01/PNG Sequences/Attacking/Minotaur_01_Attacking_010.png",
+      "img/Enemy/Minotaur/PNG/Minotaur_01/PNG Sequences/Attacking/Minotaur_01_Attacking_011.png",
+   ];
 
    constructor() {
       super();
@@ -24,16 +37,8 @@ class minotaur extends MovableObject {
       this.speed = gameSettings.gameSpeed * 1.1;
       this.x = 300 + Math.random() * 500;
       this.loadImages(this.IMAGES_WAITING);
+      this.loadImages(this.IMAGES_ATTACKING);
       this.animation();
       this.moveLeft();
-   }
-
-   animation() {
-      setInterval(() => {
-         let path = this.IMAGES_WAITING[this.currentImage];
-         this.img = this.imageCache[path];
-         this.currentImage =
-            (this.currentImage + 1) % this.IMAGES_WAITING.length;
-      }, 4000 / 60);
    }
 }

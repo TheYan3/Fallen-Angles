@@ -18,7 +18,21 @@ class golem extends MovableObject {
       "img/Enemy/Golem/Golem_1/PNG/PNG Sequences/Idle/0_Golem_Idle_016.png",
       "img/Enemy/Golem/Golem_1/PNG/PNG Sequences/Idle/0_Golem_Idle_017.png",
    ];
-   currentImage = 0;
+   IMAGES_ATTACKING = [
+      "img/Enemy/Golem/Golem_1/PNG/PNG Sequences/Slashing/0_Golem_Slashing_000.png",
+      "img/Enemy/Golem/Golem_1/PNG/PNG Sequences/Slashing/0_Golem_Slashing_001.png",
+      "img/Enemy/Golem/Golem_1/PNG/PNG Sequences/Slashing/0_Golem_Slashing_002.png",
+      "img/Enemy/Golem/Golem_1/PNG/PNG Sequences/Slashing/0_Golem_Slashing_003.png",
+      "img/Enemy/Golem/Golem_1/PNG/PNG Sequences/Slashing/0_Golem_Slashing_004.png",
+      "img/Enemy/Golem/Golem_1/PNG/PNG Sequences/Slashing/0_Golem_Slashing_005.png",
+      "img/Enemy/Golem/Golem_1/PNG/PNG Sequences/Slashing/0_Golem_Slashing_006.png",
+      "img/Enemy/Golem/Golem_1/PNG/PNG Sequences/Slashing/0_Golem_Slashing_007.png",
+      "img/Enemy/Golem/Golem_1/PNG/PNG Sequences/Slashing/0_Golem_Slashing_008.png",
+      "img/Enemy/Golem/Golem_1/PNG/PNG Sequences/Slashing/0_Golem_Slashing_009.png",
+      "img/Enemy/Golem/Golem_1/PNG/PNG Sequences/Slashing/0_Golem_Slashing_010.png",
+      "img/Enemy/Golem/Golem_1/PNG/PNG Sequences/Slashing/0_Golem_Slashing_011.png",
+   ];
+   animationSpeed = 8000 / 60;
 
    constructor() {
       super();
@@ -29,16 +43,8 @@ class golem extends MovableObject {
       this.speed = gameSettings.gameSpeed * 0.3;
       this.x = 300 + Math.random() * 500;
       this.loadImages(this.IMAGES_WAITING);
+      this.loadImages(this.IMAGES_ATTACKING);
       this.animation();
       this.moveLeft();
-   }
-
-   animation() {
-      setInterval(() => {
-         let path = this.IMAGES_WAITING[this.currentImage];
-         this.img = this.imageCache[path];
-         this.currentImage =
-            (this.currentImage + 1) % this.IMAGES_WAITING.length;
-      }, 8000 / 60);
    }
 }
