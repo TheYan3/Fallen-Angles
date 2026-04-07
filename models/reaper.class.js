@@ -59,6 +59,20 @@ class reaper extends MovableObject {
       "img/Enemy/Reaper/Reaper_Man_1/PNG/PNG Sequences/Walking/0_Reaper_Man_Walking_022.png",
       "img/Enemy/Reaper/Reaper_Man_1/PNG/PNG Sequences/Walking/0_Reaper_Man_Walking_023.png",
    ];
+   IMAGES_RUN = [
+      "img/Enemy/Reaper/Reaper_Man_1/PNG/PNG Sequences/Running/0_Reaper_Man_Running_000.png",
+      "img/Enemy/Reaper/Reaper_Man_1/PNG/PNG Sequences/Running/0_Reaper_Man_Running_001.png",
+      "img/Enemy/Reaper/Reaper_Man_1/PNG/PNG Sequences/Running/0_Reaper_Man_Running_002.png",
+      "img/Enemy/Reaper/Reaper_Man_1/PNG/PNG Sequences/Running/0_Reaper_Man_Running_003.png",
+      "img/Enemy/Reaper/Reaper_Man_1/PNG/PNG Sequences/Running/0_Reaper_Man_Running_004.png",
+      "img/Enemy/Reaper/Reaper_Man_1/PNG/PNG Sequences/Running/0_Reaper_Man_Running_005.png",
+      "img/Enemy/Reaper/Reaper_Man_1/PNG/PNG Sequences/Running/0_Reaper_Man_Running_006.png",
+      "img/Enemy/Reaper/Reaper_Man_1/PNG/PNG Sequences/Running/0_Reaper_Man_Running_007.png",
+      "img/Enemy/Reaper/Reaper_Man_1/PNG/PNG Sequences/Running/0_Reaper_Man_Running_008.png",
+      "img/Enemy/Reaper/Reaper_Man_1/PNG/PNG Sequences/Running/0_Reaper_Man_Running_009.png",
+      "img/Enemy/Reaper/Reaper_Man_1/PNG/PNG Sequences/Running/0_Reaper_Man_Running_010.png",
+      "img/Enemy/Reaper/Reaper_Man_1/PNG/PNG Sequences/Running/0_Reaper_Man_Running_011.png",
+   ];
    animationSpeed = 5000 / 60;
 
    constructor() {
@@ -71,7 +85,20 @@ class reaper extends MovableObject {
       this.x = 300 + Math.random() * 500;
       this.loadImages(this.IMAGES_WAITING);
       this.loadImages(this.IMAGES_ATTACKING);
+      this.loadImages(this.IMAGES_WALKING);
       this.animation();
       this.moveLeft();
+   }
+
+   animation() {
+      setInterval(() => {
+         this.playAnimation(this.IMAGES_WALKING);
+      }, this.animationSpeed);
+   }
+
+   attackAnimation() {
+      setInterval(() => {
+         this.playAnimation(this.IMAGES_ATTACKING);
+      }, this.attackAnimationSpeed);
    }
 }

@@ -47,6 +47,7 @@ class minotaur extends MovableObject {
       "img/Enemy/Minotaur/PNG/Minotaur_01/PNG Sequences/Walking/Minotaur_01_Walking_016.png",
       "img/Enemy/Minotaur/PNG/Minotaur_01/PNG Sequences/Walking/Minotaur_01_Walking_017.png",
    ];
+   IMAGES_RUN = [];
 
    constructor() {
       super();
@@ -58,7 +59,20 @@ class minotaur extends MovableObject {
       this.x = 300 + Math.random() * 500;
       this.loadImages(this.IMAGES_WAITING);
       this.loadImages(this.IMAGES_ATTACKING);
+      this.loadImages(this.IMAGES_WALKING);
       this.animation();
       this.moveLeft();
+   }
+
+   animation() {
+      setInterval(() => {
+         this.playAnimation(this.IMAGES_WALKING);
+      }, this.animationSpeed);
+   }
+
+   attackAnimation() {
+      setInterval(() => {
+         this.playAnimation(this.IMAGES_ATTACKING);
+      }, this.attackAnimationSpeed);
    }
 }

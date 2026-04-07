@@ -58,9 +58,27 @@ class player extends MovableObject {
       "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Walking/0_Fallen_Angels_Walking_022.png",
       "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Walking/0_Fallen_Angels_Walking_023.png",
    ];
+   IMAGES_RUN = [
+      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Running/0_Fallen_Angels_Running_000.png",
+      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Running/0_Fallen_Angels_Running_001.png",
+      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Running/0_Fallen_Angels_Running_002.png",
+      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Running/0_Fallen_Angels_Running_003.png",
+      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Running/0_Fallen_Angels_Running_004.png",
+      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Running/0_Fallen_Angels_Running_005.png",
+      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Running/0_Fallen_Angels_Running_006.png",
+      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Running/0_Fallen_Angels_Running_007.png",
+      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Running/0_Fallen_Angels_Running_008.png",
+      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Running/0_Fallen_Angels_Running_009.png",
+      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Running/0_Fallen_Angels_Running_010.png",
+      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Running/0_Fallen_Angels_Running_011.png",
+   ];
 
    world;
    keyboard;
+   lastAnimation = null;
+   isAttacking = false;
+   attackKeyHandled = false;
+   runSpeed = gameSettings.gameSpeed * 0.9;
 
    constructor(keyboard) {
       super();
@@ -70,14 +88,91 @@ class player extends MovableObject {
       );
       this.loadImages(this.IMAGES_WAITING);
       this.loadImages(this.IMAGES_ATTACKING);
+      this.loadImages(this.IMAGES_WALKING);
+      this.loadImages(this.IMAGES_RUN);
       this.animation();
+      this.handleMovement();
    }
 
-   moveRight() {
-      if (this.keyboard.RIGHT) {
-         animation();
-         this.x += this.speed;
+   handleMovement() {
+      setInterval(() => {
+         let currentSpeed = this.keyboard.RUN ? this.runSpeed : this.speed;
+
+         if (this.keyboard.RIGHT) {
+            this.x += currentSpeed;
+            this.otherDirection = false;
+         }
+
+         if (this.keyboard.LEFT) {
+            this.x -= currentSpeed;
+            this.otherDirection = true;
+         }
+         this.world.camara_x = -this.x;
+      }, 1000 / 60);
+   }
+
+   animation() {
+      setInterval(() => {
+         this.handleAttackState();
+
+         let images = this.getCurrentAnimationImages();
+         this.updateAnimationState(images);
+         this.playCurrentAnimation(images);
+      }, this.animationSpeed);
+   }
+
+   handleAttackState() {
+      if (this.keyboard.ATTACK && !this.attackKeyHandled && !this.isAttacking) {
+         this.isAttacking = true;
+         this.attackKeyHandled = true;
+         this.currentImage = 0;
+         this.lastAnimation = this.IMAGES_ATTACKING;
       }
+
+      if (!this.keyboard.ATTACK) {
+         this.attackKeyHandled = false;
+      }
+   }
+
+   getCurrentAnimationImages() {
+      if (this.isAttacking) {
+         return this.IMAGES_ATTACKING;
+      }
+
+      if (this.keyboard.RIGHT && this.keyboard.LEFT) {
+         return this.IMAGES_WAITING;
+      }
+
+      if ((this.keyboard.RIGHT || this.keyboard.LEFT) && this.keyboard.RUN) {
+         return this.IMAGES_RUN;
+      }
+
+      if (this.keyboard.LEFT || this.keyboard.RIGHT) {
+         return this.IMAGES_WALKING;
+      }
+
+      return this.IMAGES_WAITING;
+   }
+
+   updateAnimationState(images) {
+      if (this.lastAnimation !== images) {
+         this.currentImage = 0;
+         this.lastAnimation = images;
+      }
+   }
+
+   playCurrentAnimation(images) {
+      if (this.isAttacking) {
+         let animationFinished = this.playAnimationOnce(images);
+
+         if (animationFinished) {
+            this.isAttacking = false;
+            this.lastAnimation = null;
+         }
+         return;
+      }
+
+      this.playAnimation(images);
    }
 
    jump() {
