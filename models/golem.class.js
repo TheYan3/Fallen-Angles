@@ -32,6 +32,32 @@ class golem extends MovableObject {
       "img/Enemy/Golem/Golem_1/PNG/PNG Sequences/Slashing/0_Golem_Slashing_010.png",
       "img/Enemy/Golem/Golem_1/PNG/PNG Sequences/Slashing/0_Golem_Slashing_011.png",
    ];
+   IMAGES_WALKING = [
+      "img/Enemy/Golem/Golem_1/PNG/PNG Sequences/Walking/0_Golem_Walking_000.png",
+      "img/Enemy/Golem/Golem_1/PNG/PNG Sequences/Walking/0_Golem_Walking_001.png",
+      "img/Enemy/Golem/Golem_1/PNG/PNG Sequences/Walking/0_Golem_Walking_002.png",
+      "img/Enemy/Golem/Golem_1/PNG/PNG Sequences/Walking/0_Golem_Walking_003.png",
+      "img/Enemy/Golem/Golem_1/PNG/PNG Sequences/Walking/0_Golem_Walking_004.png",
+      "img/Enemy/Golem/Golem_1/PNG/PNG Sequences/Walking/0_Golem_Walking_005.png",
+      "img/Enemy/Golem/Golem_1/PNG/PNG Sequences/Walking/0_Golem_Walking_006.png",
+      "img/Enemy/Golem/Golem_1/PNG/PNG Sequences/Walking/0_Golem_Walking_007.png",
+      "img/Enemy/Golem/Golem_1/PNG/PNG Sequences/Walking/0_Golem_Walking_008.png",
+      "img/Enemy/Golem/Golem_1/PNG/PNG Sequences/Walking/0_Golem_Walking_009.png",
+      "img/Enemy/Golem/Golem_1/PNG/PNG Sequences/Walking/0_Golem_Walking_010.png",
+      "img/Enemy/Golem/Golem_1/PNG/PNG Sequences/Walking/0_Golem_Walking_011.png",
+      "img/Enemy/Golem/Golem_1/PNG/PNG Sequences/Walking/0_Golem_Walking_012.png",
+      "img/Enemy/Golem/Golem_1/PNG/PNG Sequences/Walking/0_Golem_Walking_013.png",
+      "img/Enemy/Golem/Golem_1/PNG/PNG Sequences/Walking/0_Golem_Walking_014.png",
+      "img/Enemy/Golem/Golem_1/PNG/PNG Sequences/Walking/0_Golem_Walking_015.png",
+      "img/Enemy/Golem/Golem_1/PNG/PNG Sequences/Walking/0_Golem_Walking_016.png",
+      "img/Enemy/Golem/Golem_1/PNG/PNG Sequences/Walking/0_Golem_Walking_017.png",
+      "img/Enemy/Golem/Golem_1/PNG/PNG Sequences/Walking/0_Golem_Walking_018.png",
+      "img/Enemy/Golem/Golem_1/PNG/PNG Sequences/Walking/0_Golem_Walking_019.png",
+      "img/Enemy/Golem/Golem_1/PNG/PNG Sequences/Walking/0_Golem_Walking_020.png",
+      "img/Enemy/Golem/Golem_1/PNG/PNG Sequences/Walking/0_Golem_Walking_021.png",
+      "img/Enemy/Golem/Golem_1/PNG/PNG Sequences/Walking/0_Golem_Walking_022.png",
+      "img/Enemy/Golem/Golem_1/PNG/PNG Sequences/Walking/0_Golem_Walking_023.png",
+   ];
    animationSpeed = 8000 / 60;
 
    constructor() {

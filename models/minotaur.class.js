@@ -27,6 +27,26 @@ class minotaur extends MovableObject {
       "img/Enemy/Minotaur/PNG/Minotaur_01/PNG Sequences/Attacking/Minotaur_01_Attacking_010.png",
       "img/Enemy/Minotaur/PNG/Minotaur_01/PNG Sequences/Attacking/Minotaur_01_Attacking_011.png",
    ];
+   IMAGES_WALKING = [
+      "img/Enemy/Minotaur/PNG/Minotaur_01/PNG Sequences/Walking/Minotaur_01_Walking_000.png",
+      "img/Enemy/Minotaur/PNG/Minotaur_01/PNG Sequences/Walking/Minotaur_01_Walking_001.png",
+      "img/Enemy/Minotaur/PNG/Minotaur_01/PNG Sequences/Walking/Minotaur_01_Walking_002.png",
+      "img/Enemy/Minotaur/PNG/Minotaur_01/PNG Sequences/Walking/Minotaur_01_Walking_003.png",
+      "img/Enemy/Minotaur/PNG/Minotaur_01/PNG Sequences/Walking/Minotaur_01_Walking_004.png",
+      "img/Enemy/Minotaur/PNG/Minotaur_01/PNG Sequences/Walking/Minotaur_01_Walking_005.png",
+      "img/Enemy/Minotaur/PNG/Minotaur_01/PNG Sequences/Walking/Minotaur_01_Walking_006.png",
+      "img/Enemy/Minotaur/PNG/Minotaur_01/PNG Sequences/Walking/Minotaur_01_Walking_007.png",
+      "img/Enemy/Minotaur/PNG/Minotaur_01/PNG Sequences/Walking/Minotaur_01_Walking_008.png",
+      "img/Enemy/Minotaur/PNG/Minotaur_01/PNG Sequences/Walking/Minotaur_01_Walking_009.png",
+      "img/Enemy/Minotaur/PNG/Minotaur_01/PNG Sequences/Walking/Minotaur_01_Walking_010.png",
+      "img/Enemy/Minotaur/PNG/Minotaur_01/PNG Sequences/Walking/Minotaur_01_Walking_011.png",
+      "img/Enemy/Minotaur/PNG/Minotaur_01/PNG Sequences/Walking/Minotaur_01_Walking_012.png",
+      "img/Enemy/Minotaur/PNG/Minotaur_01/PNG Sequences/Walking/Minotaur_01_Walking_013.png",
+      "img/Enemy/Minotaur/PNG/Minotaur_01/PNG Sequences/Walking/Minotaur_01_Walking_014.png",
+      "img/Enemy/Minotaur/PNG/Minotaur_01/PNG Sequences/Walking/Minotaur_01_Walking_015.png",
+      "img/Enemy/Minotaur/PNG/Minotaur_01/PNG Sequences/Walking/Minotaur_01_Walking_016.png",
+      "img/Enemy/Minotaur/PNG/Minotaur_01/PNG Sequences/Walking/Minotaur_01_Walking_017.png",
+   ];
 
    constructor() {
       super();

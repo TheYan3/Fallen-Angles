@@ -32,7 +32,32 @@ class player extends MovableObject {
       "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Slashing/0_Fallen_Angels_Slashing_010.png",
       "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Slashing/0_Fallen_Angels_Slashing_011.png",
    ];
-   IMAGES_WALKING = [];
+   IMAGES_WALKING = [
+      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Walking/0_Fallen_Angels_Walking_000.png",
+      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Walking/0_Fallen_Angels_Walking_001.png",
+      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Walking/0_Fallen_Angels_Walking_002.png",
+      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Walking/0_Fallen_Angels_Walking_003.png",
+      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Walking/0_Fallen_Angels_Walking_004.png",
+      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Walking/0_Fallen_Angels_Walking_005.png",
+      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Walking/0_Fallen_Angels_Walking_006.png",
+      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Walking/0_Fallen_Angels_Walking_007.png",
+      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Walking/0_Fallen_Angels_Walking_008.png",
+      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Walking/0_Fallen_Angels_Walking_009.png",
+      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Walking/0_Fallen_Angels_Walking_010.png",
+      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Walking/0_Fallen_Angels_Walking_011.png",
+      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Walking/0_Fallen_Angels_Walking_012.png",
+      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Walking/0_Fallen_Angels_Walking_013.png",
+      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Walking/0_Fallen_Angels_Walking_014.png",
+      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Walking/0_Fallen_Angels_Walking_015.png",
+      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Walking/0_Fallen_Angels_Walking_016.png",
+      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Walking/0_Fallen_Angels_Walking_017.png",
+      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Walking/0_Fallen_Angels_Walking_018.png",
+      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Walking/0_Fallen_Angels_Walking_019.png",
+      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Walking/0_Fallen_Angels_Walking_020.png",
+      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Walking/0_Fallen_Angels_Walking_021.png",
+      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Walking/0_Fallen_Angels_Walking_022.png",
+      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Walking/0_Fallen_Angels_Walking_023.png",
+   ];
 
    world;
    keyboard;
