@@ -5,6 +5,7 @@ class keyboard {
    DOWN = false;
    SPACE = false;
    ATTACK = false;
+   RUN = false;
 
    constructor() {
       window.addEventListener("keydown", (event) => {
@@ -37,8 +38,12 @@ class keyboard {
          this.SPACE = isPressed;
       }
 
-      if (key === "j" || key === "J") {
+      if (key === "f" || key === "F") {
          this.ATTACK = isPressed;
+      }
+
+      if (key === "Shift") {
+         this.RUN = isPressed;
       }
    }
 }
