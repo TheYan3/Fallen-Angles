@@ -2,6 +2,7 @@ const gameSettings = {
    canvasWidth: 720,
    canvasHeight: 480,
    gameSpeed: 3,
+   hitboxShown: true,
 
    applyToCanvas(canvas) {
       canvas.width = this.canvasWidth;

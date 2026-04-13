@@ -51,18 +51,51 @@ class world {
       }
 
       if (mo.otherDirection) {
-         this.ctx.save();
-         this.ctx.scale(-1, 1);
-         this.ctx.drawImage(
-            mo.img,
-            -mo.x - mo.width,
-            mo.y,
-            mo.width,
-            mo.height,
-         );
-         this.ctx.restore();
+         this.flipImage(mo);
       } else {
          this.ctx.drawImage(mo.img, mo.x, mo.y, mo.width, mo.height);
       }
+
+      this.drawHitboxIfEnabled(mo);
+   }
+
+   flipImage(mo) {
+      this.ctx.save();
+      this.ctx.scale(-1, 1);
+      this.ctx.drawImage(
+         mo.img,
+         -mo.x - mo.width,
+         mo.y,
+         mo.width,
+         mo.height,
+      );
+      this.ctx.restore();
+   }
+
+   drawHitboxIfEnabled(mo) {
+      if (!gameSettings.hitboxShown) {
+         return;
+      }
+
+      let shouldDrawHitbox =
+         mo instanceof player ||
+         mo instanceof golem ||
+         mo instanceof reaper ||
+         mo instanceof minotaur ||
+         mo instanceof endboss;
+
+      if (!shouldDrawHitbox) {
+         return;
+      }
+
+      this.drawRedFrame(mo);
+   }
+
+   drawRedFrame(mo) {
+      this.ctx.save();
+      this.ctx.strokeStyle = "red";
+      this.ctx.lineWidth = 2;
+      this.ctx.strokeRect(mo.x, mo.y, mo.width, mo.height);
+      this.ctx.restore();
    }
 }
