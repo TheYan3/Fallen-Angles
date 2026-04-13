@@ -1,111 +1,68 @@
 class player extends MovableObject {
-   IMAGES_WAITING = [
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Idle/0_Fallen_Angels_Idle_000.png",
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Idle/0_Fallen_Angels_Idle_001.png",
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Idle/0_Fallen_Angels_Idle_002.png",
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Idle/0_Fallen_Angels_Idle_003.png",
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Idle/0_Fallen_Angels_Idle_004.png",
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Idle/0_Fallen_Angels_Idle_005.png",
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Idle/0_Fallen_Angels_Idle_006.png",
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Idle/0_Fallen_Angels_Idle_007.png",
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Idle/0_Fallen_Angels_Idle_008.png",
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Idle/0_Fallen_Angels_Idle_009.png",
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Idle/0_Fallen_Angels_Idle_010.png",
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Idle/0_Fallen_Angels_Idle_011.png",
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Idle/0_Fallen_Angels_Idle_012.png",
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Idle/0_Fallen_Angels_Idle_013.png",
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Idle/0_Fallen_Angels_Idle_014.png",
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Idle/0_Fallen_Angels_Idle_015.png",
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Idle/0_Fallen_Angels_Idle_016.png",
-   ];
-   IMAGES_ATTACKING = [
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Slashing/0_Fallen_Angels_Slashing_000.png",
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Slashing/0_Fallen_Angels_Slashing_001.png",
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Slashing/0_Fallen_Angels_Slashing_002.png",
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Slashing/0_Fallen_Angels_Slashing_003.png",
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Slashing/0_Fallen_Angels_Slashing_004.png",
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Slashing/0_Fallen_Angels_Slashing_005.png",
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Slashing/0_Fallen_Angels_Slashing_006.png",
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Slashing/0_Fallen_Angels_Slashing_007.png",
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Slashing/0_Fallen_Angels_Slashing_008.png",
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Slashing/0_Fallen_Angels_Slashing_009.png",
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Slashing/0_Fallen_Angels_Slashing_010.png",
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Slashing/0_Fallen_Angels_Slashing_011.png",
-   ];
-   IMAGES_WALKING = [
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Walking/0_Fallen_Angels_Walking_000.png",
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Walking/0_Fallen_Angels_Walking_001.png",
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Walking/0_Fallen_Angels_Walking_002.png",
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Walking/0_Fallen_Angels_Walking_003.png",
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Walking/0_Fallen_Angels_Walking_004.png",
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Walking/0_Fallen_Angels_Walking_005.png",
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Walking/0_Fallen_Angels_Walking_006.png",
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Walking/0_Fallen_Angels_Walking_007.png",
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Walking/0_Fallen_Angels_Walking_008.png",
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Walking/0_Fallen_Angels_Walking_009.png",
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Walking/0_Fallen_Angels_Walking_010.png",
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Walking/0_Fallen_Angels_Walking_011.png",
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Walking/0_Fallen_Angels_Walking_012.png",
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Walking/0_Fallen_Angels_Walking_013.png",
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Walking/0_Fallen_Angels_Walking_014.png",
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Walking/0_Fallen_Angels_Walking_015.png",
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Walking/0_Fallen_Angels_Walking_016.png",
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Walking/0_Fallen_Angels_Walking_017.png",
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Walking/0_Fallen_Angels_Walking_018.png",
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Walking/0_Fallen_Angels_Walking_019.png",
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Walking/0_Fallen_Angels_Walking_020.png",
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Walking/0_Fallen_Angels_Walking_021.png",
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Walking/0_Fallen_Angels_Walking_022.png",
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Walking/0_Fallen_Angels_Walking_023.png",
-   ];
-   IMAGES_RUN = [
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Running/0_Fallen_Angels_Running_000.png",
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Running/0_Fallen_Angels_Running_001.png",
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Running/0_Fallen_Angels_Running_002.png",
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Running/0_Fallen_Angels_Running_003.png",
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Running/0_Fallen_Angels_Running_004.png",
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Running/0_Fallen_Angels_Running_005.png",
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Running/0_Fallen_Angels_Running_006.png",
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Running/0_Fallen_Angels_Running_007.png",
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Running/0_Fallen_Angels_Running_008.png",
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Running/0_Fallen_Angels_Running_009.png",
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Running/0_Fallen_Angels_Running_010.png",
-      "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Running/0_Fallen_Angels_Running_011.png",
-   ];
+   DEFAULT_SKIN = "Fallen_Angels_1";
 
    world;
    keyboard;
    lastAnimation = null;
    isAttacking = false;
    attackKeyHandled = false;
+   currentAttackAnimation = null;
+   jumpBlocked = false;
+   jumpCooldown = 800;
    runSpeed = gameSettings.gameSpeed * 0.9;
 
    constructor(keyboard) {
       super();
+      let animations = animationLibrary.player[this.DEFAULT_SKIN];
+
+      this.IMAGES_WAITING = animations.idle;
+      this.IMAGES_ATTACKING = animations.slashing;
+      this.IMAGES_RUN_ATTACKING = animations.runSlashing;
+      this.IMAGES_WALKING = animations.walking;
+      this.IMAGES_RUN = animations.running;
+      this.IMAGES_JUMPING = animations.jumpStart;
+      this.IMAGES_FALLING = animations.fallingDown;
+      this.IMAGES_DYING = animations.dying;
+
       this.keyboard = keyboard;
-      this.loadImage(
-         "img/Player/Fallen-Angles/Fallen_Angels_1/PNG/PNG Sequences/Idle/0_Fallen_Angels_Idle_000.png",
-      );
+      this.loadImage(this.IMAGES_WAITING[0]);
       this.loadImages(this.IMAGES_WAITING);
       this.loadImages(this.IMAGES_ATTACKING);
+      this.loadImages(this.IMAGES_RUN_ATTACKING);
       this.loadImages(this.IMAGES_WALKING);
       this.loadImages(this.IMAGES_RUN);
+      this.loadImages(this.IMAGES_JUMPING);
+      this.loadImages(this.IMAGES_FALLING);
+      this.loadImages(this.IMAGES_DYING);
+      this.applyGravity();
       this.animation();
       this.handleMovement();
    }
 
    handleMovement() {
       setInterval(() => {
-         let currentSpeed = this.keyboard.RUN ? this.runSpeed : this.speed;
+         let currentSpeed = this.getMovementSpeed(
+            this.keyboard.RUN,
+            this.runSpeed,
+         );
+         let isNormalAttackLocked =
+            this.isAttacking &&
+            this.currentAttackAnimation === this.IMAGES_ATTACKING;
 
-         if (this.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
-            this.x += currentSpeed;
-            this.otherDirection = false;
+         if (
+            !isNormalAttackLocked &&
+            this.keyboard.RIGHT &&
+            this.x < this.world.level.level_end_x
+         ) {
+            this.moveRight(currentSpeed);
          }
 
-         if (this.keyboard.LEFT && this.x > 0) {
-            this.x -= currentSpeed;
-            this.otherDirection = true;
+         if (!isNormalAttackLocked && this.keyboard.LEFT && this.x > 0) {
+            this.moveLeft(currentSpeed);
+         }
+
+         if (this.keyboard.SPACE && !this.isAboveGround()) {
+            this.jump();
          }
          this.world.camara_x = -this.x + 100;
       }, 1000 / 60);
@@ -126,7 +83,8 @@ class player extends MovableObject {
          this.isAttacking = true;
          this.attackKeyHandled = true;
          this.currentImage = 0;
-         this.lastAnimation = this.IMAGES_ATTACKING;
+         this.currentAttackAnimation = this.getAttackAnimationImages();
+         this.lastAnimation = this.currentAttackAnimation;
       }
 
       if (!this.keyboard.ATTACK) {
@@ -136,7 +94,15 @@ class player extends MovableObject {
 
    getCurrentAnimationImages() {
       if (this.isAttacking) {
-         return this.IMAGES_ATTACKING;
+         return this.currentAttackAnimation || this.IMAGES_ATTACKING;
+      }
+
+      if (this.isAboveGround() && this.speedY < 0) {
+         return this.IMAGES_JUMPING;
+      }
+
+      if (this.isAboveGround()) {
+         return this.IMAGES_FALLING;
       }
 
       if (this.keyboard.RIGHT && this.keyboard.LEFT) {
@@ -154,6 +120,16 @@ class player extends MovableObject {
       return this.IMAGES_WAITING;
    }
 
+   getAttackAnimationImages() {
+      let isMoving = this.keyboard.LEFT || this.keyboard.RIGHT;
+
+      if (isMoving && this.keyboard.RUN) {
+         return this.IMAGES_RUN_ATTACKING;
+      }
+
+      return this.IMAGES_ATTACKING;
+   }
+
    updateAnimationState(images) {
       if (this.lastAnimation !== images) {
          this.currentImage = 0;
@@ -167,6 +143,7 @@ class player extends MovableObject {
 
          if (animationFinished) {
             this.isAttacking = false;
+            this.currentAttackAnimation = null;
             this.lastAnimation = null;
          }
          return;
@@ -176,6 +153,12 @@ class player extends MovableObject {
    }
 
    jump() {
-      console.log("Jumping");
+      if (!this.isAboveGround() && !this.jumpBlocked) {
+         this.jumpBlocked = true;
+         this.speedY = -15;
+         setTimeout(() => {
+            this.jumpBlocked = false;
+         }, this.jumpCooldown);
+      }
    }
 }

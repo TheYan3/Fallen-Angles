@@ -1,15 +1,39 @@
 class MovableObject {
    x = 100;
-   y = 360;
+   y = gameSettings.canvasHeight - 110;
    img;
    height = 100;
    width = 100;
    imageCache = {};
    otherDirection = false;
-   speed = gameSettings.gameSpeed * 0.2;
+   speed = gameSettings.gameSpeed * 0.3;
    currentImage = 0;
    animationSpeed = 4000 / 60;
    attackAnimationSpeed = 4000 / 60;
+   speedY = 0;
+   acceleration = 0.9;
+   groundY = gameSettings.canvasHeight - 110;
+
+   applyGravity() {
+      setInterval(() => {
+         if (this.isAboveGround() || this.speedY < 0) {
+            this.y += this.speedY;
+            this.speedY += this.acceleration;
+
+            if (this.y > this.groundY) {
+               this.y = this.groundY;
+               this.speedY = 0;
+            }
+         } else {
+            this.y = this.groundY;
+            this.speedY = 0;
+         }
+      }, 1000 / 60);
+   }
+
+   isAboveGround() {
+      return this.y < this.groundY;
+   }
 
    loadImage(path) {
       this.img = new Image();
@@ -24,12 +48,18 @@ class MovableObject {
       });
    }
 
-   moveRight() {
-      this.x += this.speed;
+   moveRight(speed = this.speed) {
+      this.x += speed;
+      this.otherDirection = false;
    }
 
-   moveLeft() {
-      this.x -= this.speed;
+   moveLeft(speed = this.speed) {
+      this.x -= speed;
+      this.otherDirection = true;
+   }
+
+   getMovementSpeed(isRunning = false, runSpeed = this.speed) {
+      return isRunning ? runSpeed : this.speed;
    }
 
    playAnimation(images) {
