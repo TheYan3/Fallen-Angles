@@ -98,16 +98,16 @@ class player extends MovableObject {
       setInterval(() => {
          let currentSpeed = this.keyboard.RUN ? this.runSpeed : this.speed;
 
-         if (this.keyboard.RIGHT) {
+         if (this.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
             this.x += currentSpeed;
             this.otherDirection = false;
          }
 
-         if (this.keyboard.LEFT) {
+         if (this.keyboard.LEFT && this.x > 0) {
             this.x -= currentSpeed;
             this.otherDirection = true;
          }
-         this.world.camara_x = -this.x;
+         this.world.camara_x = -this.x + 100;
       }, 1000 / 60);
    }
 

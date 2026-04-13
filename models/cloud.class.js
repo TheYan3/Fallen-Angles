@@ -10,7 +10,7 @@ class cloud extends MovableObject {
    }
 
    randomizePosition() {
-      this.x = Math.random() * gameSettings.canvasWidth;
+      this.x = Math.random() * gameSettings.canvasWidth * 5;
       this.y =
          Math.random() * (gameSettings.canvasHeight / 2 - this.height / 2);
    }

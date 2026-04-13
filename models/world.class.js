@@ -1,10 +1,6 @@
 class world {
    character;
    level = level1;
-   enemies = this.level.enemies;
-   skies = this.level.skies;
-   clouds = this.level.clouds;
-   groundObjects = this.level.groundObjects;
    ctx;
    canvas;
    keyboardInput;
@@ -15,8 +11,8 @@ class world {
       this.keyboardInput = keyboardInput;
       this.canvas = canvas;
       this.character = new player(keyboardInput);
-      this.draw();
       this.setWorld();
+      this.draw();
    }
 
    setWorld() {
@@ -28,24 +24,32 @@ class world {
 
       this.ctx.translate(Math.round(this.camara_x), 0);
 
-      this.skies.forEach((skyObject) => skyObject.draw(this.ctx));
-      this.addObjectsToMap(this.groundObjects);
-      this.addObjectsToMap(this.clouds);
+      this.level.skies.forEach((skyObject) => skyObject.draw(this.ctx));
+      this.addObjectsToMap(this.level.clouds);
+      this.addObjectsToMap(this.level.groundObjects);
       this.addToMap(this.character);
-      this.addObjectsToMap(this.enemies);
+      this.addObjectsToMap(this.level.enemies);
 
       this.ctx.translate(-Math.round(this.camara_x), 0);
 
       requestAnimationFrame(this.draw.bind(this));
    }
 
-   addObjectsToMap(object) {
-      object.forEach((o) => {
+   addObjectsToMap(objects) {
+      if (!Array.isArray(objects)) {
+         return;
+      }
+
+      objects.forEach((o) => {
          this.addToMap(o);
       });
    }
 
    addToMap(mo) {
+      if (!mo?.img) {
+         return;
+      }
+
       if (mo.otherDirection) {
          this.ctx.save();
          this.ctx.scale(-1, 1);
