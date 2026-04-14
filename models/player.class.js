@@ -9,7 +9,7 @@ class player extends MovableObject {
    currentAttackAnimation = null;
    jumpBlocked = false;
    jumpCooldown = 800;
-   runSpeed = gameSettings.gameSpeed * 0.9;
+   runSpeed = gameSettings.gameSpeed * 1.2;
 
    constructor(keyboard) {
       super();
@@ -79,7 +79,7 @@ class player extends MovableObject {
    }
 
    handleAttackState() {
-      if (this.keyboard.ATTACK && !this.attackKeyHandled && !this.isAttacking) {
+      if (this.keyboard.UP && !this.attackKeyHandled && !this.isAttacking) {
          this.isAttacking = true;
          this.attackKeyHandled = true;
          this.currentImage = 0;
@@ -87,7 +87,7 @@ class player extends MovableObject {
          this.lastAnimation = this.currentAttackAnimation;
       }
 
-      if (!this.keyboard.ATTACK) {
+      if (!this.keyboard.UP) {
          this.attackKeyHandled = false;
       }
    }
@@ -155,7 +155,7 @@ class player extends MovableObject {
    jump() {
       if (!this.isAboveGround() && !this.jumpBlocked) {
          this.jumpBlocked = true;
-         this.speedY = -15;
+         this.speedY = -17;
          setTimeout(() => {
             this.jumpBlocked = false;
          }, this.jumpCooldown);
