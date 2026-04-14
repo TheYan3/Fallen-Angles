@@ -1,6 +1,10 @@
 class endboss extends MovableObject {
    DEFAULT_SKIN = "Wraith_03";
    animationSpeed = 5000 / 60;
+   attackFrameDelay = 2;
+   isAggro = false;
+   isAttacking = false;
+   isWalking = false;
 
    constructor() {
       super();
@@ -16,7 +20,7 @@ class endboss extends MovableObject {
       this.IMAGES_TAUNT = animations.taunt;
 
       this.otherDirection = true;
-      this.speed = 0;
+      this.speed = gameSettings.gameSpeed * 0.4;
       this.x = 1300;
       this.y = 230;
       this.width = 250;
@@ -35,7 +39,19 @@ class endboss extends MovableObject {
 
    animation() {
       setInterval(() => {
-         this.playAnimation(this.IMAGES_IDLE);
+         let images = this.IMAGES_IDLE;
+
+         if (this.isAttacking) {
+            images = this.IMAGES_ATTACKING;
+         } else if (this.isAggro && this.isWalking) {
+            images = this.IMAGES_WALKING;
+         }
+
+         this.updateAnimationState(images);
+         this.playAnimationWithDelay(
+            images,
+            this.isAttacking ? this.attackFrameDelay : 1,
+         );
       }, this.animationSpeed);
    }
 }

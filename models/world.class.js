@@ -5,6 +5,8 @@ class world {
    canvas;
    keyboardInput;
    camara_x = 0;
+   enemyActivationDistance = 290;
+   enemyStopDistance = 20;
 
    constructor(canvas, keyboardInput) {
       this.ctx = canvas.getContext("2d");
@@ -13,10 +15,55 @@ class world {
       this.character = new player(keyboardInput);
       this.setWorld();
       this.draw();
+      this.moveEnemiesTowardsPlayer();
+      this.checkCollisions();
    }
 
    setWorld() {
       this.character.world = this;
+   }
+
+   checkCollisions() {
+      setInterval(() => {
+         this.level.enemies.forEach((enemy) => {
+            enemy.isAttacking = this.character.isColliding(enemy);
+         });
+      }, 1000 / 60);
+   }
+
+   moveEnemiesTowardsPlayer() {
+      setInterval(() => {
+         this.level.enemies.forEach((enemy) => {
+            if (!enemy.isAggro) {
+               enemy.isAggro =
+                  this.character.x >= enemy.x - this.enemyActivationDistance;
+            }
+
+            if (!enemy.isAggro) {
+               enemy.isWalking = false;
+               return;
+            }
+
+            if (enemy.isAttacking) {
+               enemy.isWalking = false;
+               return;
+            }
+
+            if (enemy.x > this.character.x + this.enemyStopDistance) {
+               enemy.isWalking = true;
+               enemy.moveLeft();
+               return;
+            }
+
+            if (enemy.x < this.character.x - this.enemyStopDistance) {
+               enemy.isWalking = true;
+               enemy.moveRight();
+               return;
+            }
+
+            enemy.isWalking = false;
+         });
+      }, 1000 / 60);
    }
 
    draw() {
@@ -62,13 +109,7 @@ class world {
    flipImage(mo) {
       this.ctx.save();
       this.ctx.scale(-1, 1);
-      this.ctx.drawImage(
-         mo.img,
-         -mo.x - mo.width,
-         mo.y,
-         mo.width,
-         mo.height,
-      );
+      this.ctx.drawImage(mo.img, -mo.x - mo.width, mo.y, mo.width, mo.height);
       this.ctx.restore();
    }
 
