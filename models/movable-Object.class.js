@@ -8,6 +8,8 @@ class MovableObject {
    otherDirection = false;
    speed = gameSettings.gameSpeed * 0.3;
    currentImage = 0;
+   lastAnimation = null;
+   animationTick = 0;
    animationSpeed = 4000 / 60;
    attackAnimationSpeed = 4000 / 60;
    speedY = 0;
@@ -68,6 +70,20 @@ class MovableObject {
       this.currentImage = (this.currentImage + 1) % images.length;
    }
 
+   playAnimationWithDelay(images, frameDelay = 1) {
+      let path = images[this.currentImage];
+      this.img = this.imageCache[path];
+
+      this.animationTick++;
+
+      if (this.animationTick < frameDelay) {
+         return;
+      }
+
+      this.currentImage = (this.currentImage + 1) % images.length;
+      this.animationTick = 0;
+   }
+
    playAnimationOnce(images) {
       let path = images[this.currentImage];
       this.img = this.imageCache[path];
@@ -79,5 +95,26 @@ class MovableObject {
       }
 
       return false;
+   }
+
+   updateAnimationState(images) {
+      if (this.lastAnimation !== images) {
+         this.currentImage = 0;
+         this.lastAnimation = images;
+         this.animationTick = 0;
+      }
+   }
+
+   isColliding(otherObject) {
+      if (!otherObject) {
+         return false;
+      }
+
+      return (
+         this.x < otherObject.x + otherObject.width &&
+         this.x + this.width > otherObject.x &&
+         this.y < otherObject.y + otherObject.height &&
+         this.y + this.height > otherObject.y
+      );
    }
 }
