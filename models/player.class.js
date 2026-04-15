@@ -27,7 +27,8 @@ class player extends MovableObject {
       this.IMAGES_DYING = animations.dying;
 
       this.keyboard = keyboard;
-      this.damage = 20;
+      this.energy = 100;
+      this.damage = 25;
       this.loadImage(this.IMAGES_WAITING[0]);
       this.loadImages(this.IMAGES_WAITING);
       this.loadImages(this.IMAGES_ATTACKING);

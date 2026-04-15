@@ -1,7 +1,7 @@
 class endboss extends MovableObject {
    DEFAULT_SKIN = "Wraith_03";
    animationSpeed = 5000 / 60;
-   attackFrameDelay = 2;
+   attackFrameDelay = 1.5;
 
    constructor() {
       super();
@@ -17,7 +17,8 @@ class endboss extends MovableObject {
       this.IMAGES_TAUNT = animations.taunt;
 
       this.otherDirection = true;
-      this.damage = 15;
+      this.energy = 200;
+      this.damage = 50;
       this.speed = gameSettings.gameSpeed * 0.4;
       this.x = 2000;
       this.y = 230;
