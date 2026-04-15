@@ -3,9 +3,15 @@ const gameSettings = {
    canvasHeight: 480,
    gameSpeed: 3,
    hitboxShown: true,
+   fontFamily: '"Josefin Sans", sans-serif',
+   fontWeight: "700",
 
    applyToCanvas(canvas) {
       canvas.width = this.canvasWidth;
       canvas.height = this.canvasHeight;
+   },
+
+   getCanvasFont(size) {
+      return `${this.fontWeight} ${size}px ${this.fontFamily}`;
    },
 };

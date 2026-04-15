@@ -5,9 +5,10 @@ class world {
    canvas;
    keyboardInput;
    camara_x = 0;
-   enemyActivationDistance = 290;
+   enemyActivationDistance = 390;
    enemyStopDistance = 30;
    isGameStopped = false;
+   powerUpCounter = new powerUpCounter();
 
    constructor(canvas, keyboardInput) {
       this.ctx = canvas.getContext("2d");
@@ -33,11 +34,34 @@ class world {
             return;
          }
 
+         this.checkPowerUpCollisions();
          this.character.checkDeath();
          this.updateEnemyStates();
          this.removeRemovedEnemies();
+         this.removeCollectedPowerUps();
          this.stopGameIfPlayerIsRemoved();
       }, 1000 / 60);
+   }
+
+   checkPowerUpCollisions() {
+      this.level.powerUps.forEach((powerUpItem) => {
+         if (
+            !powerUpItem.isRemoved &&
+            this.character.isColliding(powerUpItem)
+         ) {
+            this.collectPowerUp(powerUpItem);
+         }
+      });
+   }
+
+   collectPowerUp(powerUpItem) {
+      this.applyPowerUpEffect(powerUpItem);
+      this.powerUpCounter.increment();
+      powerUpItem.collect();
+   }
+
+   applyPowerUpEffect(powerUpItem) {
+      this.character.energy += powerUpItem.lifeAmount;
    }
 
    isEnemyInAttackRange(enemy) {
@@ -70,6 +94,12 @@ class world {
    removeRemovedEnemies() {
       this.level.enemies = this.level.enemies.filter(
          (enemy) => !enemy.isRemoved,
+      );
+   }
+
+   removeCollectedPowerUps() {
+      this.level.powerUps = this.level.powerUps.filter(
+         (powerUpItem) => !powerUpItem.isRemoved,
       );
    }
 
@@ -178,12 +208,18 @@ class world {
       this.addObjectsToMap(this.level.clouds);
       this.addObjectsToMap(this.level.groundObjects);
       this.addToMap(this.character);
+      this.addObjectsToMap(this.level.powerUps);
       this.addObjectsToMap(this.level.enemies);
       this.addObjectsToMap(this.level.rocks);
 
       this.ctx.translate(-Math.round(this.camara_x), 0);
+      this.drawUi();
 
       requestAnimationFrame(this.draw.bind(this));
+   }
+
+   drawUi() {
+      this.powerUpCounter.draw(this.ctx, this.canvas.width);
    }
 
    addObjectsToMap(objects) {

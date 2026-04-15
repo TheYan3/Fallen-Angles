@@ -5,6 +5,13 @@ function buildAnimationFrames(rootPath, sequenceFolder, prefix, lastFrame) {
    });
 }
 
+function buildSimpleFrames(rootPath, prefix, lastFrame) {
+   return Array.from({ length: lastFrame + 1 }, (_, index) => {
+      let frameNumber = String(index).padStart(3, "0");
+      return `${rootPath}/${prefix}${frameNumber}.png`;
+   });
+}
+
 function resolveTemplate(template, skinName) {
    return template.replaceAll("{skin}", skinName);
 }
@@ -40,18 +47,33 @@ function buildEntityAnimations(basePath, skinNames, sequenceDefinitions) {
 }
 
 const animationLibrary = {
+   powerup: {
+      flameFeather: buildSimpleFrames("img/Powerup", "flame_feather", 17),
+   },
    player: buildEntityAnimations(
       "img/Player/Fallen-Angles/{skin}/PNG/PNG Sequences",
       ["Fallen_Angels_1", "Fallen_Angels_2", "Fallen_Angels_3"],
       {
-         dying: { folder: "Dying", prefix: "0_Fallen_Angels_Dying_", lastFrame: 14 },
+         dying: {
+            folder: "Dying",
+            prefix: "0_Fallen_Angels_Dying_",
+            lastFrame: 14,
+         },
          fallingDown: {
             folder: "Falling Down",
             prefix: "0_Fallen_Angels_Falling Down_",
             lastFrame: 5,
          },
-         hurt: { folder: "Hurt", prefix: "0_Fallen_Angels_Hurt_", lastFrame: 11 },
-         idle: { folder: "Idle", prefix: "0_Fallen_Angels_Idle_", lastFrame: 17 },
+         hurt: {
+            folder: "Hurt",
+            prefix: "0_Fallen_Angels_Hurt_",
+            lastFrame: 11,
+         },
+         idle: {
+            folder: "Idle",
+            prefix: "0_Fallen_Angels_Idle_",
+            lastFrame: 17,
+         },
          idleBlink: {
             folder: "Idle Blinking",
             prefix: "0_Fallen_Angels_Idle Blinking_",
@@ -202,7 +224,11 @@ const animationLibrary = {
       "img/Enemy/Reaper/{skin}/PNG/PNG Sequences",
       ["Reaper_Man_1", "Reaper_Man_2", "Reaper_Man_3"],
       {
-         dying: { folder: "Dying", prefix: "0_Reaper_Man_Dying_", lastFrame: 14 },
+         dying: {
+            folder: "Dying",
+            prefix: "0_Reaper_Man_Dying_",
+            lastFrame: 14,
+         },
          fallingDown: {
             folder: "Falling Down",
             prefix: "0_Reaper_Man_Falling Down_",

@@ -70,4 +70,37 @@ const level1 = new Level(
          true,
       ),
    ],
+   createPowerUps(2700),
 );
+
+function createPowerUps(levelEndX) {
+   return [0, 1, 2].map((index) => {
+      return new powerUp(
+         getRandomPowerUpX(index, levelEndX),
+         getRandomPowerUpY(),
+      );
+   });
+}
+
+function getRandomPowerUpX(index, levelEndX) {
+   let minX = 220;
+   let maxX = levelEndX - 220;
+   let laneWidth = (maxX - minX) / 3;
+   let laneStart = minX + index * laneWidth;
+   let laneEnd = laneStart + laneWidth - 120;
+   return laneStart + Math.random() * (laneEnd - laneStart);
+}
+
+function getRandomPowerUpY() {
+   let groundY = gameSettings.canvasHeight - 110;
+   let jumpHeight = getPlayerJumpHeight();
+   let maxY = groundY - jumpHeight * 0.45;
+   let minY = groundY - jumpHeight * 0.85;
+   return minY + Math.random() * (maxY - minY);
+}
+
+function getPlayerJumpHeight() {
+   let jumpSpeed = 17;
+   let gravity = 0.6;
+   return (jumpSpeed * jumpSpeed) / (2 * gravity);
+}

@@ -1,11 +1,4 @@
-class MovableObject {
-   x = 100;
-   y = gameSettings.canvasHeight - 110;
-   img;
-   height = 100;
-   width = 100;
-   imageCache = {};
-   otherDirection = false;
+class MovableObject extends drawableObjects {
    speed = gameSettings.gameSpeed * 0.3;
    currentImage = 0;
    lastAnimation = null;
@@ -19,7 +12,7 @@ class MovableObject {
    isAggro = false;
    isAttacking = false;
    isWalking = false;
-   energy = 100;
+   energy = 50;
    damage = 0;
    attackAnimationCompleted = false;
    hasAppliedAttackHit = false;
@@ -30,7 +23,8 @@ class MovableObject {
    applyGravity() {
       setInterval(() => {
          let floorY = this.getCurrentGroundY();
-         if (this.isAboveGround() || this.speedY < 0) return this.fallToFloor(floorY);
+         if (this.isAboveGround() || this.speedY < 0)
+            return this.fallToFloor(floorY);
          this.landOnFloor(floorY);
       }, 1000 / 60);
    }
@@ -56,19 +50,6 @@ class MovableObject {
    landOnFloor(floorY) {
       this.y = floorY;
       this.speedY = 0;
-   }
-
-   loadImage(path) {
-      this.img = new Image();
-      this.img.src = path;
-   }
-
-   loadImages(paths) {
-      paths.forEach((path) => {
-         let img = new Image();
-         img.src = path;
-         this.imageCache[path] = img;
-      });
    }
 
    moveRight(speed = this.speed) {

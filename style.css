@@ -5,7 +5,14 @@ body {
    justify-content: center;
    min-height: 100vh;
    overflow: hidden;
+   font-family: "Josefin Sans", sans-serif;
+   font-weight: 700;
 }
+
+h1 {
+   font-family: inherit;
+}
+
 canvas {
    background-color: black;
 }
