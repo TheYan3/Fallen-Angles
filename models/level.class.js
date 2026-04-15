@@ -3,12 +3,15 @@ class Level {
    clouds;
    skies;
    groundObjects;
-   level_end_x = 1400;
+   rocks;
+   player_end_x = 2700;
+   camera_end_x = 2200;
 
-   constructor(enemies, clouds, skies, groundObjects) {
+   constructor(enemies, clouds, skies, groundObjects, rocks = []) {
       this.enemies = enemies;
       this.clouds = clouds;
       this.skies = skies;
       this.groundObjects = groundObjects;
+      this.rocks = rocks;
    }
 }

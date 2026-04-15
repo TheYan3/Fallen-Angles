@@ -2,9 +2,6 @@ class reaper extends MovableObject {
    DEFAULT_SKIN = "Reaper_Man_1";
    animationSpeed = 5000 / 60;
    attackFrameDelay = 2;
-   isAggro = false;
-   isAttacking = false;
-   isWalking = false;
 
    constructor() {
       super();
@@ -12,36 +9,58 @@ class reaper extends MovableObject {
 
       this.IMAGES_WAITING = animations.idle;
       this.IMAGES_ATTACKING = animations.slashing;
+      this.IMAGES_HURT = animations.hurt;
+      this.IMAGES_DYING = animations.dying;
       this.IMAGES_WALKING = animations.walking;
       this.IMAGES_RUN = animations.running;
 
       this.otherDirection = true;
+      this.damage = 5;
       this.loadImage(this.IMAGES_WAITING[0]);
       this.speed = gameSettings.gameSpeed * 0.7;
-      this.x = 600 + Math.random() * 500;
+      this.x = 600 + Math.random() * 800;
       this.loadImages(this.IMAGES_WAITING);
       this.loadImages(this.IMAGES_ATTACKING);
+      this.loadImages(this.IMAGES_HURT);
+      this.loadImages(this.IMAGES_DYING);
       this.loadImages(this.IMAGES_WALKING);
       this.loadImages(this.IMAGES_RUN);
+      this.applyGravity();
       this.animation();
       this.moveLeft();
    }
 
    animation() {
       setInterval(() => {
-         let images = this.IMAGES_WAITING;
-
-         if (this.isAttacking) {
-            images = this.IMAGES_ATTACKING;
-         } else if (this.isAggro && this.isWalking) {
-            images = this.IMAGES_WALKING;
-         }
-
-         this.updateAnimationState(images);
-         this.playAnimationWithDelay(
-            images,
-            this.isAttacking ? this.attackFrameDelay : 1,
-         );
+         this.playStateAnimation();
       }, this.animationSpeed);
+   }
+
+   getCurrentAnimationImages() {
+      if (this.isHurt) {
+         return this.IMAGES_HURT;
+      }
+
+      if (this.isAttacking) {
+         return this.IMAGES_ATTACKING;
+      }
+
+      if (this.isAggro && this.isWalking) {
+         return this.IMAGES_WALKING;
+      }
+
+      return this.IMAGES_WAITING;
+   }
+
+   playStateAnimation() {
+      if (this.isRemoved) return;
+      if (this.isDying) return this.playDyingAnimation();
+      if (this.isHurt) return this.playHurtAnimation();
+      let images = this.getCurrentAnimationImages();
+      this.updateAnimationState(images);
+      this.playAnimationWithDelay(
+         images,
+         this.isAttacking ? this.attackFrameDelay : 1,
+      );
    }
 }

@@ -2,9 +2,6 @@ class endboss extends MovableObject {
    DEFAULT_SKIN = "Wraith_03";
    animationSpeed = 5000 / 60;
    attackFrameDelay = 2;
-   isAggro = false;
-   isAttacking = false;
-   isWalking = false;
 
    constructor() {
       super();
@@ -20,8 +17,9 @@ class endboss extends MovableObject {
       this.IMAGES_TAUNT = animations.taunt;
 
       this.otherDirection = true;
+      this.damage = 15;
       this.speed = gameSettings.gameSpeed * 0.4;
-      this.x = 1300;
+      this.x = 2000;
       this.y = 230;
       this.width = 250;
       this.height = 250;
@@ -39,19 +37,35 @@ class endboss extends MovableObject {
 
    animation() {
       setInterval(() => {
-         let images = this.IMAGES_IDLE;
-
-         if (this.isAttacking) {
-            images = this.IMAGES_ATTACKING;
-         } else if (this.isAggro && this.isWalking) {
-            images = this.IMAGES_WALKING;
-         }
-
-         this.updateAnimationState(images);
-         this.playAnimationWithDelay(
-            images,
-            this.isAttacking ? this.attackFrameDelay : 1,
-         );
+         this.playStateAnimation();
       }, this.animationSpeed);
+   }
+
+   getCurrentAnimationImages() {
+      if (this.isHurt) {
+         return this.IMAGES_HURT;
+      }
+
+      if (this.isAttacking) {
+         return this.IMAGES_ATTACKING;
+      }
+
+      if (this.isAggro && this.isWalking) {
+         return this.IMAGES_WALKING;
+      }
+
+      return this.IMAGES_IDLE;
+   }
+
+   playStateAnimation() {
+      if (this.isRemoved) return;
+      if (this.isDying) return this.playDyingAnimation();
+      if (this.isHurt) return this.playHurtAnimation();
+      let images = this.getCurrentAnimationImages();
+      this.updateAnimationState(images);
+      this.playAnimationWithDelay(
+         images,
+         this.isAttacking ? this.attackFrameDelay : 1,
+      );
    }
 }

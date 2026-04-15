@@ -6,7 +6,8 @@ class world {
    keyboardInput;
    camara_x = 0;
    enemyActivationDistance = 290;
-   enemyStopDistance = 20;
+   enemyStopDistance = 30;
+   isGameStopped = false;
 
    constructor(canvas, keyboardInput) {
       this.ctx = canvas.getContext("2d");
@@ -21,52 +22,154 @@ class world {
 
    setWorld() {
       this.character.world = this;
+      this.level.enemies.forEach((enemy) => {
+         enemy.world = this;
+      });
    }
 
    checkCollisions() {
       setInterval(() => {
-         this.level.enemies.forEach((enemy) => {
-            enemy.isAttacking = this.character.isColliding(enemy);
-         });
+         if (this.isGameStopped) {
+            return;
+         }
+
+         this.character.checkDeath();
+         this.updateEnemyStates();
+         this.removeRemovedEnemies();
+         this.stopGameIfPlayerIsRemoved();
       }, 1000 / 60);
+   }
+
+   isEnemyInAttackRange(enemy) {
+      if (!enemy || enemy.isDying || enemy.isRemoved) {
+         return false;
+      }
+
+      return this.character.isColliding(enemy, this.enemyStopDistance);
+   }
+
+   updateEnemyStates() {
+      this.level.enemies.forEach((enemy) => {
+         enemy.checkDeath();
+         enemy.isAttacking = this.isEnemyInAttackRange(enemy);
+         this.resetEnemyHit(enemy);
+      });
+   }
+
+   resetEnemyHit(enemy) {
+      if (enemy.attackAnimationCompleted) {
+         enemy.hasAppliedAttackHit = false;
+         enemy.attackAnimationCompleted = false;
+      }
+
+      if (!enemy.isAttacking) {
+         enemy.hasAppliedAttackHit = false;
+      }
+   }
+
+   removeRemovedEnemies() {
+      this.level.enemies = this.level.enemies.filter(
+         (enemy) => !enemy.isRemoved,
+      );
+   }
+
+   stopGameIfPlayerIsRemoved() {
+      if (this.character.isRemoved) {
+         this.isGameStopped = true;
+      }
    }
 
    moveEnemiesTowardsPlayer() {
       setInterval(() => {
+         if (this.isGameStopped) {
+            return;
+         }
+
          this.level.enemies.forEach((enemy) => {
-            if (!enemy.isAggro) {
-               enemy.isAggro =
-                  this.character.x >= enemy.x - this.enemyActivationDistance;
-            }
-
-            if (!enemy.isAggro) {
-               enemy.isWalking = false;
-               return;
-            }
-
-            if (enemy.isAttacking) {
-               enemy.isWalking = false;
-               return;
-            }
-
-            if (enemy.x > this.character.x + this.enemyStopDistance) {
-               enemy.isWalking = true;
-               enemy.moveLeft();
-               return;
-            }
-
-            if (enemy.x < this.character.x - this.enemyStopDistance) {
-               enemy.isWalking = true;
-               enemy.moveRight();
-               return;
-            }
-
-            enemy.isWalking = false;
+            this.moveEnemy(enemy);
          });
       }, 1000 / 60);
    }
 
+   moveEnemy(enemy) {
+      if (enemy.isDying || enemy.isRemoved) return this.stopEnemy(enemy);
+      this.updateEnemyAggro(enemy);
+      if (!enemy.isAggro || enemy.isAttacking) return this.stopEnemy(enemy);
+      if (enemy.x - this.character.x > this.enemyStopDistance)
+         return this.walkEnemyLeft(enemy);
+      if (this.character.x - enemy.x > this.enemyStopDistance)
+         return this.walkEnemyRight(enemy);
+      this.stopEnemy(enemy);
+   }
+
+   updateEnemyAggro(enemy) {
+      if (!enemy.isAggro) {
+         enemy.isAggro =
+            this.character.x >= enemy.x - this.enemyActivationDistance;
+      }
+   }
+
+   walkEnemyLeft(enemy) {
+      enemy.isWalking = true;
+      if (!this.isBlockedByRock(enemy, -enemy.speed)) {
+         enemy.moveLeft();
+      }
+   }
+
+   walkEnemyRight(enemy) {
+      enemy.isWalking = true;
+      if (!this.isBlockedByRock(enemy, enemy.speed)) {
+         enemy.moveRight();
+      }
+   }
+
+   stopEnemy(enemy) {
+      enemy.isWalking = false;
+   }
+
+   isBlockedByRock(mo, speed) {
+      let nextX = mo.x + speed;
+      return this.level.rocks.some((rock) =>
+         this.wouldCollideWithRock(mo, rock, nextX),
+      );
+   }
+
+   wouldCollideWithRock(mo, rock, nextX) {
+      if (mo.y + mo.height <= rock.getSurfaceY() + 1) {
+         return false;
+      }
+
+      return (
+         rock.overlapsX(mo, nextX) &&
+         mo.y < rock.getHitboxBottom() &&
+         mo.y + mo.height > rock.getHitboxY()
+      );
+   }
+
+   getRockGroundY(mo) {
+      let rockYs = this.level.rocks
+         .filter((rock) => this.canLandOnRock(mo, rock))
+         .map((rock) => rock.getTopYFor(mo));
+      return rockYs.length ? Math.min(...rockYs) : null;
+   }
+
+   canLandOnRock(mo, rock) {
+      if (!rock.overlapsX(mo)) {
+         return false;
+      }
+
+      let surfaceY = rock.getSurfaceY();
+      let nextBottom = mo.y + mo.height + mo.speedY;
+      let isStanding = Math.abs(mo.y - rock.getTopYFor(mo)) < 1;
+      let isLanding = mo.y + mo.height <= surfaceY && nextBottom >= surfaceY;
+      return isStanding || isLanding;
+   }
+
    draw() {
+      if (this.isGameStopped) {
+         return;
+      }
+
       this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
 
       this.ctx.translate(Math.round(this.camara_x), 0);
@@ -76,6 +179,7 @@ class world {
       this.addObjectsToMap(this.level.groundObjects);
       this.addToMap(this.character);
       this.addObjectsToMap(this.level.enemies);
+      this.addObjectsToMap(this.level.rocks);
 
       this.ctx.translate(-Math.round(this.camara_x), 0);
 
@@ -93,7 +197,7 @@ class world {
    }
 
    addToMap(mo) {
-      if (!mo?.img) {
+      if (!mo?.img || mo.isRemoved) {
          return;
       }
 
