@@ -13,6 +13,7 @@ class MovableObject extends drawableObjects {
    isAttacking = false;
    isWalking = false;
    energy = 50;
+   maxEnergy = 50;
    damage = 0;
    attackAnimationCompleted = false;
    hasAppliedAttackHit = false;

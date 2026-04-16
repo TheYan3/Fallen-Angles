@@ -28,6 +28,7 @@ class player extends MovableObject {
 
       this.keyboard = keyboard;
       this.energy = 100;
+      this.maxEnergy = 100;
       this.damage = 25;
       this.loadImage(this.IMAGES_WAITING[0]);
       this.loadImages(this.IMAGES_WAITING);

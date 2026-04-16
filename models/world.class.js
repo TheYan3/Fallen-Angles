@@ -9,6 +9,7 @@ class world {
    enemyStopDistance = 30;
    isGameStopped = false;
    powerUpCounter = new powerUpCounter();
+   healthbar = new healthbar();
 
    constructor(canvas, keyboardInput) {
       this.ctx = canvas.getContext("2d");
@@ -62,6 +63,7 @@ class world {
 
    applyPowerUpEffect(powerUpItem) {
       this.character.energy += powerUpItem.lifeAmount;
+      this.healthbar.increaseMaxHealth(powerUpItem.lifeAmount);
    }
 
    isEnemyInAttackRange(enemy) {
@@ -210,6 +212,7 @@ class world {
       this.addToMap(this.character);
       this.addObjectsToMap(this.level.powerUps);
       this.addObjectsToMap(this.level.enemies);
+      this.drawEnemyHealthbars();
       this.addObjectsToMap(this.level.rocks);
 
       this.ctx.translate(-Math.round(this.camara_x), 0);
@@ -219,7 +222,46 @@ class world {
    }
 
    drawUi() {
+      this.drawHealthbar();
       this.powerUpCounter.draw(this.ctx, this.canvas.width);
+   }
+
+   drawHealthbar() {
+      this.healthbar.setHealth(this.character.energy);
+      this.healthbar.draw(this.ctx);
+   }
+
+   drawEnemyHealthbars() {
+      this.level.enemies.forEach((enemy) => {
+         if (this.shouldDrawEnemyHealthbar(enemy)) {
+            this.drawEnemyHealthbar(enemy);
+         }
+      });
+   }
+
+   shouldDrawEnemyHealthbar(enemy) {
+      return !enemy.isRemoved && !enemy.isDying && enemy.energy > 0;
+   }
+
+   drawEnemyHealthbar(enemy) {
+      let bar = this.getEnemyHealthbar(enemy);
+      bar.setPosition(enemy.x + enemy.width / 2 - bar.width / 2, enemy.y - 12);
+      bar.setHealth(enemy.energy);
+      bar.draw(this.ctx);
+   }
+
+   getEnemyHealthbar(enemy) {
+      if (!enemy.healthbar) {
+         enemy.healthbar = this.createEnemyHealthbar(enemy);
+      }
+
+      return enemy.healthbar;
+   }
+
+   createEnemyHealthbar(enemy) {
+      let width = Math.min(160, Math.max(70, enemy.width * 0.6));
+      let maxHealth = enemy.maxEnergy ?? enemy.energy;
+      return new healthbar(enemy.x, enemy.y - 12, width, 8, maxHealth);
    }
 
    addObjectsToMap(objects) {

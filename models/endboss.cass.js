@@ -18,6 +18,7 @@ class endboss extends MovableObject {
 
       this.otherDirection = true;
       this.energy = 200;
+      this.maxEnergy = 200;
       this.damage = 50;
       this.speed = gameSettings.gameSpeed * 0.4;
       this.x = 2000;
