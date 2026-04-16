@@ -19,7 +19,7 @@ class world {
       this.setWorld();
       this.draw();
       this.moveEnemiesTowardsPlayer();
-      this.checkCollisions();
+      this.updateGameState();
    }
 
    setWorld() {
@@ -29,30 +29,43 @@ class world {
       });
    }
 
-   checkCollisions() {
+   updateGameState() {
       setInterval(() => {
          if (this.isGameStopped) {
             return;
          }
 
-         this.checkPowerUpCollisions();
-         this.character.checkDeath();
-         this.updateEnemyStates();
-         this.removeRemovedEnemies();
-         this.removeCollectedPowerUps();
-         this.stopGameIfPlayerIsRemoved();
+         this.runGameStateTick();
       }, 1000 / 60);
    }
 
+   runGameStateTick() {
+      this.checkPowerUpCollisions();
+      this.character.checkDeath();
+      this.updateEnemyStates();
+      this.removeRemovedEnemies();
+      this.removeCollectedPowerUps();
+      this.stopGameIfPlayerIsRemoved();
+   }
+
    checkPowerUpCollisions() {
-      this.level.powerUps.forEach((powerUpItem) => {
-         if (
-            !powerUpItem.isRemoved &&
-            this.character.isColliding(powerUpItem)
-         ) {
-            this.collectPowerUp(powerUpItem);
-         }
-      });
+      if (this.shouldSkipPowerUpCollisions()) {
+         return;
+      }
+
+      this.level.powerUps.forEach((powerUpItem) =>
+         this.checkPowerUpCollision(powerUpItem),
+      );
+   }
+
+   checkPowerUpCollision(powerUpItem) {
+      if (!powerUpItem.isRemoved && this.character.isColliding(powerUpItem)) {
+         this.collectPowerUp(powerUpItem);
+      }
+   }
+
+   shouldSkipPowerUpCollisions() {
+      return this.character.isFearCollisionDisabled?.();
    }
 
    collectPowerUp(powerUpItem) {
@@ -67,6 +80,10 @@ class world {
    }
 
    isEnemyInAttackRange(enemy) {
+      if (this.character.isFearCollisionDisabled?.()) {
+         return false;
+      }
+
       if (!enemy || enemy.isDying || enemy.isRemoved) {
          return false;
       }
@@ -160,10 +177,18 @@ class world {
    }
 
    isBlockedByRock(mo, speed) {
+      if (this.ignoresRockCollision(mo)) {
+         return false;
+      }
+
       let nextX = mo.x + speed;
       return this.level.rocks.some((rock) =>
          this.wouldCollideWithRock(mo, rock, nextX),
       );
+   }
+
+   ignoresRockCollision(mo) {
+      return mo.isFearCollisionDisabled?.() || mo instanceof endboss;
    }
 
    wouldCollideWithRock(mo, rock, nextX) {
@@ -202,10 +227,23 @@ class world {
          return;
       }
 
+      this.clearCanvas();
+      this.drawCameraLayer();
+      this.drawUi();
+      requestAnimationFrame(this.draw.bind(this));
+   }
+
+   clearCanvas() {
       this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+   }
 
+   drawCameraLayer() {
       this.ctx.translate(Math.round(this.camara_x), 0);
+      this.drawWorldObjects();
+      this.resetCamera();
+   }
 
+   drawWorldObjects() {
       this.level.skies.forEach((skyObject) => skyObject.draw(this.ctx));
       this.addObjectsToMap(this.level.clouds);
       this.addObjectsToMap(this.level.groundObjects);
@@ -214,11 +252,10 @@ class world {
       this.addObjectsToMap(this.level.enemies);
       this.drawEnemyHealthbars();
       this.addObjectsToMap(this.level.rocks);
+   }
 
+   resetCamera() {
       this.ctx.translate(-Math.round(this.camara_x), 0);
-      this.drawUi();
-
-      requestAnimationFrame(this.draw.bind(this));
    }
 
    drawUi() {
@@ -245,7 +282,7 @@ class world {
 
    drawEnemyHealthbar(enemy) {
       let bar = this.getEnemyHealthbar(enemy);
-      bar.setPosition(enemy.x + enemy.width / 2 - bar.width / 2, enemy.y - 12);
+      bar.followObject(enemy);
       bar.setHealth(enemy.energy);
       bar.draw(this.ctx);
    }
@@ -261,7 +298,9 @@ class world {
    createEnemyHealthbar(enemy) {
       let width = Math.min(160, Math.max(70, enemy.width * 0.6));
       let maxHealth = enemy.maxEnergy ?? enemy.energy;
-      return new healthbar(enemy.x, enemy.y - 12, width, 8, maxHealth);
+      let bar = new healthbar(enemy.x, enemy.y - 12, width, 8, maxHealth);
+      bar.hasSideArrows = enemy instanceof endboss;
+      return bar;
    }
 
    addObjectsToMap(objects) {
@@ -296,22 +335,25 @@ class world {
    }
 
    drawHitboxIfEnabled(mo) {
-      if (!gameSettings.hitboxShown) {
-         return;
-      }
-
-      let shouldDrawHitbox =
-         mo instanceof player ||
-         mo instanceof golem ||
-         mo instanceof reaper ||
-         mo instanceof minotaur ||
-         mo instanceof endboss;
-
-      if (!shouldDrawHitbox) {
+      if (!this.canDrawHitbox(mo)) {
          return;
       }
 
       this.drawRedFrame(mo);
+   }
+
+   canDrawHitbox(mo) {
+      return gameSettings.hitboxShown && this.isHitboxObject(mo);
+   }
+
+   isHitboxObject(mo) {
+      return (
+         mo instanceof player ||
+         mo instanceof golem ||
+         mo instanceof reaper ||
+         mo instanceof minotaur ||
+         mo instanceof endboss
+      );
    }
 
    drawRedFrame(mo) {

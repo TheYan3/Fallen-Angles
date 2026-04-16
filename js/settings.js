@@ -2,7 +2,7 @@ const gameSettings = {
    canvasWidth: 720,
    canvasHeight: 480,
    gameSpeed: 3,
-   hitboxShown: true,
+   hitboxShown: false,
    fontFamily: '"Josefin Sans", sans-serif',
    fontWeight: "700",
 

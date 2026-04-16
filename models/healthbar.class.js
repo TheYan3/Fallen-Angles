@@ -5,8 +5,9 @@ class healthbar extends drawableObjects {
    baseWidth = 200;
    x = 20;
    y = 20;
-   width = 200;
+   width = 100;
    height = 20;
+   hasSideArrows = false;
 
    constructor(x = 20, y = 20, width = 200, height = 20, maxHealth = 100) {
       super();
@@ -28,6 +29,11 @@ class healthbar extends drawableObjects {
       this.y = y;
    }
 
+   followObject(mo, offsetY = -12) {
+      this.x = mo.x + mo.width / 2 - this.width / 2;
+      this.y = mo.y + offsetY;
+   }
+
    increaseMaxHealth(amount) {
       this.maxHealth += amount;
       this.updateWidth();
@@ -41,6 +47,7 @@ class healthbar extends drawableObjects {
       this.drawBackground(ctx);
       this.drawHealth(ctx);
       this.drawBorder(ctx);
+      this.drawSideArrows(ctx);
    }
 
    drawBackground(ctx) {
@@ -64,9 +71,20 @@ class healthbar extends drawableObjects {
       ctx.strokeRect(this.x, this.y, this.width, this.height);
    }
 
+   drawSideArrows(ctx) {
+      if (!this.hasSideArrows) {
+         return;
+      }
+
+      ctx.font = gameSettings.getCanvasFont(22);
+      ctx.fillStyle = "red";
+      ctx.fillText(">>", this.x - 26, this.y + this.height);
+      ctx.fillText("<<", this.x + this.width + 2, this.y + this.height);
+   }
+
    getHealthColor() {
       let percentage = (this.health / this.getSafeMaxHealth()) * 100;
-      if (percentage > 50) return "green";
+      if (percentage > 50) return "yellow";
       if (percentage > 20) return "orange";
       return "red";
    }
