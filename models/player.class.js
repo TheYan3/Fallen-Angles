@@ -11,9 +11,20 @@ class player extends MovableObject {
    jumpCooldown = 800;
    runSpeed = gameSettings.gameSpeed * 1.3;
    airSpeedMultiplier = 1.2;
+   isFeared = false;
+   fearSpeedMultiplier = 1;
+   fearTimer = null;
 
    constructor(keyboard) {
       super();
+      this.keyboard = keyboard;
+      this.setAnimations();
+      this.setupStats();
+      this.loadAnimationImages();
+      this.startSystems();
+   }
+
+   setAnimations() {
       let animations = animationLibrary.player[this.DEFAULT_SKIN];
 
       this.IMAGES_WAITING = animations.idle;
@@ -25,11 +36,15 @@ class player extends MovableObject {
       this.IMAGES_JUMPING = animations.jumpStart;
       this.IMAGES_FALLING = animations.fallingDown;
       this.IMAGES_DYING = animations.dying;
+   }
 
-      this.keyboard = keyboard;
+   setupStats() {
       this.energy = 100;
       this.maxEnergy = 100;
       this.damage = 25;
+   }
+
+   loadAnimationImages() {
       this.loadImage(this.IMAGES_WAITING[0]);
       this.loadImages(this.IMAGES_WAITING);
       this.loadImages(this.IMAGES_ATTACKING);
@@ -40,6 +55,9 @@ class player extends MovableObject {
       this.loadImages(this.IMAGES_JUMPING);
       this.loadImages(this.IMAGES_FALLING);
       this.loadImages(this.IMAGES_DYING);
+   }
+
+   startSystems() {
       this.applyGravity();
       this.animation();
       this.handleMovement();
@@ -62,7 +80,7 @@ class player extends MovableObject {
    }
 
    handleAttackState() {
-      if (this.isInactive()) {
+      if (this.isControlBlocked()) {
          return;
       }
 
@@ -76,23 +94,26 @@ class player extends MovableObject {
    }
 
    getCurrentAnimationImages() {
-      if (this.isDying) {
-         return this.IMAGES_DYING;
-      }
-
-      if (this.isHurt) {
-         return this.IMAGES_HURT;
-      }
-
-      if (this.isAttacking) {
-         return this.currentAttackAnimation || this.IMAGES_ATTACKING;
-      }
+      let priorityImages = this.getPriorityAnimationImages();
+      if (priorityImages) return priorityImages;
 
       if (this.isAboveGround()) {
          return this.getAirAnimationImages();
       }
 
       return this.getGroundAnimationImages();
+   }
+
+   getPriorityAnimationImages() {
+      if (this.isDying) return this.IMAGES_DYING;
+      if (this.isHurt) return this.IMAGES_HURT;
+      if (this.isFeared) return this.IMAGES_RUN;
+      if (this.isAttacking) return this.getActiveAttackImages();
+      return null;
+   }
+
+   getActiveAttackImages() {
+      return this.currentAttackAnimation || this.IMAGES_ATTACKING;
    }
 
    getAttackAnimationImages() {
@@ -121,6 +142,10 @@ class player extends MovableObject {
 
    isInactive() {
       return this.isHurt || this.isDying || this.isRemoved;
+   }
+
+   isControlBlocked() {
+      return this.isInactive() || this.isFeared;
    }
 
    startAttack() {
@@ -155,10 +180,19 @@ class player extends MovableObject {
    }
 
    updateMovement() {
+      if (this.isFeared) {
+         return this.moveFeared();
+      }
+
       if (this.isInactive()) {
          return;
       }
 
+      this.handleControlledMovement();
+      this.updateCamera();
+   }
+
+   handleControlledMovement() {
       let speed = this.getAirMovementSpeed();
       if (this.canMoveRight() && !this.world.isBlockedByRock(this, speed)) {
          this.moveRight(speed);
@@ -167,6 +201,25 @@ class player extends MovableObject {
          this.moveLeft(speed);
       }
       if (this.canJump()) this.jump();
+   }
+
+   startFear(duration, speedMultiplier) {
+      if (this.isInactive()) return;
+      this.isFeared = true;
+      this.fearSpeedMultiplier = speedMultiplier;
+      this.finishAttack();
+      clearTimeout(this.fearTimer);
+      this.fearTimer = setTimeout(() => this.stopFear(), duration);
+   }
+
+   stopFear() {
+      this.isFeared = false;
+      this.fearSpeedMultiplier = 1;
+   }
+
+   moveFeared() {
+      this.x = Math.max(0, this.x - this.runSpeed * this.fearSpeedMultiplier);
+      this.otherDirection = true;
       this.updateCamera();
    }
 
@@ -184,6 +237,10 @@ class player extends MovableObject {
 
    canJump() {
       return this.keyboard.SPACE && !this.isAboveGround();
+   }
+
+   isFearCollisionDisabled() {
+      return this.isFeared;
    }
 
    isNormalAttackLocked() {

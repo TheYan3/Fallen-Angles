@@ -132,9 +132,24 @@ class MovableObject extends drawableObjects {
       }
 
       let isColliding = this.isTouchingHitbox(otherObject, overlap);
+      this.applyCombatDamage(otherObject, isColliding);
+      return isColliding;
+   }
+
+   applyCombatDamage(otherObject, isColliding) {
+      if (this.hasDisabledFearCollision(otherObject)) {
+         return;
+      }
+
       this.applyEnemyAttackDamage(otherObject, isColliding);
       this.applyPlayerAttackDamage(otherObject, isColliding);
-      return isColliding;
+   }
+
+   hasDisabledFearCollision(otherObject) {
+      return (
+         this.isFearCollisionDisabled?.() ||
+         otherObject.isFearCollisionDisabled?.()
+      );
    }
 
    isTouchingHitbox(otherObject, overlap) {
