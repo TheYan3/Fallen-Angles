@@ -8,8 +8,7 @@
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
       <link
          href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@700&display=swap"
-         rel="stylesheet"
-      />
+         rel="stylesheet" />
       <link rel="stylesheet" href="style.css" />
 
       <script src="./js/settings.js"></script>
@@ -30,17 +29,39 @@
       <script src="./Abilities/heal.js"></script>
       <script src="./Abilities/fear.js"></script>
       <script src="./models/Abilities.class.js"></script>
-      <script src="./models/endboss.cass.js"></script>
+      <script src="./models/endboss.class.js"></script>
       <script src="./Levels/level1.js"></script>
       <script src="./models/healthbar.class.js"></script>
       <script src="./models/powerUpCounter.class.js"></script>
       <script src="./models/world.class.js"></script>
       <script src="./models/keyboard.class.js"></script>
       <script src="./js/game.js"></script>
+      <script src="./js/page.js"></script>
    </head>
-   <body onload="init()">
+   <body>
       <h1>Fallen Angles</h1>
+      <div id="startMenue">
+         <button onclick="gameStart()" class="menue-button play-button">
+            <img src="./img/Menü/Play_Button.png" alt="Play_Button" />
+         </button>
+         <button class="menue-button">
+            <img src="./img/Menü/Settings-Button.png" alt="Options_Button" />
+         </button>
+         <button class="menue-button">
+            <img src="./img/Menü/Exit_Button.png" alt="Exit_Button" />
+         </button>
+      </div>
 
-      <canvas id="canvas"> </canvas>
+      <div id="gameContainer" class="game-container hidden">
+         <canvas id="canvas"> </canvas>
+         <button
+            id="fullscreenButton"
+            class="fullscreen-button"
+            type="button"
+            aria-label="Fullscreen"
+            onclick="toggleFullscreen()">
+            ⛶
+         </button>
+      </div>
    </body>
 </html>
