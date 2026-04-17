@@ -39,29 +39,40 @@
       <script src="./js/page.js"></script>
    </head>
    <body>
-      <h1>Fallen Angles</h1>
-      <div id="startMenue">
+      <div id="startMenue" class="menue-container">
          <button onclick="gameStart()" class="menue-button play-button">
-            <img src="./img/Menü/Play_Button.png" alt="Play_Button" />
+            <img src="./img/Menü/Buttons/Play_Button.png" alt="Play_Button" />
          </button>
-         <button class="menue-button">
-            <img src="./img/Menü/Settings-Button.png" alt="Options_Button" />
+         <button class="menue-button hidden">
+            <img
+               src="./img/Menü/Buttons/Settings-Button.png"
+               alt="Options_Button" />
          </button>
-         <button class="menue-button">
-            <img src="./img/Menü/Exit_Button.png" alt="Exit_Button" />
+         <button class="menue-button hidden">
+            <img src="./img/Menü/Buttons/Exit_Button.png" alt="Exit_Button" />
          </button>
       </div>
 
       <div id="gameContainer" class="game-container hidden">
          <canvas id="canvas"> </canvas>
-         <button
-            id="fullscreenButton"
-            class="fullscreen-button"
-            type="button"
-            aria-label="Fullscreen"
-            onclick="toggleFullscreen()">
-            ⛶
-         </button>
+         <div class="game-button-row">
+            <button
+               id="fullscreenButton"
+               class="game-control-button"
+               type="button"
+               aria-label="Fullscreen"
+               onclick="toggleFullscreen()">
+               ⛶
+            </button>
+            <button
+               id="backToMenueButton"
+               class="game-control-button"
+               type="button"
+               aria-label="Back to menu"
+               onclick="backToMenue()">
+               x
+            </button>
+         </div>
       </div>
    </body>
 </html>

@@ -8,7 +8,7 @@ body {
    overflow: hidden;
    font-family: "Josefin Sans", sans-serif;
    font-weight: 700;
-   background-image: url("img/Menü/Mnue_Background.png");
+   background-image: url("img/Background_Menue.png");
    background-position: center;
    background-size: cover;
    background-repeat: no-repeat;
@@ -26,6 +26,7 @@ h1 {
 
 canvas {
    background-color: black;
+   margin-top: 200px;
 }
 
 #startMenue {
@@ -45,11 +46,16 @@ canvas {
 
 .menue-button img {
    display: block;
+   margin-top: 21px;
+}
+
+.menue-button :active {
+   transform: scale(0.9);
 }
 
 .play-button img {
-   width: 740px;
-   height: 383px;
+   width: 482px;
+   height: 151px;
 }
 
 .game-container {
@@ -68,7 +74,12 @@ canvas {
    display: none;
 }
 
-.fullscreen-button {
+.game-button-row {
+   display: flex;
+   gap: 12px;
+}
+
+.game-control-button {
    width: 48px;
    height: 48px;
    border: 2px solid white;
@@ -80,7 +91,7 @@ canvas {
    cursor: pointer;
 }
 
-.fullscreen-button:hover {
+.game-control-button:hover {
    background: rgba(255, 255, 255, 0.18);
 }
 
