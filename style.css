@@ -16,10 +16,23 @@ body {
    overflow-y: auto;
    font-family: "Josefin Sans", sans-serif;
    font-weight: 700;
-   background-image: url("img/Menü/Mnue_Background.png");
+   background-image: url("img/Menü/Menue_Background1+mobs.png");
    background-position: center;
    background-size: cover;
    background-repeat: no-repeat;
+}
+
+.impressum-link {
+   color: white;
+   text-decoration: none;
+   font-size: 16px;
+   opacity: 0.6;
+   transition: opacity 0.2s;
+   margin-top: 10px;
+}
+
+.impressum-link:hover {
+   opacity: 1;
 }
 
 h1 {
@@ -51,7 +64,7 @@ canvas {
    display: flex;
    flex-direction: column;
    align-items: center;
-   width: min(100%, 760px);
+   width: min(100%, 928px);
    gap: clamp(16px, 4vh, 36px);
    margin-top: 40px;
 }
