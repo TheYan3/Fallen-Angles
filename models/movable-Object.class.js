@@ -215,6 +215,7 @@ class MovableObject extends drawableObjects {
       this.updateAnimationState(this.IMAGES_DYING);
       let isFinished = this.playAnimationOnce(this.IMAGES_DYING);
       if (isFinished) {
+         this.world?.handleObjectFinishedDying?.(this);
          this.isRemoved = true;
       }
    }

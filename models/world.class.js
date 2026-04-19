@@ -8,6 +8,7 @@ class world {
    enemyActivationDistance = 390;
    enemyStopDistance = 30;
    isGameStopped = false;
+   isEndbossDefeated = false;
    powerUpCounter = new powerUpCounter();
    healthbar = new healthbar();
    gameOverScreen = new gameover();
@@ -195,6 +196,13 @@ class world {
       }
    }
 
+   handleObjectFinishedDying(object) {
+      if (object instanceof endboss) {
+         this.isEndbossDefeated = true;
+         this.isGameStopped = true;
+      }
+   }
+
    isBlockedByRock(mo, speed) {
       if (this.ignoresRockCollision(mo)) {
          return false;
@@ -243,7 +251,7 @@ class world {
 
    draw() {
       if (this.isGameStopped) {
-         return this.drawGameOverScreen();
+         return this.drawGameEndScreen();
       }
 
       if (gameSettings.shouldRunTick(this.drawTickKey)) {
@@ -253,6 +261,21 @@ class world {
       }
 
       requestAnimationFrame(this.draw.bind(this));
+   }
+
+   drawGameEndScreen() {
+      if (this.isEndbossDefeated) {
+         return this.drawReplayButtonScreen();
+      }
+
+      this.drawGameOverScreen();
+   }
+
+   drawReplayButtonScreen() {
+      this.clearCanvas();
+      this.drawCameraLayer();
+      this.drawUi();
+      this.gameOverScreen.drawRepeatButton(this.ctx, this.canvas);
    }
 
    drawGameOverScreen() {
