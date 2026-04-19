@@ -6,6 +6,10 @@ class endboss extends MovableObject {
    isCasting = false;
    fearSpawnCount = 3;
 
+   /**
+    * Initializes the boss entity with high health, abilities,
+    * and a unique animation set.
+    */
    constructor() {
       super();
       this.setAnimations();
@@ -15,6 +19,9 @@ class endboss extends MovableObject {
       this.animation();
    }
 
+   /**
+    * Loads specific Wraith skin animations into state variables.
+    */
    setAnimations() {
       let animations = animationLibrary.wraith[this.DEFAULT_SKIN];
 
@@ -28,6 +35,9 @@ class endboss extends MovableObject {
       this.IMAGES_TAUNT = animations.taunt;
    }
 
+   /**
+    * Configures boss-specific stats (HP, position, scale, speed).
+    */
    setupStats() {
       this.otherDirection = true;
       this.energy = 200;
@@ -40,6 +50,9 @@ class endboss extends MovableObject {
       this.height = 250;
    }
 
+   /**
+    * Preloads all boss animation frames.
+    */
    loadAnimationImages() {
       this.loadImage(this.IMAGES_IDLE[0]);
       this.loadImages(this.IMAGES_IDLE);
@@ -52,12 +65,18 @@ class endboss extends MovableObject {
       this.loadImages(this.IMAGES_TAUNT);
    }
 
+   /**
+    * Instantiates the Abilities controller for the boss.
+    */
    createAbilities() {
       this.abilities = new Abilities(this, {
          healthThreshold: 50,
       });
    }
 
+   /**
+    * Starts the 60fps animation update cycle.
+    */
    animation() {
       setInterval(() => {
          if (!gameSettings.shouldRunTick(`${this.timeScaleId}-animation`)) {
@@ -68,12 +87,20 @@ class endboss extends MovableObject {
       }, this.animationSpeed);
    }
 
+   /**
+    * Determines the current image set based on casting, movement or hurt state.
+    * @returns {string[]}
+    */
    getCurrentAnimationImages() {
       let priorityImages = this.getPriorityAnimationImages();
       if (priorityImages) return priorityImages;
       return this.IMAGES_IDLE;
    }
 
+   /**
+    * State-priority hierarchy for boss animations.
+    * @returns {string[]|null}
+    */
    getPriorityAnimationImages() {
       if (this.isHurt) return this.IMAGES_HURT;
       if (this.isCasting) return this.IMAGES_CASTING;
@@ -82,6 +109,10 @@ class endboss extends MovableObject {
       return null;
    }
 
+   /**
+    * Routes state to animation playback.
+    * Triggers ability checks every tick to see if health threshold is reached.
+    */
    playStateAnimation() {
       if (this.isRemoved) return;
       if (this.isDying) return this.playDyingAnimation();
@@ -96,6 +127,11 @@ class endboss extends MovableObject {
       );
    }
 
+   /**
+    * Plays the casting sequence once.
+    * Notifies the Abilities controller to finish the effects once
+    * the visual sequence ends.
+    */
    playCastingAnimation(images) {
       let isFinished = this.playAnimationOnce(images);
       if (isFinished) {
@@ -103,6 +139,10 @@ class endboss extends MovableObject {
       }
    }
 
+   /**
+    * AI logic to summon a group of random enemies after
+    * a Fear ability is cast, overwhelming the player.
+    */
    spawnEnemiesAfterFear() {
       if (!this.canSpawnEnemiesAfterFear()) {
          return;
@@ -113,10 +153,17 @@ class endboss extends MovableObject {
       }
    }
 
+   /**
+    * Safety check to ensure player is still active before spawning reinforcements.
+    */
    canSpawnEnemiesAfterFear() {
       return Boolean(this.world?.character);
    }
 
+   /**
+    * Instantiates a single reinforcement enemy and positions it
+    * relative to the player.
+    */
    spawnFearEnemy(index) {
       let enemy = this.createFearSpawnEnemy();
       this.positionFearSpawnEnemy(enemy, index);
@@ -125,12 +172,19 @@ class endboss extends MovableObject {
       this.world.level.enemies.push(enemy);
    }
 
+   /**
+    * Picks a random standard enemy type for the summons.
+    */
    createFearSpawnEnemy() {
       let enemyTypes = [golem, reaper, minotaur];
       let EnemyType = enemyTypes[Math.floor(Math.random() * enemyTypes.length)];
       return new EnemyType();
    }
 
+   /**
+    * Places spawned enemies ahead of the player to block their path
+    * during the fear escape.
+    */
    positionFearSpawnEnemy(enemy, index) {
       let characterX = this.world.character.x;
       let spawnRange = this.world.enemyActivationDistance;

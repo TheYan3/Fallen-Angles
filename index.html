@@ -50,6 +50,14 @@
          src="img/Menü/Header.png"
          alt="Fallen Angels Header" />
       <div id="startMenu" class="menu-container">
+         <button
+            id="startMuteButton"
+            class="game-control-button"
+            style="position: absolute; top: 20px; right: 20px; z-index: 100"
+            onclick="toggleMute()"
+            aria-label="Mute">
+            ♪
+         </button>
          <button onclick="gameStart()" class="menu-button play-button">
             <img src="./img/Menü/Buttons/Play_Button.png" alt="Play_Button" />
          </button>
@@ -79,6 +87,7 @@
                   id="muteButton"
                   class="game-control-button"
                   type="button"
+                  onclick="toggleMute()"
                   aria-label="Mute">
                   ♪
                </button>
@@ -87,7 +96,7 @@
                   class="game-control-button"
                   type="button"
                   aria-label="Back to menu"
-                  onclick="backToMenu()">
+                  onclick="backToMenu();">
                   x
                </button>
             </div>

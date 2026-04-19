@@ -7,6 +7,6 @@ class teleportAbility {
 
    use() {
       let characterX = this.owner.world?.character?.x ?? this.owner.x;
-      this.owner.x = characterX + Math.random() * this.range;
+      this.owner.x = characterX + this.range;
    }
 }
