@@ -338,7 +338,7 @@ class world {
 
    drawUi() {
       this.drawHealthbar();
-      this.powerUpCounter.draw(this.ctx, this.canvas.width);
+      this.powerUpCounter.draw(this.ctx);
    }
 
    drawHealthbar() {

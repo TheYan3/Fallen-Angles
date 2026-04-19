@@ -1,7 +1,7 @@
 class powerUpCounter extends drawableObjects {
    count = 0;
-   x = -90;
-   y = 18;
+   x = 20;
+   y = 50;
    width = 48;
    height = 48;
 
@@ -14,23 +14,23 @@ class powerUpCounter extends drawableObjects {
       this.count++;
    }
 
-   draw(ctx, canvasWidth) {
-      this.drawIcon(ctx, canvasWidth);
-      this.drawCount(ctx, canvasWidth);
+   draw(ctx) {
+      this.drawIcon(ctx);
+      this.drawCount(ctx);
    }
 
-   drawIcon(ctx, canvasWidth) {
-      ctx.drawImage(this.img, canvasWidth + this.x, this.y, this.width, this.height);
+   drawIcon(ctx) {
+      ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
    }
 
-   drawCount(ctx, canvasWidth) {
+   drawCount(ctx) {
       ctx.save();
       ctx.font = gameSettings.getCanvasFont(32);
       ctx.fillStyle = "white";
       ctx.strokeStyle = "black";
       ctx.lineWidth = 5;
-      ctx.strokeText(this.count, canvasWidth - 120, 58);
-      ctx.fillText(this.count, canvasWidth - 120, 58);
+      ctx.strokeText(this.count, this.x + this.width + 14, this.y + 36);
+      ctx.fillText(this.count, this.x + this.width + 14, this.y + 36);
       ctx.restore();
    }
 }
