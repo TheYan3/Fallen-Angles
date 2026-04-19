@@ -1,6 +1,7 @@
 class player extends MovableObject {
    DEFAULT_SKIN = "Fallen_Angels_1";
 
+   y = -100;
    world;
    keyboard;
    lastAnimation = null;
