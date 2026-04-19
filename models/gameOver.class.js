@@ -4,7 +4,7 @@ class gameover extends drawableObjects {
    width = 500;
    height = 170;
    buttonGap = 12;
-   repeatButton = new reapeatBtn();
+   repeatButton = new repeatButton();
 
    constructor() {
       super();

@@ -21,15 +21,19 @@ function buildSkinAnimations(basePath, skinName, sequenceDefinitions) {
    let animations = {};
 
    Object.entries(sequenceDefinitions).forEach(([key, definition]) => {
-      animations[key] = buildAnimationFrames(
-         skinPath,
-         resolveTemplate(definition.folder, skinName),
-         resolveTemplate(definition.prefix, skinName),
-         definition.lastFrame,
-      );
+      animations[key] = buildAnimationSequence(skinPath, skinName, definition);
    });
 
    return animations;
+}
+
+function buildAnimationSequence(skinPath, skinName, definition) {
+   return buildAnimationFrames(
+      skinPath,
+      resolveTemplate(definition.folder, skinName),
+      resolveTemplate(definition.prefix, skinName),
+      definition.lastFrame,
+   );
 }
 
 function buildEntityAnimations(basePath, skinNames, sequenceDefinitions) {

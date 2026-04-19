@@ -27,6 +27,7 @@ class Abilities {
    finishCasting() {
       this.heal.use();
       this.fear.use();
+      this.owner.spawnEnemiesAfterFear?.();
       this.owner.isCasting = false;
    }
 }

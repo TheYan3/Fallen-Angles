@@ -4,7 +4,7 @@ class world {
    ctx;
    canvas;
    keyboardInput;
-   camara_x = 0;
+   cameraX = 0;
    enemyActivationDistance = 390;
    enemyStopDistance = 30;
    isGameStopped = false;
@@ -141,17 +141,23 @@ class world {
 
    moveEnemiesTowardsPlayer() {
       this.enemyMoveInterval = setInterval(() => {
-         if (
-            this.isGameStopped ||
-            !gameSettings.shouldRunTick("world-enemy-movement")
-         ) {
-            return;
-         }
-
-         this.level.enemies.forEach((enemy) => {
-            this.moveEnemy(enemy);
-         });
+         this.runEnemyMovementTick();
       }, 1000 / 60);
+   }
+
+   runEnemyMovementTick() {
+      if (this.shouldSkipEnemyMovement()) {
+         return;
+      }
+
+      this.level.enemies.forEach((enemy) => this.moveEnemy(enemy));
+   }
+
+   shouldSkipEnemyMovement() {
+      return (
+         this.isGameStopped ||
+         !gameSettings.shouldRunTick("world-enemy-movement")
+      );
    }
 
    moveEnemy(enemy) {
@@ -250,12 +256,11 @@ class world {
    }
 
    draw() {
-      if (this.isGameStopped) {
-         return this.drawGameEndScreen();
-      }
+      this.clearCanvas();
 
-      if (gameSettings.shouldRunTick(this.drawTickKey)) {
-         this.clearCanvas();
+      if (this.isGameStopped) {
+         this.drawGameEndScreen();
+      } else {
          this.drawCameraLayer();
          this.drawUi();
       }
@@ -272,19 +277,13 @@ class world {
    }
 
    drawReplayButtonScreen() {
-      this.clearCanvas();
       this.drawCameraLayer();
       this.drawUi();
       this.gameOverScreen.drawRepeatButton(this.ctx, this.canvas);
    }
 
    drawGameOverScreen() {
-      this.clearCanvas();
       this.gameOverScreen.draw(this.ctx, this.canvas);
-
-      if (!this.gameOverScreen.isImageReady()) {
-         requestAnimationFrame(this.draw.bind(this));
-      }
    }
 
    registerGameOverClick() {
@@ -316,7 +315,7 @@ class world {
    }
 
    drawCameraLayer() {
-      this.ctx.translate(Math.round(this.camara_x), 0);
+      this.ctx.translate(Math.round(this.cameraX), 0);
       this.drawWorldObjects();
       this.resetCamera();
    }
@@ -333,7 +332,7 @@ class world {
    }
 
    resetCamera() {
-      this.ctx.translate(-Math.round(this.camara_x), 0);
+      this.ctx.translate(-Math.round(this.cameraX), 0);
    }
 
    drawUi() {

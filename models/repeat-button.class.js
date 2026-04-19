@@ -1,4 +1,4 @@
-class reapeatBtn extends drawableObjects {
+class repeatButton extends drawableObjects {
    width = 220;
    height = 150;
 

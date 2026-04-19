@@ -81,18 +81,44 @@ class MovableObject extends drawableObjects {
    }
 
    playAnimationWithDelay(images, frameDelay = 1) {
+      this.showCurrentAnimationFrame(images);
+      this.animationTick++;
+      if (this.shouldKeepAnimationFrame(frameDelay)) return;
+      this.advanceDelayedAnimation(images);
+   }
+
+   showCurrentAnimationFrame(images) {
       let path = images[this.currentImage];
       this.img = this.imageCache[path];
+   }
 
-      this.animationTick++;
+   shouldKeepAnimationFrame(frameDelay) {
+      return this.animationTick < frameDelay;
+   }
 
-      if (this.animationTick < frameDelay) {
-         return;
-      }
-
+   advanceDelayedAnimation(images) {
       this.currentImage = (this.currentImage + 1) % images.length;
       this.markFinishedAttackCycle(images);
       this.animationTick = 0;
+   }
+
+   getEnemyAnimationImages(waitingImages) {
+      if (this.isHurt) return this.IMAGES_HURT;
+      if (this.isAttacking) return this.IMAGES_ATTACKING;
+      if (this.isAggro && this.isWalking) return this.IMAGES_WALKING;
+      return waitingImages;
+   }
+
+   playEnemyStateAnimation(waitingImages) {
+      if (this.isRemoved) return;
+      if (this.isDying) return this.playDyingAnimation();
+      if (this.isHurt) return this.playHurtAnimation();
+      let images = this.getEnemyAnimationImages(waitingImages);
+      this.updateAnimationState(images);
+      this.playAnimationWithDelay(
+         images,
+         this.isAttacking ? this.attackFrameDelay : 1,
+      );
    }
 
    playAnimationOnce(images) {

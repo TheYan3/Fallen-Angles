@@ -4,6 +4,7 @@ class endboss extends MovableObject {
    attackFrameDelay = 1.5;
    abilityUsed = false;
    isCasting = false;
+   fearSpawnCount = 3;
 
    constructor() {
       super();
@@ -100,5 +101,41 @@ class endboss extends MovableObject {
       if (isFinished) {
          this.abilities.finishCasting();
       }
+   }
+
+   spawnEnemiesAfterFear() {
+      if (!this.canSpawnEnemiesAfterFear()) {
+         return;
+      }
+
+      for (let i = 0; i < this.fearSpawnCount; i++) {
+         this.spawnFearEnemy(i);
+      }
+   }
+
+   canSpawnEnemiesAfterFear() {
+      return Boolean(this.world?.character);
+   }
+
+   spawnFearEnemy(index) {
+      let enemy = this.createFearSpawnEnemy();
+      this.positionFearSpawnEnemy(enemy, index);
+      enemy.world = this.world;
+      enemy.isAggro = true;
+      this.world.level.enemies.push(enemy);
+   }
+
+   createFearSpawnEnemy() {
+      let enemyTypes = [golem, reaper, minotaur];
+      let EnemyType = enemyTypes[Math.floor(Math.random() * enemyTypes.length)];
+      return new EnemyType();
+   }
+
+   positionFearSpawnEnemy(enemy, index) {
+      let characterX = this.world.character.x;
+      let spawnRange = this.world.enemyActivationDistance;
+      let spawnOffset = 80 + Math.random() * spawnRange + index * enemy.width;
+      enemy.x = characterX + spawnOffset;
+      enemy.otherDirection = true;
    }
 }

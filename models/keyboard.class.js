@@ -18,6 +18,17 @@ class keyboard {
    }
 
    setKeyState(key, code, isPressed) {
+      this.setMovementKeyState(key, isPressed);
+      this.setActionKeyState(key, code, isPressed);
+      this.setRunKeyState(key, isPressed);
+   }
+
+   setMovementKeyState(key, isPressed) {
+      this.setHorizontalKeyState(key, isPressed);
+      this.setVerticalKeyState(key, isPressed);
+   }
+
+   setHorizontalKeyState(key, isPressed) {
       if (key === "ArrowLeft" || key === "a" || key === "A") {
          this.LEFT = isPressed;
       }
@@ -25,7 +36,9 @@ class keyboard {
       if (key === "ArrowRight" || key === "d" || key === "D") {
          this.RIGHT = isPressed;
       }
+   }
 
+   setVerticalKeyState(key, isPressed) {
       if (key === "ArrowUp" || key === "w" || key === "W") {
          this.UP = isPressed;
       }
@@ -33,7 +46,9 @@ class keyboard {
       if (key === "ArrowDown" || key === "s" || key === "S") {
          this.DOWN = isPressed;
       }
+   }
 
+   setActionKeyState(key, code, isPressed) {
       if (code === "Space" || key === " ") {
          this.SPACE = isPressed;
       }
@@ -41,7 +56,9 @@ class keyboard {
       if (key === "f" || key === "F") {
          this.ATTACK = isPressed;
       }
+   }
 
+   setRunKeyState(key, isPressed) {
       if (key === "Shift") {
          this.RUN = isPressed;
       }

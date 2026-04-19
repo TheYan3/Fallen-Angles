@@ -51,20 +51,25 @@ function getGroundPaths() {
 }
 
 function createRocks() {
-   return [
-      new rock(
-         "img/Barrier/PNG/middle_lane_rocks2/middle_lane_rock2_1.png",
-         300 + Math.random() * 500,
-         null,
-         false,
-      ),
-      new rock(
-         "img/Barrier/PNG/middle_lane_rocks2/middle_lane_rock2_2.png",
-         1000 + Math.random() * 2000,
-         null,
-         true,
-      ),
-   ];
+   return [createFirstRock(), createSecondRock()];
+}
+
+function createFirstRock() {
+   return new rock(
+      "img/Barrier/PNG/middle_lane_rocks2/middle_lane_rock2_1.png",
+      300 + Math.random() * 500,
+      null,
+      false,
+   );
+}
+
+function createSecondRock() {
+   return new rock(
+      "img/Barrier/PNG/middle_lane_rocks2/middle_lane_rock2_2.png",
+      1000 + Math.random() * 2000,
+      null,
+      true,
+   );
 }
 
 function createPowerUps(levelEndX) {

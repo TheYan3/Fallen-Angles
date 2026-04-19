@@ -36,9 +36,7 @@ canvas {
    background-color: black;
    border: 2px solid rgb(0, 0, 0);
    border-radius: 12px;
-
-   bor
-   margin-top: 50px;
+   margin-top: 0;
 }
 
 .header {
@@ -49,16 +47,16 @@ canvas {
    object-fit: contain;
 }
 
-#startMenue {
+#startMenu {
    display: flex;
    flex-direction: column;
    align-items: center;
    width: min(100%, 760px);
    gap: clamp(16px, 4vh, 36px);
-   margin-top: 120px;
+   margin-top: 40px;
 }
 
-.menue-button {
+.menu-button {
    padding: 0;
    background: transparent;
    border: none;
@@ -85,7 +83,7 @@ canvas {
    }
 }
 
-.menue-button img {
+.menu-button img {
    display: block;
    max-width: 100%;
 }
@@ -111,14 +109,26 @@ canvas {
    display: flex;
    flex-direction: column;
    align-items: center;
-   gap: 12px;
+   position: relative;
+   gap: 0;
+}
+
+.canvas-toolbar {
+   display: flex;
+   justify-content: flex-end;
+   width: min(100%, 760px);
+   position: absolute;
+   top: 12px;
+   right: 12px;
+   z-index: 2;
+   pointer-events: none;
 }
 
 .hidden {
    display: none;
 }
 
-#startMenue.hidden,
+#startMenu.hidden,
 .game-container.hidden {
    display: none;
 }
@@ -126,6 +136,29 @@ canvas {
 .game-button-row {
    display: flex;
    gap: 12px;
+   pointer-events: auto;
+}
+
+.mobile-control-row {
+   display: none;
+   justify-content: space-between;
+   width: min(100%, 760px);
+   margin-top: 12px;
+}
+
+.mobile-control-group {
+   display: flex;
+   gap: 12px;
+}
+
+.mobile-control-hint {
+   width: min(100%, 760px);
+   margin: 12px 0 0;
+   color: white;
+   font-size: clamp(16px, 4vw, 24px);
+   line-height: 1.3;
+   text-align: center;
+   text-shadow: 2px 2px 4px #000000;
 }
 
 .game-control-button {
@@ -138,13 +171,32 @@ canvas {
    font-family: inherit;
    font-size: 28px;
    cursor: pointer;
+   touch-action: none;
+   user-select: none;
+   transition: transform 80ms ease, background 120ms ease;
 }
 
-.game-control-button:hover {
-   background: rgba(255, 255, 255, 0.18);
+.game-control-button:active {
+   background: rgba(0, 0, 0, 0.85);
+   transform: scale(0.9);
 }
 
-canvas:fullscreen {
+.game-container:fullscreen {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   width: 100vw;
+   height: 100vh;
+   background: black;
+}
+
+.game-container:fullscreen .canvas-toolbar {
+   width: 100%;
+   top: 12px;
+   right: 12px;
+}
+
+.game-container:fullscreen canvas {
    width: 100vw;
    height: 100vh;
    object-fit: contain;
@@ -162,7 +214,16 @@ canvas:fullscreen {
    .keybinds {
       width: min(92vw, 420px);
    }
+}
 
+@media (orientation: landscape) {
+   .mobile-control-hint {
+      display: none;
+   }
+
+   .mobile-control-row {
+      display: flex;
+   }
 }
 
 @media (max-height: 460px) and (orientation: landscape) {
@@ -171,7 +232,7 @@ canvas:fullscreen {
       padding-block: 10px;
    }
 
-   #startMenue {
+   #startMenu {
       gap: 8px;
       margin-block: 0;
    }
@@ -181,9 +242,8 @@ canvas:fullscreen {
    }
 
    .header {
-     display:  none;
+      display: none;
    }
-
 
    .keybinds {
       width: min(54vw, 420px);
@@ -211,7 +271,18 @@ canvas:fullscreen {
 
 /* Smartphones ----------- */
 @media only screen and (max-height: 480px) {
-   canvas {
-      height: 100vh;
+   .mobile-control-row {
+      position: absolute;
+      right: 12px;
+      bottom: 12px;
+      left: 12px;
+      z-index: 2;
+      width: auto;
+      margin-top: 0;
+      pointer-events: none;
+   }
+
+   .mobile-control-group {
+      pointer-events: auto;
    }
 }

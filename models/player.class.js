@@ -236,7 +236,7 @@ class player extends MovableObject {
       return (
          !this.isNormalAttackLocked() &&
          this.keyboard.RIGHT &&
-         this.x < this.world.level.player_end_x
+         this.x < this.world.level.playerEndX
       );
    }
 
@@ -282,11 +282,16 @@ class player extends MovableObject {
    }
 
    updateCamera() {
-      let cameraX = -this.x + 100;
-      this.world.camara_x = Math.max(cameraX, this.getCameraStopX());
+      let cameraX = this.getCenteredCameraX();
+      this.world.cameraX = Math.min(0, Math.max(cameraX, this.getCameraStopX()));
+   }
+
+   getCenteredCameraX() {
+      let playerCenterX = this.x + this.width / 2;
+      return this.world.canvas.width / 2 - playerCenterX;
    }
 
    getCameraStopX() {
-      return -this.world.level.camera_end_x + 100;
+      return this.world.canvas.width - this.world.level.cameraEndX;
    }
 }
