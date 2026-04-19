@@ -1,8 +1,9 @@
 let movementHoldTimer;
 let Music = new Audio("audio/World/TitelMusic.mp3");
-let isMuted = false;
+let isMuted = localStorage.getItem("gameMuted") === "true";
 Music.loop = true;
 Music.volume = 0.5;
+Music.muted = isMuted;
 
 /**
  * Attempts to play the title music.
@@ -180,22 +181,26 @@ function backToMenu() {
 function toggleMute() {
    isMuted = !isMuted;
    Music.muted = isMuted;
+   localStorage.setItem("gameMuted", isMuted);
    updateMuteButtons();
 }
 
 /**
  * Updates the visual state (icons and labels) of all mute buttons on the page.
+ * The icon is derived directly from the persisted 'isMuted' state.
  */
 function updateMuteButtons() {
-   const icon = isMuted ? "🔇" : "♪";
-   const label = isMuted ? "Unmute" : "Mute";
-   const buttons = ["muteButton", "startMuteButton"];
+   const buttonState = {
+      icon: isMuted ? "🔇" : "♪",
+      label: isMuted ? "Unmute" : "Mute",
+   };
 
+   const buttons = ["muteButton", "startMuteButton"];
    buttons.forEach((id) => {
       const btn = document.getElementById(id);
       if (btn) {
-         btn.textContent = icon;
-         btn.setAttribute("aria-label", label);
+         btn.textContent = buttonState.icon;
+         btn.setAttribute("aria-label", buttonState.label);
       }
    });
 }
@@ -242,5 +247,7 @@ function hideGameContainer() {
 function showGameContainer() {
    document.getElementById("gameContainer").classList.remove("hidden");
 }
+
+updateMuteButtons();
 
 document.addEventListener("fullscreenchange", updateFullscreenButton);
