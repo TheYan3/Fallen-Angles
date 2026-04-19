@@ -1,14 +1,21 @@
+*,
+*::before,
+*::after {
+   box-sizing: border-box;
+}
+
 body {
    margin: 0;
    display: flex;
    flex-direction: column;
    align-items: center;
-   justify-content: center;
-   min-height: 100vh;
-   overflow: hidden;
+   min-height: 100dvh;
+   padding: clamp(16px, 4vw, 48px);
+   overflow-x: hidden;
+   overflow-y: auto;
    font-family: "Josefin Sans", sans-serif;
    font-weight: 700;
-   background-image: url("img/Background_Menue.png");
+   background-image: url("img/Menü/Mnue_Background.png");
    background-position: center;
    background-size: cover;
    background-repeat: no-repeat;
@@ -26,19 +33,19 @@ h1 {
 
 canvas {
    background-color: black;
-   margin-top: 200px;
+   margin-top: 50px;
 }
 
 #startMenue {
    display: flex;
    flex-direction: column;
    align-items: center;
-   gap: 30px;
-   margin-top: 100px;
+   width: min(100%, 760px);
+   gap: clamp(16px, 4vh, 36px);
+   margin-top: 120px;
 }
 
 .menue-button {
-   height: 190px;
    padding: 0;
    background: transparent;
    border: none;
@@ -46,14 +53,18 @@ canvas {
 }
 
 .keybinds {
-   height: 300px;
+   width: clamp(280px, 82vw, 720px);
+   max-width: 100%;
+   height: auto;
+   max-height: min(48dvh, 420px);
+   object-fit: contain;
    animation: keybindPulse 3200ms ease-in-out infinite;
 }
 
 @keyframes keybindPulse {
    0%,
    100% {
-      transform: scale(1.1);
+      transform: scale(1);
    }
 
    50% {
@@ -63,22 +74,24 @@ canvas {
 
 .menue-button img {
    display: block;
-   margin-top: 21px;
+   max-width: 100%;
 }
 
 .play-button img {
-   width: 482px;
-   height: 151px;
+   width: clamp(220px, 68vw, 482px);
+   height: auto;
    transition: transform 750ms ease;
-}
-
-.play-button:hover img {
-   transform: scale(1.04);
 }
 
 .play-button:active img {
    transform: scale(0.94);
    transition-duration: 0ms;
+}
+
+@media (hover: hover) and (pointer: fine) {
+   .play-button:hover img {
+      transform: scale(1.04);
+   }
 }
 
 .game-container {
@@ -122,4 +135,50 @@ canvas:fullscreen {
    width: 100vw;
    height: 100vh;
    object-fit: contain;
+}
+
+@media (max-width: 420px) {
+   body {
+      padding-inline: 12px;
+   }
+
+   .play-button img {
+      width: min(86vw, 360px);
+   }
+
+   .keybinds {
+      width: min(92vw, 420px);
+   }
+}
+
+@media (max-height: 460px) and (orientation: landscape) {
+   body {
+      justify-content: flex-start;
+      padding-block: 10px;
+   }
+
+   #startMenue {
+      gap: 8px;
+      margin-block: 0;
+   }
+
+   .play-button img {
+      width: min(42vw, 320px);
+   }
+
+   .keybinds {
+      width: min(54vw, 420px);
+      max-height: 45dvh;
+   }
+}
+
+@media (prefers-reduced-motion: reduce) {
+   *,
+   *::before,
+   *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+   }
 }
