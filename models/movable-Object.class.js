@@ -1,4 +1,7 @@
 class MovableObject extends drawableObjects {
+   static nextTimeScaleId = 0;
+
+   timeScaleId = MovableObject.nextTimeScaleId++;
    speed = gameSettings.gameSpeed * 0.3;
    currentImage = 0;
    lastAnimation = null;
@@ -23,6 +26,10 @@ class MovableObject extends drawableObjects {
 
    applyGravity() {
       setInterval(() => {
+         if (!gameSettings.shouldRunTick(`${this.timeScaleId}-gravity`)) {
+            return;
+         }
+
          let floorY = this.getCurrentGroundY();
          if (this.isAboveGround() || this.speedY < 0)
             return this.fallToFloor(floorY);
@@ -201,6 +208,7 @@ class MovableObject extends drawableObjects {
       this.currentImage = 0;
       this.lastAnimation = null;
       this.animationTick = 0;
+      this.world?.handleObjectStartedDying?.(this);
    }
 
    playDyingAnimation() {

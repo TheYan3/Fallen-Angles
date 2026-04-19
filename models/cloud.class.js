@@ -17,6 +17,10 @@ class cloud extends MovableObject {
 
    moveLeft() {
       setInterval(() => {
+         if (!gameSettings.shouldRunTick(`${this.timeScaleId}-movement`)) {
+            return;
+         }
+
          this.x -= this.speed;
          if (this.x < -this.width) {
             this.randomizePosition();

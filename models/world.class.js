@@ -1,6 +1,6 @@
 class world {
    character;
-   level = level1;
+   level = createLevel1();
    ctx;
    canvas;
    keyboardInput;
@@ -10,13 +10,20 @@ class world {
    isGameStopped = false;
    powerUpCounter = new powerUpCounter();
    healthbar = new healthbar();
+   gameOverScreen = new gameover();
+   enemyMoveInterval;
+   gameStateInterval;
+   gameOverClickHandler;
+   drawTickKey = "world-draw";
 
    constructor(canvas, keyboardInput) {
+      gameSettings.resetTimeScale();
       this.ctx = canvas.getContext("2d");
       this.keyboardInput = keyboardInput;
       this.canvas = canvas;
       this.character = new player(keyboardInput);
       this.setWorld();
+      this.registerGameOverClick();
       this.draw();
       this.moveEnemiesTowardsPlayer();
       this.updateGameState();
@@ -30,8 +37,11 @@ class world {
    }
 
    updateGameState() {
-      setInterval(() => {
-         if (this.isGameStopped) {
+      this.gameStateInterval = setInterval(() => {
+         if (
+            this.isGameStopped ||
+            !gameSettings.shouldRunTick("world-game-state")
+         ) {
             return;
          }
 
@@ -129,8 +139,11 @@ class world {
    }
 
    moveEnemiesTowardsPlayer() {
-      setInterval(() => {
-         if (this.isGameStopped) {
+      this.enemyMoveInterval = setInterval(() => {
+         if (
+            this.isGameStopped ||
+            !gameSettings.shouldRunTick("world-enemy-movement")
+         ) {
             return;
          }
 
@@ -174,6 +187,12 @@ class world {
 
    stopEnemy(enemy) {
       enemy.isWalking = false;
+   }
+
+   handleObjectStartedDying(object) {
+      if (object instanceof endboss) {
+         gameSettings.startSlowMotion();
+      }
    }
 
    isBlockedByRock(mo, speed) {
@@ -224,13 +243,49 @@ class world {
 
    draw() {
       if (this.isGameStopped) {
+         return this.drawGameOverScreen();
+      }
+
+      if (gameSettings.shouldRunTick(this.drawTickKey)) {
+         this.clearCanvas();
+         this.drawCameraLayer();
+         this.drawUi();
+      }
+
+      requestAnimationFrame(this.draw.bind(this));
+   }
+
+   drawGameOverScreen() {
+      this.clearCanvas();
+      this.gameOverScreen.draw(this.ctx, this.canvas);
+
+      if (!this.gameOverScreen.isImageReady()) {
+         requestAnimationFrame(this.draw.bind(this));
+      }
+   }
+
+   registerGameOverClick() {
+      this.gameOverClickHandler = this.handleGameOverClick.bind(this);
+      this.canvas.addEventListener("click", this.gameOverClickHandler);
+   }
+
+   handleGameOverClick(event) {
+      if (!this.isGameStopped) {
          return;
       }
 
-      this.clearCanvas();
-      this.drawCameraLayer();
-      this.drawUi();
-      requestAnimationFrame(this.draw.bind(this));
+      let point = this.getCanvasClickPoint(event);
+      if (this.gameOverScreen.handleClick(point.x, point.y)) {
+         restartGame();
+      }
+   }
+
+   getCanvasClickPoint(event) {
+      let rect = this.canvas.getBoundingClientRect();
+      return {
+         x: ((event.clientX - rect.left) * this.canvas.width) / rect.width,
+         y: ((event.clientY - rect.top) * this.canvas.height) / rect.height,
+      };
    }
 
    clearCanvas() {
@@ -362,5 +417,11 @@ class world {
       this.ctx.lineWidth = 2;
       this.ctx.strokeRect(mo.x, mo.y, mo.width, mo.height);
       this.ctx.restore();
+   }
+
+   destroy() {
+      clearInterval(this.enemyMoveInterval);
+      clearInterval(this.gameStateInterval);
+      this.canvas.removeEventListener("click", this.gameOverClickHandler);
    }
 }

@@ -16,6 +16,10 @@ class powerUp extends MovableObject {
 
    animate() {
       setInterval(() => {
+         if (!gameSettings.shouldRunTick(`${this.timeScaleId}-animation`)) {
+            return;
+         }
+
          this.playIdleAnimation();
       }, this.animationSpeed);
    }

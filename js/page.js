@@ -13,7 +13,7 @@ function getFullscreenTarget() {
 function gameStart() {
    hideStartMenue();
    showGameContainer();
-   init();
+   restartGame();
 }
 
 function backToMenue() {

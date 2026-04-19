@@ -8,3 +8,12 @@ function init() {
    gameSettings.applyToCanvas(canvas);
    gameWorld = new world(canvas, keyboardInput);
 }
+
+function restartGame() {
+   if (gameWorld) {
+      gameWorld.destroy();
+   }
+
+   gameWorld = null;
+   init();
+}

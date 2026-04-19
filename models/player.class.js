@@ -65,12 +65,20 @@ class player extends MovableObject {
 
    handleMovement() {
       setInterval(() => {
+         if (!gameSettings.shouldRunTick(`${this.timeScaleId}-movement`)) {
+            return;
+         }
+
          this.updateMovement();
       }, 1000 / 60);
    }
 
    animation() {
       setInterval(() => {
+         if (!gameSettings.shouldRunTick(`${this.timeScaleId}-animation`)) {
+            return;
+         }
+
          this.handleAttackState();
 
          let images = this.getCurrentAnimationImages();

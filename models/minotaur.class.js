@@ -30,6 +30,10 @@ class minotaur extends MovableObject {
 
    animation() {
       setInterval(() => {
+         if (!gameSettings.shouldRunTick(`${this.timeScaleId}-animation`)) {
+            return;
+         }
+
          this.playStateAnimation();
       }, this.animationSpeed);
    }

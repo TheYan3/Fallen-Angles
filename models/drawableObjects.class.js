@@ -19,4 +19,16 @@ class drawableObjects {
          this.imageCache[path] = img;
       });
    }
+
+   draw(ctx) {
+      if (!this.img) {
+         return;
+      }
+
+      ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+   }
+
+   isImageReady() {
+      return this.img?.complete && this.img.naturalWidth > 0;
+   }
 }
