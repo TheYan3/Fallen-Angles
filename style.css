@@ -8,6 +8,7 @@ body {
    margin: 0;
    display: flex;
    flex-direction: column;
+   justify-content: center;
    align-items: center;
    min-height: 100dvh;
    padding: clamp(16px, 4vw, 48px);
@@ -33,7 +34,19 @@ h1 {
 
 canvas {
    background-color: black;
+   border: 2px solid rgb(0, 0, 0);
+   border-radius: 12px;
+
+   bor
    margin-top: 50px;
+}
+
+.header {
+   display: block;
+   width: min(100%, 760px);
+   max-width: 100%;
+   height: auto;
+   object-fit: contain;
 }
 
 #startMenue {
@@ -149,6 +162,7 @@ canvas:fullscreen {
    .keybinds {
       width: min(92vw, 420px);
    }
+
 }
 
 @media (max-height: 460px) and (orientation: landscape) {
@@ -166,6 +180,11 @@ canvas:fullscreen {
       width: min(42vw, 320px);
    }
 
+   .header {
+     display:  none;
+   }
+
+
    .keybinds {
       width: min(54vw, 420px);
       max-height: 45dvh;
@@ -180,5 +199,19 @@ canvas:fullscreen {
       animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
       scroll-behavior: auto !important;
+   }
+}
+
+/* Smartphones ----------- */
+@media only screen and (max-width: 760px) {
+   canvas {
+      width: 100%;
+   }
+}
+
+/* Smartphones ----------- */
+@media only screen and (max-height: 480px) {
+   canvas {
+      height: 100vh;
    }
 }
