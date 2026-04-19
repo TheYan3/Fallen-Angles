@@ -1,6 +1,6 @@
 class repeatButton extends drawableObjects {
    width = 220;
-   height = 150;
+   height = 70;
 
    /**
     * Initializes the repeat/restart button and loads its graphic.

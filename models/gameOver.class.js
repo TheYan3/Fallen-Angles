@@ -2,7 +2,7 @@ class gameover extends drawableObjects {
    x = 0;
    y = 0;
    width = 500;
-   height = 170;
+   height = 300;
    buttonGap = 12;
    repeatButton = new repeatButton();
 
