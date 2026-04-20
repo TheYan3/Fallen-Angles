@@ -66,7 +66,7 @@ function createFirstRock() {
 function createSecondRock() {
    return new rock(
       "img/Barrier/PNG/middle_lane_rocks2/middle_lane_rock2_2.png",
-      1000 + Math.random() * 2000,
+      1000 + Math.random() * 1800,
       null,
       true,
    );

@@ -248,6 +248,10 @@ function showGameContainer() {
    document.getElementById("gameContainer").classList.remove("hidden");
 }
 
-updateMuteButtons();
+if (document.readyState === "loading") {
+   document.addEventListener("DOMContentLoaded", updateMuteButtons);
+} else {
+   updateMuteButtons();
+}
 
 document.addEventListener("fullscreenchange", updateFullscreenButton);

@@ -23,7 +23,7 @@ class MovableObject extends drawableObjects {
    isHurt = false;
    isDying = false;
    isRemoved = false;
-   Slashdelay = 2000;
+   Slashdelay = 1500;
    lastAttackTime = 0;
    lastHitTime = 0;
 
