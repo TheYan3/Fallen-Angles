@@ -6,6 +6,7 @@ class teleportAbility {
    }
 
    use() {
+      playEffect("audio/Abilitys/Ability_Teleport.mp3");
       let characterX = this.owner.world?.character?.x ?? this.owner.x;
       this.owner.x = characterX + this.range;
    }

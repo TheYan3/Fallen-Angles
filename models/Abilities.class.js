@@ -46,12 +46,12 @@ class Abilities {
 
    /**
     * Completes the casting phase.
-    * Triggers secondary effects like healing and fear on the player,
-    * then allows the boss to resume normal behavior.
+    * Triggers secondary effects, then lets the boss resume normal behavior.
     */
    finishCasting() {
       this.heal.use();
       this.fear.use();
+      this.owner.spawnEnemiesAfterFear?.();
       this.owner.isCasting = false;
    }
 }

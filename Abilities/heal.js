@@ -14,5 +14,6 @@ class healAbility {
     */
    use() {
       this.owner.energy += this.amount;
+      playEffect("audio/World/Collect_Feather.mp3");
    }
 }

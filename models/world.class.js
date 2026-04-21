@@ -257,22 +257,29 @@ class world {
 
    /**
     * Checks if an enemy should become aggressive based on player proximity.
-    * Triggers boss-specific music if the endboss is activated.
+    * Triggers boss-specific audio if the endboss is activated.
     * @param {Object} enemy - The enemy instance.
     */
    updateEnemyAggro(enemy) {
-      if (!enemy.isAggro) {
-         enemy.isAggro =
-            this.character.x >= enemy.x - this.enemyActivationDistance;
-         if (enemy.isAggro && enemy instanceof endboss) {
-            Music.pause();
-            Music = new Audio("audio/Boss/Bossfight_Musik.mp3");
-            Music.muted = isMuted;
-            Music.volume = 0.5;
-            Music.loop = true;
-            Music.play();
-         }
+      if (enemy.isAggro) return;
+      enemy.isAggro =
+         this.character.x >= enemy.x - this.enemyActivationDistance;
+      if (enemy.isAggro && enemy instanceof endboss) {
+         this.startBossFightAudio();
       }
+   }
+
+   /**
+    * Starts boss aggro sound and boss fight music.
+    */
+   startBossFightAudio() {
+      playEffect("audio/Boss/Boss_get_aggro.mp3");
+      Music.pause();
+      Music = new Audio("audio/Boss/Bossfight_Musik.mp3");
+      Music.muted = isMuted;
+      Music.volume = 0.5;
+      Music.loop = true;
+      Music.play();
    }
 
    /**
@@ -476,6 +483,7 @@ class world {
 
       let point = this.getCanvasClickPoint(event);
       if (this.gameOverScreen.handleClick(point.x, point.y)) {
+         startIngameMusic();
          restartGame();
       }
    }

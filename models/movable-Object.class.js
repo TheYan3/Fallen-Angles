@@ -424,19 +424,19 @@ class MovableObject extends drawableObjects {
    whousHit() {
       playEffect("audio/Charakter/SuccesHit.mp3");
       if (this instanceof minotaur) {
-         playEffect("audio/Minotaur/Minotaur_get_Hit.wav");
+         playEffect("audio/Minotaur/Minotaur_get_Hit.mp3");
       }
       if (this instanceof reaper) {
-         playEffect("audio/Reaper/Reaper_get_Hit.wav");
+         playEffect("audio/Reaper/Reaper_Hit.mp3");
       }
       if (this instanceof golem) {
-         playEffect("audio/Golem/Golem_get_Hit.wav");
+         playEffect("audio/Golem/Golem_Hurt.mp3");
       }
       if (this instanceof endboss) {
-         playEffect("audio/Wraith/Wraith_get_Hit.wav");
+         playEffect("audio/Boss/Boss_hurt.mp3");
       }
       if (this instanceof player) {
-         playEffect("audio/Player/Player_get_Hit.wav");
+         playEffect("audio/Charakter/get_hit.mp3");
       }
    }
 
@@ -445,16 +445,16 @@ class MovableObject extends drawableObjects {
     */
    whousDeath() {
       if (this instanceof minotaur) {
-         playEffect("audio/Minotaur/Minotaur_Dying.mp3");
+         playEffect("audio/Minotaur/Minotaur_death.mp3");
       }
       if (this instanceof reaper) {
-         playEffect("audio/Reaper/Reaper_death.wav");
+         playEffect("audio/Reaper/Reaper_death.mp3");
       }
       if (this instanceof golem) {
-         playEffect("audio/Golem/Golem_death.wav");
+         playEffect("audio/Golem/golem_death.mp3");
       }
       if (this instanceof endboss) {
-         playEffect("audio/Wraith/Wraith_death.wav");
+         playEffect("audio/Boss/Boss_death.mp3");
       }
       if (this instanceof player) {
          playEffect("audio/Charakter/Dying_Charakter.mp3");
