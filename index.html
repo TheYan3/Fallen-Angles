@@ -54,122 +54,126 @@
       <script src="./script.js"></script>
    </head>
    <body>
-      <img
-         class="header"
-         src="img/Menü/Header2.png"
-         alt="Fallen Angels Header" />
-      <div id="startMenu" class="menu-container">
-         <button
-            id="startMuteButton"
-            class="game-control-button"
-            style="position: absolute; top: 20px; right: 20px; z-index: 100"
-            onclick="toggleMute()"
-            aria-label="Mute">
-            ♪
-         </button>
-         <button onclick="gameStart()" class="menu-button play-button">
-            <img src="./img/Menü/Buttons/Play_Button1.png" alt="Play_Button" />
-         </button>
+      <div id="menuScreen" class="menu-screen">
          <img
-            class="keybinds"
-            src="img/Movement_keyboard.png"
-            alt="Movement keyboard controls" />
-         <a href="impressum.html" class="impressum-link">Impressum</a>
-      </div>
-
-      <div id="gameContainer" class="game-container hidden">
-         <div class="canvas-toolbar">
-            <div class="game-button-row">
-               <button
-                  id="fullscreenButton"
-                  class="game-control-button"
-                  type="button"
-                  aria-label="Fullscreen"
-                  onclick="toggleFullscreen()">
-                  ⛶
-               </button>
-               <button
-                  id="keyboardHelpButton"
-                  class="game-control-button"
-                  type="button"
-                  oncontextmenu="return false;"
-                  aria-label="Show keyboard controls"
-                  onpointerdown="showKeyboardControls(event)">
-                  ⌨
-               </button>
-               <button
-                  id="muteButton"
-                  class="game-control-button"
-                  type="button"
-                  onclick="toggleMute()"
-                  aria-label="Mute">
-                  ♪
-               </button>
-               <button
-                  id="backToMenuButton"
-                  class="game-control-button"
-                  type="button"
-                  aria-label="Back to menu"
-                  onclick="backToMenu();">
-                  x
-               </button>
-            </div>
-         </div>
-         <div id="keyboardControlsOverlay" class="keyboard-controls-overlay">
+            class="header"
+            src="img/Menü/Header2.png"
+            alt="Fallen Angels Header" />
+         <div id="startMenu" class="menu-container">
+            <button
+               id="startMuteButton"
+               class="game-control-button"
+               style="position: absolute; top: 20px; right: 20px; z-index: 100"
+               onclick="toggleMute()"
+               aria-label="Mute">
+               ♪
+            </button>
+            <button onclick="gameStart()" class="menu-button play-button">
+               <img
+                  src="./img/Menü/Buttons/Play_Button1.png"
+                  alt="Play_Button" />
+            </button>
             <img
+               class="keybinds"
                src="img/Movement_keyboard.png"
                alt="Movement keyboard controls" />
+            <a href="impressum.html" class="impressum-link">Impressum</a>
          </div>
-         <canvas id="canvas"> </canvas>
-         <p class="mobile-control-hint">Turn your device to move!</p>
-         <div class="mobile-control-row" aria-label="Game controls">
-            <div class="mobile-control-group">
-               <button
-                  class="game-control-button"
-                  type="button"
-                  oncontextmenu="return false;"
-                  aria-label="Move left"
-                  onpointerdown="setMovementControl('LEFT', true)"
-                  onpointerup="setMovementControl('LEFT', false)"
-                  onpointerleave="setMovementControl('LEFT', false)"
-                  onpointercancel="setMovementControl('LEFT', false)">
-                  ←
-               </button>
-               <button
-                  class="game-control-button"
-                  type="button"
-                  oncontextmenu="return false;"
-                  aria-label="Move right"
-                  onpointerdown="setMovementControl('RIGHT', true)"
-                  onpointerup="setMovementControl('RIGHT', false)"
-                  onpointerleave="setMovementControl('RIGHT', false)"
-                  onpointercancel="setMovementControl('RIGHT', false)">
-                  →
-               </button>
+
+         <div id="gameContainer" class="game-container hidden">
+            <div class="canvas-toolbar">
+               <div class="game-button-row">
+                  <button
+                     id="fullscreenButton"
+                     class="game-control-button"
+                     type="button"
+                     aria-label="Fullscreen"
+                     onclick="toggleFullscreen()">
+                     ⛶
+                  </button>
+                  <button
+                     id="keyboardHelpButton"
+                     class="game-control-button"
+                     type="button"
+                     oncontextmenu="return false;"
+                     aria-label="Show keyboard controls"
+                     onpointerdown="showKeyboardControls(event)">
+                     ⌨
+                  </button>
+                  <button
+                     id="muteButton"
+                     class="game-control-button"
+                     type="button"
+                     onclick="toggleMute()"
+                     aria-label="Mute">
+                     ♪
+                  </button>
+                  <button
+                     id="backToMenuButton"
+                     class="game-control-button"
+                     type="button"
+                     aria-label="Back to menu"
+                     onclick="backToMenu();">
+                     x
+                  </button>
+               </div>
             </div>
-            <div class="mobile-control-group">
-               <button
-                  class="game-control-button"
-                  type="button"
-                  oncontextmenu="return false;"
-                  aria-label="Jump"
-                  onpointerdown="setControlKey('SPACE', true)"
-                  onpointerup="setControlKey('SPACE', false)"
-                  onpointerleave="setControlKey('SPACE', false)"
-                  onpointercancel="setControlKey('SPACE', false)">
-                  ↑
-               </button>
-               <button
-                  class="game-control-button"
-                  type="button"
-                  oncontextmenu="return false;"
-                  aria-label="Attack"
-                  onpointerdown="setControlKey('UP', true)"
-                  onpointerup="setControlKey('UP', false)"
-                  onpointerleave="setControlKey('UP', false)"
-                  onpointercancel="setControlKey('UP', false)">
-                  ⚔
-               </button>
+            <div id="keyboardControlsOverlay" class="keyboard-controls-overlay">
+               <img
+                  src="img/Movement_keyboard.png"
+                  alt="Movement keyboard controls" />
+            </div>
+            <canvas id="canvas"> </canvas>
+            <p class="mobile-control-hint">Turn your device to move!</p>
+            <div class="mobile-control-row" aria-label="Game controls">
+               <div class="mobile-control-group">
+                  <button
+                     class="game-control-button"
+                     type="button"
+                     oncontextmenu="return false;"
+                     aria-label="Move left"
+                     onpointerdown="setMovementControl('LEFT', true)"
+                     onpointerup="setMovementControl('LEFT', false)"
+                     onpointerleave="setMovementControl('LEFT', false)"
+                     onpointercancel="setMovementControl('LEFT', false)">
+                     ←
+                  </button>
+                  <button
+                     class="game-control-button"
+                     type="button"
+                     oncontextmenu="return false;"
+                     aria-label="Move right"
+                     onpointerdown="setMovementControl('RIGHT', true)"
+                     onpointerup="setMovementControl('RIGHT', false)"
+                     onpointerleave="setMovementControl('RIGHT', false)"
+                     onpointercancel="setMovementControl('RIGHT', false)">
+                     →
+                  </button>
+               </div>
+               <div class="mobile-control-group">
+                  <button
+                     class="game-control-button"
+                     type="button"
+                     oncontextmenu="return false;"
+                     aria-label="Jump"
+                     onpointerdown="setControlKey('SPACE', true)"
+                     onpointerup="setControlKey('SPACE', false)"
+                     onpointerleave="setControlKey('SPACE', false)"
+                     onpointercancel="setControlKey('SPACE', false)">
+                     ↑
+                  </button>
+                  <button
+                     class="game-control-button"
+                     type="button"
+                     oncontextmenu="return false;"
+                     aria-label="Attack"
+                     onpointerdown="setControlKey('UP', true)"
+                     onpointerup="setControlKey('UP', false)"
+                     onpointerleave="setControlKey('UP', false)"
+                     onpointercancel="setControlKey('UP', false)">
+                     ⚔
+                  </button>
+               </div>
             </div>
          </div>
       </div>

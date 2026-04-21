@@ -6,13 +6,20 @@
 
 body {
    margin: 0;
+   min-height: 100dvh;
+   overflow-x: hidden;
+   background-color: #000000;
+}
+
+.menu-screen {
    display: flex;
    flex-direction: column;
    justify-content: center;
    align-items: center;
+   position: relative;
+   width: 100%;
    min-height: 100dvh;
    padding: clamp(16px, 4vw, 48px);
-   overflow-x: hidden;
    overflow-y: auto;
    font-family: "Josefin Sans", sans-serif;
    font-weight: 700;
@@ -20,6 +27,7 @@ body {
    background-position: center;
    background-size: cover;
    background-repeat: no-repeat;
+   background-color: #000000;
 }
 
 .impressum-link {
@@ -265,7 +273,7 @@ canvas {
 }
 
 @media (max-width: 420px) {
-   body {
+   .menu-screen {
       padding-inline: 12px;
    }
 
@@ -295,7 +303,7 @@ canvas {
 }
 
 @media (max-height: 460px) and (orientation: landscape) {
-   body {
+   .menu-screen {
       justify-content: flex-start;
       padding-block: 10px;
    }
@@ -385,6 +393,13 @@ body.is-playing img {
 
 @media (hover: none) and (pointer: coarse) and (orientation: landscape) {
    body.is-playing {
+      width: 100vw;
+      height: 100dvh;
+      min-height: 100dvh;
+      overflow: hidden;
+   }
+
+   body.is-playing .menu-screen {
       justify-content: center;
       width: 100vw;
       height: 100dvh;
