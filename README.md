@@ -159,6 +159,8 @@ Das Projekt ist eine statische Website. Für eine Veröffentlichung reicht ein H
 -  Speichern von Highscores oder Bestzeiten
 -  Pausenmenü
 -  Abilitys für Enemys
+-  Visuelles feedback bei abilitiy verwendung
 -  Bessere Trennung zwischen Assetdaten und Spiellogik
 -  Zentrale Verwaltung aller Intervalle beim Neustart
 -  Automatisierte Tests für Kollisions- und Bewegungslogik
+-  Setting Menue
