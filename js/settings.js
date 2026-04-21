@@ -10,6 +10,7 @@ const gameSettings = {
    pausedAt: 0,
    pausedDuration: 0,
    hitboxShown: false,
+   audioVolume: 0.2,
    fontFamily: '"Josefin Sans", sans-serif',
    fontWeight: "700",
 

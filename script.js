@@ -10,7 +10,7 @@ const keyboardControlReleaseEvents = [
 ];
 let lastGameTouchEnd = 0;
 Music.loop = true;
-Music.volume = 0.5;
+Music.volume = gameSettings.audioVolume;
 Music.muted = isMuted;
 
 /**
@@ -206,7 +206,7 @@ function startIngameMusic() {
    Music.pause();
    Music = new Audio(audioLibrary.music.ingame);
    Music.muted = isMuted;
-   Music.volume = 0.5;
+   Music.volume = gameSettings.audioVolume;
    Music.play();
 }
 
@@ -226,7 +226,7 @@ function backToMenu() {
    Music.pause();
    Music = new Audio(audioLibrary.music.title);
    Music.muted = isMuted;
-   Music.volume = 0.5;
+   Music.volume = gameSettings.audioVolume;
    Music.loop = true;
    Music.play();
    hideGameContainer();
@@ -289,7 +289,7 @@ function showStartMenu() {
 function playEffect(path) {
    if (isMuted) return;
    let audio = new Audio(path);
-   audio.volume = 0.5;
+   audio.volume = gameSettings.audioVolume;
    audio.play();
 }
 

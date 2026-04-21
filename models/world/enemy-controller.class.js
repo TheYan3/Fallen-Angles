@@ -77,7 +77,7 @@ class EnemyController {
       Music.pause();
       Music = new Audio(audioLibrary.music.bossFight);
       Music.muted = isMuted;
-      Music.volume = 0.5;
+      Music.volume = gameSettings.audioVolume;
       Music.loop = true;
       Music.play();
    }
