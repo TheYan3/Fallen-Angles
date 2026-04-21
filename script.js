@@ -1,6 +1,8 @@
 let movementHoldTimer;
 let Music = new Audio("audio/World/TitelMusic.mp3");
 let isMuted = localStorage.getItem("gameMuted") === "true";
+const mobileLandscapeQuery =
+   "(hover: none) and (pointer: coarse) and (orientation: landscape)";
 Music.loop = true;
 Music.volume = 0.5;
 Music.muted = isMuted;
@@ -239,6 +241,8 @@ function playEffect(path) {
  */
 function hideGameContainer() {
    document.getElementById("gameContainer").classList.add("hidden");
+   document.body.classList.remove("is-playing");
+   updateResponsiveCanvasSize();
 }
 
 /**
@@ -246,6 +250,75 @@ function hideGameContainer() {
  */
 function showGameContainer() {
    document.getElementById("gameContainer").classList.remove("hidden");
+   document.body.classList.add("is-playing");
+   updateResponsiveCanvasSize();
+}
+
+/**
+ * Fits the canvas into mobile landscape viewports without page scrolling.
+ */
+function updateResponsiveCanvasSize() {
+   let canvasElement = document.getElementById("canvas");
+   if (!canvasElement) return;
+
+   if (!shouldFitCanvasToMobileLandscape()) {
+      resetCanvasDisplaySize(canvasElement);
+      return;
+   }
+
+   let size = getCanvasDisplaySize();
+   canvasElement.style.width = `${size.width}px`;
+   canvasElement.style.height = `${size.height}px`;
+}
+
+/**
+ * Checks if the mobile landscape canvas sizing should be active.
+ * @returns {boolean}
+ */
+function shouldFitCanvasToMobileLandscape() {
+   return (
+      document.body.classList.contains("is-playing") &&
+      window.matchMedia(mobileLandscapeQuery).matches
+   );
+}
+
+/**
+ * Removes inline canvas display sizing outside mobile landscape mode.
+ */
+function resetCanvasDisplaySize(canvasElement) {
+   canvasElement.style.removeProperty("width");
+   canvasElement.style.removeProperty("height");
+}
+
+/**
+ * Calculates the largest canvas size that fits into the current viewport.
+ * @returns {{width: number, height: number}}
+ */
+function getCanvasDisplaySize() {
+   let viewportWidth = window.visualViewport?.width || window.innerWidth;
+   let viewportHeight = window.visualViewport?.height || window.innerHeight;
+   let padding = 16;
+   let availableWidth = Math.max(0, viewportWidth - padding);
+   let availableHeight = Math.max(0, viewportHeight - padding);
+   let aspectRatio = gameSettings.canvasWidth / gameSettings.canvasHeight;
+   let width = Math.min(
+      availableWidth,
+      availableHeight * aspectRatio,
+      gameSettings.canvasWidth,
+   );
+
+   return {
+      width,
+      height: width / aspectRatio,
+   };
+}
+
+/**
+ * Recalculates after the browser has applied viewport/orientation changes.
+ */
+function queueResponsiveCanvasResize() {
+   requestAnimationFrame(updateResponsiveCanvasSize);
+   setTimeout(updateResponsiveCanvasSize, 200);
 }
 
 if (document.readyState === "loading") {
@@ -255,3 +328,6 @@ if (document.readyState === "loading") {
 }
 
 document.addEventListener("fullscreenchange", updateFullscreenButton);
+window.addEventListener("resize", queueResponsiveCanvasResize);
+window.addEventListener("orientationchange", queueResponsiveCanvasResize);
+window.visualViewport?.addEventListener("resize", queueResponsiveCanvasResize);

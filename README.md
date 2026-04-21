@@ -87,10 +87,11 @@ http://localhost:8000
 ├── audio/              # Musik und Soundeffekte
 ├── font/               # Eingebundene Schriftdateien
 ├── img/                # Sprites, Hintergründe, UI-Elemente und Power-ups
-├── js/                 # Einstieg, Seitenevents, globale Einstellungen
+├── js/                 # Spielstart, Animationen und globale Einstellungen
 ├── models/             # Spielklassen für Welt, Spieler, Gegner, UI und Objekte
 ├── impressum.html      # Impressumsseite
 ├── index.html          # Einstiegspunkt des Spiels
+├── script.js           # Menü, Musik, Fullscreen und Mobile-Controls
 └── style.css           # Layout, Menü, Canvas- und Mobile-Styles
 ```
 
@@ -98,7 +99,7 @@ http://localhost:8000
 
 -  `index.html`: Bindet alle Skripte, Styles und die Spieloberfläche ein.
 -  `js/game.js`: Initialisiert Canvas, Tastatur und Spielwelt.
--  `js/page.js`: Steuert Menü, Musik, Mute, Fullscreen und Mobile-Controls.
+-  `script.js`: Steuert Menü, Musik, Mute, Fullscreen und Mobile-Controls.
 -  `js/settings.js`: Enthält globale Canvas-, Speed- und Slow-Motion-Einstellungen.
 -  `Levels/level1.js`: Erstellt Gegner, Wolken, Hintergrundebenen, Felsen und Power-ups.
 -  `models/world.class.js`: Zentrale Spielwelt mit Render-Loop, Kollisionen, Gegnerbewegung, Game-Over-Logik und Kamera.
