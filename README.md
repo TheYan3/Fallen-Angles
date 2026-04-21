@@ -19,6 +19,7 @@ Das Projekt ist ohne Build-System umgesetzt und läuft direkt im Browser mit HTM
 -  Soundeffekte, Titelmusik, Ingame-Musik und Bosskampf-Musik
 -  Mute-Funktion mit Speicherung in `localStorage`
 -  Fullscreen-Modus
+-  Tastatur-Hilfe als gedrückt gehaltenes Overlay im Spiel
 -  Tastatursteuerung und Touch-/Mobile-Controls
 -  Responsives Layout für Desktop und mobile Landscape-Ansicht
 
@@ -38,6 +39,7 @@ Normale Gegner werden aktiv, sobald der Spieler nahe genug ist. Der Endboss star
 | Angreifen           | `W` oder `Pfeil hoch`   | Schwert-Button                       |
 | Rennen              | `Shift` halten          | Bewegungsbutton ca. 1 Sekunde halten |
 | Fullscreen          | Toolbar-Button          | Toolbar-Button                       |
+| Steuerung anzeigen  | Tastatur-Button halten  | Tastatur-Button halten               |
 | Ton an/aus          | Mute-Button             | Mute-Button                          |
 
 ## Technologien
@@ -87,7 +89,7 @@ http://localhost:8000
 ├── audio/              # Musik und Soundeffekte
 ├── font/               # Eingebundene Schriftdateien
 ├── img/                # Sprites, Hintergründe, UI-Elemente und Power-ups
-├── js/                 # Spielstart, Animationen und globale Einstellungen
+├── js/                 # Spielstart, Asset-Libraries und globale Einstellungen
 ├── models/             # Spielklassen für Welt, Spieler, Gegner, UI und Objekte
 ├── impressum.html      # Impressumsseite
 ├── index.html          # Einstiegspunkt des Spiels
@@ -100,10 +102,16 @@ http://localhost:8000
 -  `index.html`: Bindet alle Skripte, Styles und die Spieloberfläche ein.
 -  `js/game.js`: Initialisiert Canvas, Tastatur und Spielwelt.
 -  `script.js`: Steuert Menü, Musik, Mute, Fullscreen und Mobile-Controls.
--  `js/settings.js`: Enthält globale Canvas-, Speed- und Slow-Motion-Einstellungen.
+-  `js/settings.js`: Enthält globale Canvas-, Speed-, Pause- und Slow-Motion-Einstellungen.
+-  `js/animation-library.js`: Zentrale Registrierung der Animationspfade.
+-  `js/audio-library.js`: Zentrale Registrierung aller Musik- und Soundpfade.
 -  `Levels/level1.js`: Erstellt Gegner, Wolken, Hintergrundebenen, Felsen und Power-ups.
 -  `models/world.class.js`: Zentrale Spielwelt mit Render-Loop, Kollisionen, Gegnerbewegung, Game-Over-Logik und Kamera.
--  `models/player.class.js`: Spielerbewegung, Angriffe, Animationen, Fear-Zustand und Kamera-Following.
+-  `models/animated-object.class.js`: Gemeinsame Animationslogik für Frame-Wechsel, Hurt- und Death-Animationen.
+-  `models/movable-Object.class.js`: Bewegung, Schwerkraft, Kollisionen, Trefferlogik und Lebenszustand.
+-  `models/player.class.js`: Spielerwerte, Bewegung, Sprunglogik und Auswahl der Spieleranimationen.
+-  `models/player-attack.class.js`: Angriffszustand, Angriffscooldown und Angriffsanimationen des Spielers.
+-  `models/player-status-effects.class.js`: Status-Effekte des Spielers, aktuell der Fear-Effekt.
 -  `models/endboss.class.js`: Bosswerte, Bossanimationen, Spezialfähigkeiten und Spawn-Logik.
 -  `models/keyboard.class.js`: Tastaturzustand für Bewegung, Angriff, Sprung und Sprint.
 
@@ -113,8 +121,11 @@ Das Spiel nutzt eine objektorientierte Struktur:
 
 -  `world` verwaltet Canvas, Level, Kamera, Game Loop, UI und Kollisionen.
 -  `Level` bündelt Gegner, Power-ups, Hintergründe, Felsen und Levelgrenzen.
--  `MovableObject` dient als Basisklasse für bewegliche Spielfiguren mit Animation, Kollision, Schwerkraft und Trefferlogik.
+-  `drawableObjects` lädt und zeichnet einzelne Sprites.
+-  `AnimatedObject` erweitert `drawableObjects` um wiederverwendbare Animationslogik.
+-  `MovableObject` erweitert `AnimatedObject` um Bewegung, Schwerkraft, Kollision und Trefferlogik.
 -  `player`, `golem`, `minotaur`, `reaper` und `endboss` spezialisieren Bewegung, Werte und Animationen.
+-  `PlayerAttack` und `PlayerStatusEffects` kapseln Angriff und Fear-Status des Spielers.
 -  `Abilities` koordiniert die Bossfähigkeiten `teleportAbility`, `healAbility` und `fearAbility`.
 -  UI-Klassen wie `healthbar`, `powerUpCounter`, `gameover` und `repeatButton` zeichnen Status- und Endbildschirme auf das Canvas.
 
@@ -131,6 +142,7 @@ Vor einer Veröffentlichung sollte geprüft werden, ob alle verwendeten Sprites,
 -  Die Skript-Reihenfolge in `index.html` ist wichtig, weil die Klassen global geladen werden.
 -  Neue Levelobjekte werden aktuell in `Levels/level1.js` erzeugt.
 -  Neue Animationen sollten in `js/animation-library.js` registriert und danach in der jeweiligen Klasse geladen werden.
+-  Neue Sounds sollten in `js/audio-library.js` registriert und danach über `audioLibrary` verwendet werden.
 -  `gameSettings.hitboxShown` kann für Debugging aktiviert werden.
 -  Mobile Controls erscheinen in Landscape-Ansicht.
 -  Der Canvas verwendet intern eine Auflösung von `720 x 480`.
