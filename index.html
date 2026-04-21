@@ -80,6 +80,15 @@
                   ⛶
                </button>
                <button
+                  id="keyboardHelpButton"
+                  class="game-control-button"
+                  type="button"
+                  oncontextmenu="return false;"
+                  aria-label="Show keyboard controls"
+                  onpointerdown="showKeyboardControls(event)">
+                  ⌨
+               </button>
+               <button
                   id="muteButton"
                   class="game-control-button"
                   type="button"
@@ -96,6 +105,11 @@
                   x
                </button>
             </div>
+         </div>
+         <div id="keyboardControlsOverlay" class="keyboard-controls-overlay">
+            <img
+               src="img/Movement_keyboard.png"
+               alt="Movement keyboard controls" />
          </div>
          <canvas id="canvas"> </canvas>
          <p class="mobile-control-hint">Turn your device to move!</p>

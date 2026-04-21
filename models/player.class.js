@@ -8,13 +8,13 @@ class player extends MovableObject {
    isAttacking = false;
    attackKeyHandled = false;
    currentAttackAnimation = null;
-   jumpBlocked = false;
    jumpCooldown = 800;
+   jumpCooldownEndsAt = 0;
    runSpeed = gameSettings.gameSpeed * 1.3;
    airSpeedMultiplier = 1.2;
    isFeared = false;
    fearSpeedMultiplier = 1;
-   fearTimer = null;
+   fearEndsAt = 0;
 
    /**
     * Initializes the player, loads all animations from the library
@@ -122,7 +122,7 @@ class player extends MovableObject {
          return;
       }
 
-      let timeSinceLastAttack = Date.now() - this.lastAttackTime;
+      let timeSinceLastAttack = gameSettings.getGameTime() - this.lastAttackTime;
       if (
          this.keyboard.UP &&
          !this.attackKeyHandled &&
@@ -199,14 +199,20 @@ class player extends MovableObject {
     * Only allowed if the player is touching the ground.
     */
    jump() {
-      if (!this.isAboveGround() && !this.jumpBlocked) {
+      if (!this.isAboveGround() && !this.isJumpOnCooldown()) {
          playEffect("audio/Charakter/jump.mp3");
-         this.jumpBlocked = true;
+         this.jumpCooldownEndsAt =
+            gameSettings.getGameTime() + this.jumpCooldown;
          this.speedY = -17;
-         setTimeout(() => {
-            this.jumpBlocked = false;
-         }, this.jumpCooldown);
       }
+   }
+
+   /**
+    * Checks if the game-time jump cooldown is still active.
+    * @returns {boolean}
+    */
+   isJumpOnCooldown() {
+      return gameSettings.getGameTime() < this.jumpCooldownEndsAt;
    }
 
    /**
@@ -229,7 +235,7 @@ class player extends MovableObject {
     * Starts the attack sequence: resets frames and picks the correct animation set.
     */
    startAttack() {
-      this.lastAttackTime = Date.now();
+      this.lastAttackTime = gameSettings.getGameTime();
       playEffect("audio/Charakter/Sword_slash_NO_hit.mp3");
       this.isAttacking = true;
       this.attackKeyHandled = true;
@@ -275,6 +281,8 @@ class player extends MovableObject {
     * Updates camera following logic.
     */
    updateMovement() {
+      this.updateFearState();
+
       if (this.isFeared) {
          return this.moveFeared();
       }
@@ -314,9 +322,17 @@ class player extends MovableObject {
       playEffect("audio/Abilitys/Fear.mp3");
       this.isFeared = true;
       this.fearSpeedMultiplier = speedMultiplier;
+      this.fearEndsAt = gameSettings.getGameTime() + duration;
       this.finishAttack();
-      clearTimeout(this.fearTimer);
-      this.fearTimer = setTimeout(() => this.stopFear(), duration);
+   }
+
+   /**
+    * Ends the Fear effect once its game-time duration is over.
+    */
+   updateFearState() {
+      if (this.isFeared && gameSettings.getGameTime() >= this.fearEndsAt) {
+         this.stopFear();
+      }
    }
 
    /**
@@ -325,6 +341,7 @@ class player extends MovableObject {
    stopFear() {
       this.isFeared = false;
       this.fearSpeedMultiplier = 1;
+      this.fearEndsAt = 0;
    }
 
    /**
@@ -359,7 +376,11 @@ class player extends MovableObject {
     * Input check for jumping.
     */
    canJump() {
-      return this.keyboard.SPACE && !this.isAboveGround();
+      return (
+         this.keyboard.SPACE &&
+         !this.isAboveGround() &&
+         !this.isJumpOnCooldown()
+      );
    }
 
    /**

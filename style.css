@@ -141,6 +141,39 @@ canvas {
    pointer-events: none;
 }
 
+.keyboard-controls-overlay {
+   position: fixed;
+   inset: 0;
+   z-index: 1000;
+   display: none;
+   align-items: center;
+   justify-content: center;
+   width: 100vw;
+   height: 100dvh;
+   padding: clamp(8px, 3vw, 32px);
+   background: #000000;
+}
+
+.keyboard-controls-overlay img {
+   display: block;
+   width: 100%;
+   height: 100%;
+   max-width: 100%;
+   max-height: 100%;
+   object-fit: contain;
+}
+
+.game-container.is-showing-controls canvas,
+.game-container.is-showing-controls .canvas-toolbar,
+.game-container.is-showing-controls .mobile-control-hint,
+.game-container.is-showing-controls .mobile-control-row {
+   visibility: hidden;
+}
+
+.game-container.is-showing-controls .keyboard-controls-overlay {
+   display: flex;
+}
+
 .hidden {
    display: none;
 }
@@ -218,6 +251,17 @@ canvas {
    width: 100vw;
    height: 100vh;
    object-fit: contain;
+}
+
+.game-container:fullscreen .keyboard-controls-overlay {
+   width: 100vw;
+   height: 100vh;
+   padding: clamp(8px, 3vw, 32px);
+}
+
+.game-container:fullscreen .keyboard-controls-overlay img {
+   max-width: 100vw;
+   max-height: 100vh;
 }
 
 @media (max-width: 420px) {
@@ -357,5 +401,11 @@ canvas {
 
    body.is-playing .mobile-control-group {
       pointer-events: auto;
+   }
+
+   body.is-playing .keyboard-controls-overlay {
+      width: 100%;
+      height: 100%;
+      padding: 8px;
    }
 }

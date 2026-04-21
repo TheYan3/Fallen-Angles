@@ -3,6 +3,13 @@ let Music = new Audio("audio/World/TitelMusic.mp3");
 let isMuted = localStorage.getItem("gameMuted") === "true";
 const mobileLandscapeQuery =
    "(hover: none) and (pointer: coarse) and (orientation: landscape)";
+const keyboardControlReleaseEvents = [
+   "pointerup",
+   "pointercancel",
+   "mouseup",
+   "touchend",
+   "touchcancel",
+];
 Music.loop = true;
 Music.volume = 0.5;
 Music.muted = isMuted;
@@ -131,6 +138,69 @@ function startTouchRun(key) {
 }
 
 /**
+ * Shows the keyboard controls image while the help button is held.
+ * Pauses gameplay and registers global release handlers.
+ * @param {PointerEvent} event - Initial button press event.
+ */
+function showKeyboardControls(event) {
+   event?.preventDefault();
+   event?.currentTarget?.setPointerCapture?.(event.pointerId);
+   document.activeElement?.blur?.();
+
+   let gameContainer = document.getElementById("gameContainer");
+   if (!gameContainer || gameContainer.classList.contains("is-showing-controls")) {
+      return;
+   }
+
+   resetTouchControlStates();
+   gameContainer.classList.add("is-showing-controls");
+   gameSettings.pauseGame();
+   addKeyboardControlReleaseListeners();
+}
+
+/**
+ * Hides the keyboard controls image and resumes gameplay immediately.
+ */
+function hideKeyboardControls() {
+   let gameContainer = document.getElementById("gameContainer");
+
+   removeKeyboardControlReleaseListeners();
+   resetTouchControlStates();
+   gameContainer?.classList.remove("is-showing-controls");
+   gameSettings.resumeGame();
+}
+
+/**
+ * Adds release listeners outside the button so mouse and touch exits are handled.
+ */
+function addKeyboardControlReleaseListeners() {
+   keyboardControlReleaseEvents.forEach((eventName) => {
+      window.addEventListener(eventName, hideKeyboardControls);
+   });
+   window.addEventListener("blur", hideKeyboardControls);
+}
+
+/**
+ * Removes global release listeners for the keyboard controls overlay.
+ */
+function removeKeyboardControlReleaseListeners() {
+   keyboardControlReleaseEvents.forEach((eventName) => {
+      window.removeEventListener(eventName, hideKeyboardControls);
+   });
+   window.removeEventListener("blur", hideKeyboardControls);
+}
+
+/**
+ * Clears touch-driven key states so controls cannot stay pressed under the overlay.
+ */
+function resetTouchControlStates() {
+   clearTimeout(movementHoldTimer);
+   ["LEFT", "RIGHT", "SPACE", "UP", "RUN"].forEach((key) =>
+      setControlKey(key, false),
+   );
+}
+
+/**
  * Initializes the game session by switching music, preparing the UI,
  * and triggering the game restart logic.
  */
@@ -240,6 +310,7 @@ function playEffect(path) {
  * Hides the main game container (canvas and game UI).
  */
 function hideGameContainer() {
+   hideKeyboardControls();
    document.getElementById("gameContainer").classList.add("hidden");
    document.body.classList.remove("is-playing");
    updateResponsiveCanvasSize();

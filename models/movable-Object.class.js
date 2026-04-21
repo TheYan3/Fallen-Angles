@@ -24,8 +24,8 @@ class MovableObject extends drawableObjects {
    isDying = false;
    isRemoved = false;
    Slashdelay = 1500;
-   lastAttackTime = 0;
-   lastHitTime = 0;
+   lastAttackTime = Number.NEGATIVE_INFINITY;
+   lastHitTime = Number.NEGATIVE_INFINITY;
 
    /**
     * Starts the gravity physics loop.
@@ -385,7 +385,7 @@ class MovableObject extends drawableObjects {
       }
 
       this.energy = Math.max(0, this.energy - amount);
-      this.lastHitTime = Date.now();
+      this.lastHitTime = gameSettings.getGameTime();
       if (this.energy > 0) {
          this.startHurt();
       }
@@ -396,7 +396,7 @@ class MovableObject extends drawableObjects {
     * @returns {boolean}
     */
    isInvincible() {
-      let timePassed = Date.now() - this.lastHitTime;
+      let timePassed = gameSettings.getGameTime() - this.lastHitTime;
       return timePassed < 500; // 0,5 Sekunden in Millisekunden
    }
 
