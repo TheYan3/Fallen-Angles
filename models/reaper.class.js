@@ -1,5 +1,7 @@
 class reaper extends MovableObject {
    DEFAULT_SKIN = "Reaper_Man_1";
+   hitSound = audioLibrary.effects.enemies.reaper.hurt;
+   deathSound = audioLibrary.effects.enemies.reaper.death;
    animationSpeed = 5000 / 60;
    attackFrameDelay = 2;
 

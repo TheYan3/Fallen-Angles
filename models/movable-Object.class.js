@@ -26,6 +26,8 @@ class MovableObject extends drawableObjects {
    Slashdelay = 1500;
    lastAttackTime = Number.NEGATIVE_INFINITY;
    lastHitTime = Number.NEGATIVE_INFINITY;
+   hitSound = null;
+   deathSound = null;
 
    /**
     * Starts the gravity physics loop.
@@ -88,7 +90,7 @@ class MovableObject extends drawableObjects {
     */
    landOnFloor(floorY) {
       if (this.speedY > 0 && this instanceof player) {
-         playEffect("audio/Charakter/landing_on_Ground.mp3");
+         playEffect(audioLibrary.effects.character.landing);
       }
       this.y = floorY;
       this.speedY = 0;
@@ -440,21 +442,9 @@ class MovableObject extends drawableObjects {
     * (Player, Minotaur, etc.).
     */
    whousHit() {
-      playEffect("audio/Charakter/SuccesHit.mp3");
-      if (this instanceof minotaur) {
-         playEffect("audio/Minotaur/Minotaur_get_Hit.mp3");
-      }
-      if (this instanceof reaper) {
-         playEffect("audio/Reaper/Reaper_Hit.mp3");
-      }
-      if (this instanceof golem) {
-         playEffect("audio/Golem/Golem_Hurt.mp3");
-      }
-      if (this instanceof endboss) {
-         playEffect("audio/Boss/Boss_hurt.mp3");
-      }
-      if (this instanceof player) {
-         playEffect("audio/Charakter/get_hit.mp3");
+      playEffect(audioLibrary.effects.character.successHit);
+      if (this.hitSound) {
+         playEffect(this.hitSound);
       }
    }
 
@@ -462,20 +452,8 @@ class MovableObject extends drawableObjects {
     * Plays the correct 'dying' audio effect based on the class instance type.
     */
    whousDeath() {
-      if (this instanceof minotaur) {
-         playEffect("audio/Minotaur/Minotaur_death.mp3");
-      }
-      if (this instanceof reaper) {
-         playEffect("audio/Reaper/Reaper_death.mp3");
-      }
-      if (this instanceof golem) {
-         playEffect("audio/Golem/golem_death.mp3");
-      }
-      if (this instanceof endboss) {
-         playEffect("audio/Boss/Boss_death.mp3");
-      }
-      if (this instanceof player) {
-         playEffect("audio/Charakter/Dying_Charakter.mp3");
+      if (this.deathSound) {
+         playEffect(this.deathSound);
       }
    }
 

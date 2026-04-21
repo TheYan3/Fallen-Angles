@@ -1,5 +1,7 @@
 class player extends MovableObject {
    DEFAULT_SKIN = "Fallen_Angels_1";
+   hitSound = audioLibrary.effects.character.hit;
+   deathSound = audioLibrary.effects.character.death;
 
    y = -100;
    world;
@@ -200,7 +202,7 @@ class player extends MovableObject {
     */
    jump() {
       if (!this.isAboveGround() && !this.isJumpOnCooldown()) {
-         playEffect("audio/Charakter/jump.mp3");
+         playEffect(audioLibrary.effects.character.jump);
          this.jumpCooldownEndsAt =
             gameSettings.getGameTime() + this.jumpCooldown;
          this.speedY = -17;
@@ -236,7 +238,7 @@ class player extends MovableObject {
     */
    startAttack() {
       this.lastAttackTime = gameSettings.getGameTime();
-      playEffect("audio/Charakter/Sword_slash_NO_hit.mp3");
+      playEffect(audioLibrary.effects.character.attack);
       this.isAttacking = true;
       this.attackKeyHandled = true;
       this.hasAppliedAttackHit = false;
@@ -319,7 +321,7 @@ class player extends MovableObject {
     */
    startFear(duration, speedMultiplier) {
       if (this.isInactive()) return;
-      playEffect("audio/Abilitys/Fear.mp3");
+      playEffect(audioLibrary.effects.abilities.fear);
       this.isFeared = true;
       this.fearSpeedMultiplier = speedMultiplier;
       this.fearEndsAt = gameSettings.getGameTime() + duration;

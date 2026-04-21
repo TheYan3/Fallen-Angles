@@ -13,7 +13,7 @@ class teleportAbility {
     * Moves the owner ahead of the player.
     */
    use() {
-      playEffect("audio/Abilitys/Ability_Teleport.mp3");
+      playEffect(audioLibrary.effects.abilities.teleport);
       let characterX = this.owner.world?.character?.x ?? this.owner.x;
       this.owner.x = characterX + this.range;
    }

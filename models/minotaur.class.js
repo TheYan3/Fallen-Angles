@@ -1,5 +1,7 @@
 class minotaur extends MovableObject {
    DEFAULT_SKIN = "Minotaur_01";
+   hitSound = audioLibrary.effects.enemies.minotaur.hurt;
+   deathSound = audioLibrary.effects.enemies.minotaur.death;
    attackFrameDelay = 3;
 
    /**

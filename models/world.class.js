@@ -117,7 +117,7 @@ class world {
    collectPowerUp(powerUpItem) {
       this.applyPowerUpEffect(powerUpItem);
       this.powerUpCounter.increment();
-      playEffect("audio/World/Collect_Feather.mp3");
+      playEffect(audioLibrary.effects.world.collectFeather);
       powerUpItem.collect();
    }
 
@@ -202,7 +202,7 @@ class world {
       if (this.character.isRemoved && !this.isGameStopped) {
          this.isGameStopped = true;
          Music.pause();
-         playEffect("audio/World/Gamover.wav");
+         playEffect(audioLibrary.effects.world.gameOver);
       }
    }
 
@@ -273,9 +273,9 @@ class world {
     * Starts boss aggro sound and boss fight music.
     */
    startBossFightAudio() {
-      playEffect("audio/Boss/Boss_get_aggro.mp3");
+      playEffect(audioLibrary.effects.boss.aggro);
       Music.pause();
-      Music = new Audio("audio/Boss/Bossfight_Musik.mp3");
+      Music = new Audio(audioLibrary.music.bossFight);
       Music.muted = isMuted;
       Music.volume = 0.5;
       Music.loop = true;
@@ -330,7 +330,7 @@ class world {
          this.isEndbossDefeated = true;
          this.isGameStopped = true;
          Music.pause();
-         Music = new Audio("audio/World/GameWin.mp3");
+         Music = new Audio(audioLibrary.music.win);
          Music.muted = isMuted;
          Music.volume = 0.5;
          Music.play();

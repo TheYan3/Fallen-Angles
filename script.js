@@ -1,5 +1,5 @@
 let movementHoldTimer;
-let Music = new Audio("audio/World/TitelMusic.mp3");
+let Music = new Audio(audioLibrary.music.title);
 let isMuted = localStorage.getItem("gameMuted") === "true";
 const mobileLandscapeQuery =
    "(hover: none) and (pointer: coarse) and (orientation: landscape)";
@@ -217,7 +217,7 @@ function gameStart() {
  */
 function startIngameMusic() {
    Music.pause();
-   Music = new Audio("audio/World/Ingame_Musik.mp3");
+   Music = new Audio(audioLibrary.music.ingame);
    Music.muted = isMuted;
    Music.volume = 0.5;
    Music.play();
@@ -237,7 +237,7 @@ function backToMenu() {
       document.exitFullscreen();
    }
    Music.pause();
-   Music = new Audio("audio/World/TitelMusic.mp3");
+   Music = new Audio(audioLibrary.music.title);
    Music.muted = isMuted;
    Music.volume = 0.5;
    Music.loop = true;

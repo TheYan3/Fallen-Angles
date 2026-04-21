@@ -1,5 +1,7 @@
 class endboss extends MovableObject {
    DEFAULT_SKIN = "Wraith_03";
+   hitSound = audioLibrary.effects.boss.hurt;
+   deathSound = audioLibrary.effects.boss.death;
    animationSpeed = 5000 / 60;
    attackFrameDelay = 1.5;
    abilityUsed = false;
