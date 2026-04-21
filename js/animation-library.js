@@ -366,7 +366,7 @@ const animationLibrary = {
       },
    ),
    wraith: buildEntityAnimations(
-      "img/Enemy/Wraith/PNG/{skin}/PNG Sequences",
+      "img/Enemy/Wraith/PNG/{skin}/PNG_Sequences",
       ["Wraith_01", "Wraith_02", "Wraith_03"],
       {
          attacking: {
@@ -375,22 +375,22 @@ const animationLibrary = {
             lastFrame: 11,
          },
          castingSpells: {
-            folder: "Casting Spells",
-            prefix: "{skin}_Casting Spells_",
+            folder: "Casting_Spells",
+            prefix: "{skin}_Casting_Spells_",
             lastFrame: 17,
          },
          dying: { folder: "Dying", prefix: "{skin}_Dying_", lastFrame: 14 },
          hurt: { folder: "Hurt", prefix: "{skin}_Hurt_", lastFrame: 11 },
          idle: { folder: "Idle", prefix: "{skin}_Idle_", lastFrame: 11 },
          idleBlink: {
-            folder: "Idle Blink",
-            prefix: "{skin}_Idle Blinking_",
+            folder: "Idle_Blink",
+            prefix: "{skin}_Idle_Blinking_",
             lastFrame: 11,
          },
          taunt: { folder: "Taunt", prefix: "{skin}_Taunt_", lastFrame: 17 },
          walking: {
             folder: "Walking",
-            prefix: "{skin}_Moving Forward_",
+            prefix: "{skin}_Moving_Forward_",
             lastFrame: 11,
          },
       },
