@@ -6,7 +6,7 @@ const gameSettings = {
    slowMotionScale: 0.5,
    tickCounters: {},
    isPaused: false,
-   gameClockStartedAt: Date.now(),
+   gameClockStartedAt: performance.now(),
    pausedAt: 0,
    pausedDuration: 0,
    hitboxShown: false,
@@ -54,7 +54,7 @@ const gameSettings = {
     */
    resetGameClock() {
       this.isPaused = false;
-      this.gameClockStartedAt = Date.now();
+      this.gameClockStartedAt = performance.now();
       this.pausedAt = 0;
       this.pausedDuration = 0;
    },
@@ -65,7 +65,7 @@ const gameSettings = {
    pauseGame() {
       if (this.isPaused) return;
       this.isPaused = true;
-      this.pausedAt = Date.now();
+      this.pausedAt = performance.now();
    },
 
    /**
@@ -73,7 +73,7 @@ const gameSettings = {
     */
    resumeGame() {
       if (!this.isPaused) return;
-      this.pausedDuration += Date.now() - this.pausedAt;
+      this.pausedDuration += performance.now() - this.pausedAt;
       this.pausedAt = 0;
       this.isPaused = false;
       this.tickCounters = {};
@@ -84,7 +84,7 @@ const gameSettings = {
     * @returns {number}
     */
    getGameTime() {
-      let now = this.isPaused ? this.pausedAt : Date.now();
+      let now = this.isPaused ? this.pausedAt : performance.now();
       return now - this.gameClockStartedAt - this.pausedDuration;
    },
 
