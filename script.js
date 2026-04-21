@@ -10,6 +10,7 @@ const keyboardControlReleaseEvents = [
    "touchend",
    "touchcancel",
 ];
+let lastGameTouchEnd = 0;
 Music.loop = true;
 Music.volume = 0.5;
 Music.muted = isMuted;
@@ -32,6 +33,50 @@ function startMusic() {
 }
 
 startMusic();
+
+/**
+ * Checks if the game view is currently active.
+ * @returns {boolean}
+ */
+function isGamePlaying() {
+   return document.body.classList.contains("is-playing");
+}
+
+/**
+ * Blocks browser gestures while the game is active.
+ * @param {Event} event - Browser gesture event.
+ */
+function preventGameBrowserGesture(event) {
+   if (isGamePlaying()) {
+      event.preventDefault();
+   }
+}
+
+/**
+ * Blocks pinch gestures while the game is active.
+ * @param {TouchEvent} event - Touch event.
+ */
+function preventMultiTouchGameGesture(event) {
+   if (isGamePlaying() && event.touches?.length > 1) {
+      event.preventDefault();
+   }
+}
+
+/**
+ * Blocks Safari double-tap zoom while the game is active.
+ * @param {TouchEvent} event - Touch end event.
+ */
+function preventDoubleTapGameZoom(event) {
+   if (!isGamePlaying()) {
+      return;
+   }
+
+   let now = Date.now();
+   if (now - lastGameTouchEnd < 300) {
+      event.preventDefault();
+   }
+   lastGameTouchEnd = now;
+}
 
 /**
  * Toggles the application between windowed and fullscreen mode.
@@ -399,6 +444,21 @@ if (document.readyState === "loading") {
 }
 
 document.addEventListener("fullscreenchange", updateFullscreenButton);
+document.addEventListener("contextmenu", preventGameBrowserGesture);
+document.addEventListener("selectstart", preventGameBrowserGesture);
+document.addEventListener("dragstart", preventGameBrowserGesture);
+document.addEventListener("gesturestart", preventGameBrowserGesture);
+document.addEventListener("gesturechange", preventGameBrowserGesture);
+document.addEventListener("gestureend", preventGameBrowserGesture);
+document.addEventListener("touchstart", preventMultiTouchGameGesture, {
+   passive: false,
+});
+document.addEventListener("touchmove", preventMultiTouchGameGesture, {
+   passive: false,
+});
+document.addEventListener("touchend", preventDoubleTapGameZoom, {
+   passive: false,
+});
 window.addEventListener("resize", queueResponsiveCanvasResize);
 window.addEventListener("orientationchange", queueResponsiveCanvasResize);
 window.visualViewport?.addEventListener("resize", queueResponsiveCanvasResize);

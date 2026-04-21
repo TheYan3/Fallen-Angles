@@ -330,6 +330,34 @@ canvas {
    }
 }
 
+body.is-playing .header {
+   width: min(49%, 200px);
+   position: fixed;
+   left: 10px;
+   top: 10px;
+}
+
+body.is-playing {
+   overscroll-behavior: none;
+   touch-action: none;
+   user-select: none;
+   -webkit-user-select: none;
+   -webkit-touch-callout: none;
+}
+
+body.is-playing * {
+   user-select: none;
+   -webkit-user-select: none;
+   -webkit-tap-highlight-color: transparent;
+   -webkit-touch-callout: none;
+}
+
+body.is-playing button,
+body.is-playing canvas,
+body.is-playing img {
+   -webkit-user-drag: none;
+}
+
 /* Smartphones ----------- */
 @media only screen and (max-width: 760px) {
    canvas {
@@ -363,10 +391,6 @@ canvas {
       min-height: 100dvh;
       padding: 8px;
       overflow: hidden;
-   }
-
-   body.is-playing .header {
-      display: none;
    }
 
    body.is-playing .game-container {
