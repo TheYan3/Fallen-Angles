@@ -6,16 +6,13 @@ class player extends MovableObject {
    y = -100;
    world;
    keyboard;
+   attack;
+   statusEffects;
    isAttacking = false;
-   attackKeyHandled = false;
-   currentAttackAnimation = null;
    jumpCooldown = 800;
    jumpCooldownEndsAt = 0;
    runSpeed = gameSettings.gameSpeed * 1.3;
    airSpeedMultiplier = 1.2;
-   isFeared = false;
-   fearSpeedMultiplier = 1;
-   fearEndsAt = 0;
 
    /**
     * Initializes the player, loads all animations from the library
@@ -25,6 +22,8 @@ class player extends MovableObject {
    constructor(keyboard) {
       super();
       this.keyboard = keyboard;
+      this.attack = new PlayerAttack(this);
+      this.statusEffects = new PlayerStatusEffects(this);
       this.setAnimations();
       this.setupStats();
       this.loadAnimationImages();
@@ -105,37 +104,12 @@ class player extends MovableObject {
             return;
          }
 
-         this.handleAttackState();
+         this.attack.handleState();
 
          let images = this.getCurrentAnimationImages();
          this.updateAnimationState(images);
          this.playCurrentAnimation(images);
       }, this.animationSpeed);
-   }
-
-   /**
-    * Logic to initiate an attack.
-    * Implements a 2s cooldown (Slashdelay) and prevents multi-triggering
-    * on a single key press.
-    */
-   handleAttackState() {
-      if (this.isControlBlocked()) {
-         return;
-      }
-
-      let timeSinceLastAttack = gameSettings.getGameTime() - this.lastAttackTime;
-      if (
-         this.keyboard.UP &&
-         !this.attackKeyHandled &&
-         !this.isAttacking &&
-         timeSinceLastAttack >= this.Slashdelay
-      ) {
-         this.startAttack();
-      }
-
-      if (!this.keyboard.UP) {
-         this.attackKeyHandled = false;
-      }
    }
 
    /**
@@ -161,30 +135,9 @@ class player extends MovableObject {
    getPriorityAnimationImages() {
       if (this.isDying) return this.IMAGES_DYING;
       if (this.isHurt) return this.IMAGES_HURT;
-      if (this.isFeared) return this.IMAGES_RUN;
-      if (this.isAttacking) return this.getActiveAttackImages();
+      if (this.statusEffects.isFeared) return this.IMAGES_RUN;
+      if (this.isAttacking) return this.attack.getActiveImages();
       return null;
-   }
-
-   /**
-    * Returns current attacking images, either stationary or running.
-    */
-   getActiveAttackImages() {
-      return this.currentAttackAnimation || this.IMAGES_ATTACKING;
-   }
-
-   /**
-    * Selects the correct attack set (Normal vs Running) based on input.
-    * @returns {string[]}
-    */
-   getAttackAnimationImages() {
-      let isMoving = this.keyboard.LEFT || this.keyboard.RIGHT;
-
-      if (isMoving && this.keyboard.RUN) {
-         return this.IMAGES_RUN_ATTACKING;
-      }
-
-      return this.IMAGES_ATTACKING;
    }
 
    /**
@@ -222,41 +175,7 @@ class player extends MovableObject {
     * @returns {boolean}
     */
    isControlBlocked() {
-      return this.isInactive() || this.isFeared;
-   }
-
-   /**
-    * Starts the attack sequence: resets frames and picks the correct animation set.
-    */
-   startAttack() {
-      this.lastAttackTime = gameSettings.getGameTime();
-      playEffect(audioLibrary.effects.character.attack);
-      this.isAttacking = true;
-      this.attackKeyHandled = true;
-      this.hasAppliedAttackHit = false;
-      this.currentImage = 0;
-      this.currentAttackAnimation = this.getAttackAnimationImages();
-      this.lastAnimation = this.currentAttackAnimation;
-   }
-
-   /**
-    * Resets attack-related flags once the animation finishes.
-    */
-   finishAttack() {
-      this.isAttacking = false;
-      this.hasAppliedAttackHit = false;
-      this.currentAttackAnimation = null;
-      this.lastAnimation = null;
-   }
-
-   /**
-    * Plays the attack animation exactly once.
-    */
-   playAttackAnimation(images) {
-      let animationFinished = this.playAnimationOnce(images);
-      if (animationFinished) {
-         this.finishAttack();
-      }
+      return this.isInactive() || this.statusEffects.isFeared;
    }
 
    /**
@@ -266,7 +185,7 @@ class player extends MovableObject {
       if (this.isRemoved) return;
       if (this.isDying) return this.playDyingAnimation();
       if (this.isHurt) return this.playHurtAnimation();
-      if (this.isAttacking) return this.playAttackAnimation(images);
+      if (this.isAttacking) return this.attack.playAnimation(images);
       this.playAnimation(images);
    }
 
@@ -275,10 +194,10 @@ class player extends MovableObject {
     * Updates camera following logic.
     */
    updateMovement() {
-      this.updateFearState();
+      this.statusEffects.updateFearState();
 
-      if (this.isFeared) {
-         return this.moveFeared();
+      if (this.statusEffects.isFeared) {
+         return this.statusEffects.moveFeared();
       }
 
       if (this.isInactive()) {
@@ -286,7 +205,7 @@ class player extends MovableObject {
       }
 
       this.handleControlledMovement();
-      this.updateCamera();
+      this.world.updateCameraFor(this);
    }
 
    /**
@@ -305,55 +224,11 @@ class player extends MovableObject {
    }
 
    /**
-    * Initiates the Fear status effect.
-    * Forces player movement in the opposite direction and blocks manual control.
-    * Automatically stops after the specified duration.
-    * @param {number} duration - Effect length in ms.
-    * @param {number} speedMultiplier - How much faster the player runs away.
-    */
-   startFear(duration, speedMultiplier) {
-      if (this.isInactive()) return;
-      playEffect(audioLibrary.effects.abilities.fear);
-      this.isFeared = true;
-      this.fearSpeedMultiplier = speedMultiplier;
-      this.fearEndsAt = gameSettings.getGameTime() + duration;
-      this.finishAttack();
-   }
-
-   /**
-    * Ends the Fear effect once its game-time duration is over.
-    */
-   updateFearState() {
-      if (this.isFeared && gameSettings.getGameTime() >= this.fearEndsAt) {
-         this.stopFear();
-      }
-   }
-
-   /**
-    * Resets the Fear status effect variables.
-    */
-   stopFear() {
-      this.isFeared = false;
-      this.fearSpeedMultiplier = 1;
-      this.fearEndsAt = 0;
-   }
-
-   /**
-    * Automatic movement logic while under the Fear effect.
-    * Forces the player toward the left edge of the map.
-    */
-   moveFeared() {
-      this.x = Math.max(0, this.x - this.runSpeed * this.fearSpeedMultiplier);
-      this.otherDirection = true;
-      this.updateCamera();
-   }
-
-   /**
     * Movement boundary check for the right side.
     */
    canMoveRight() {
       return (
-         !this.isNormalAttackLocked() &&
+         !this.attack.isNormalAttackLocked() &&
          this.keyboard.RIGHT &&
          this.x < this.world.level.playerEndX
       );
@@ -363,7 +238,9 @@ class player extends MovableObject {
     * Movement boundary check for the left side.
     */
    canMoveLeft() {
-      return !this.isNormalAttackLocked() && this.keyboard.LEFT && this.x > 0;
+      return (
+         !this.attack.isNormalAttackLocked() && this.keyboard.LEFT && this.x > 0
+      );
    }
 
    /**
@@ -378,21 +255,20 @@ class player extends MovableObject {
    }
 
    /**
-    * Logic to disable collisions while feared (player phases through enemies).
+    * Starts the Fear status effect.
+    * @param {number} duration - Effect length in ms.
+    * @param {number} speedMultiplier - Fear movement speed multiplier.
     */
-   isFearCollisionDisabled() {
-      return this.isFeared;
+   startFear(duration, speedMultiplier) {
+      this.statusEffects.startFear(duration, speedMultiplier);
    }
 
    /**
-    * Prevents horizontal movement while performing the stationary
-    * slashing attack to make the animation look grounded.
+    * Checks if Fear disables collisions.
+    * @returns {boolean}
     */
-   isNormalAttackLocked() {
-      return (
-         this.isAttacking &&
-         this.currentAttackAnimation === this.IMAGES_ATTACKING
-      );
+   isFearCollisionDisabled() {
+      return this.statusEffects.isFearCollisionDisabled();
    }
 
    /**
@@ -427,30 +303,4 @@ class player extends MovableObject {
       return speed;
    }
 
-   /**
-    * Positions the camera so the player is centered, but prevents
-    * the camera from showing areas outside the level boundaries.
-    */
-   updateCamera() {
-      let cameraX = this.getCenteredCameraX();
-      this.world.cameraX = Math.min(
-         0,
-         Math.max(cameraX, this.getCameraStopX()),
-      );
-   }
-
-   /**
-    * Calculates camera offset for horizontal centering.
-    */
-   getCenteredCameraX() {
-      let playerCenterX = this.x + this.width / 2;
-      return this.world.canvas.width / 2 - playerCenterX;
-   }
-
-   /**
-    * Determines the maximum leftward pan limit for the camera.
-    */
-   getCameraStopX() {
-      return this.world.canvas.width - this.world.level.cameraEndX;
-   }
 }

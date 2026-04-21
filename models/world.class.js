@@ -416,6 +416,33 @@ class world {
    }
 
    /**
+    * Updates camera position for a character.
+    * @param {Object} character - Character to follow.
+    */
+   updateCameraFor(character) {
+      let cameraX = this.getCenteredCameraX(character);
+      this.cameraX = Math.min(0, Math.max(cameraX, this.getCameraStopX()));
+   }
+
+   /**
+    * Calculates camera offset for horizontal centering.
+    * @param {Object} character - Character to center.
+    * @returns {number}
+    */
+   getCenteredCameraX(character) {
+      let playerCenterX = character.x + character.width / 2;
+      return this.canvas.width / 2 - playerCenterX;
+   }
+
+   /**
+    * Returns the maximum leftward camera limit.
+    * @returns {number}
+    */
+   getCameraStopX() {
+      return this.canvas.width - this.level.cameraEndX;
+   }
+
+   /**
     * Central drawing loop using requestAnimationFrame.
     * Clears canvas and renders layers depending on game state.
     */
