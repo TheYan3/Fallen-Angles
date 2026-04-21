@@ -12,14 +12,13 @@ class world {
    powerUpCounter = new powerUpCounter();
    healthbar = new healthbar();
    gameOverScreen = new gameover();
-   enemyMoveInterval;
    gameStateInterval;
    gameOverClickHandler;
    isDestroyed = false;
    drawTickKey = "world-draw";
 
    /**
-    * Initializes the game world, set up the character, and starts the game loops.
+    * Sets up the game world, helpers and game loops.
     * @param {HTMLCanvasElement} canvas - The drawing area.
     * @param {Object} keyboardInput - The keyboard state tracker.
     */
@@ -29,16 +28,18 @@ class world {
       this.keyboardInput = keyboardInput;
       this.canvas = canvas;
       this.character = new player(keyboardInput);
+      this.renderer = new WorldRenderer(this);
+      this.enemyController = new EnemyController(this);
+      this.collision = new WorldCollision(this);
       this.setWorld();
       this.registerGameOverClick();
-      this.draw();
-      this.moveEnemiesTowardsPlayer();
+      this.renderer.draw();
+      this.enemyController.moveEnemiesTowardsPlayer();
       this.updateGameState();
    }
 
    /**
-    * Injects the world reference into the character and all enemies
-    * for coordinate and collision context.
+    * Gives the player and enemies access to this world.
     */
    setWorld() {
       this.character.world = this;
@@ -48,8 +49,7 @@ class world {
    }
 
    /**
-    * Starts the interval for the game state logic (collisions, death checks, etc.).
-    * Runs at 60 FPS but respects gameSettings time scaling.
+    * Starts the logic loop for collisions, deaths and cleanup.
     */
    updateGameState() {
       this.gameStateInterval = setInterval(() => {
@@ -65,22 +65,19 @@ class world {
    }
 
    /**
-    * Main logic tick. Orchestrates collision detection, enemy state updates,
-    * and object cleanup.
+    * Runs one world logic tick.
     */
    runGameStateTick() {
       this.checkPowerUpCollisions();
       this.character.checkDeath();
-      this.updateEnemyStates();
-      this.removeRemovedEnemies();
+      this.enemyController.updateEnemyStates();
+      this.enemyController.removeRemovedEnemies();
       this.removeCollectedPowerUps();
       this.stopGameIfPlayerIsRemoved();
    }
 
    /**
-    * Iterates through all power-ups in the level to check for player contact.
-    * Skips checks if the player is currently under certain status effects
-    * (like Fear).
+    * Checks if the player collects a power-up.
     */
    checkPowerUpCollisions() {
       if (this.shouldSkipPowerUpCollisions()) {
@@ -93,8 +90,8 @@ class world {
    }
 
    /**
-    * Checks for a collision between the player and a specific power-up.
-    * @param {Object} powerUpItem - The power-up item to check.
+    * Checks one power-up against the player.
+    * @param {Object} powerUpItem - Power-up to check.
     */
    checkPowerUpCollision(powerUpItem) {
       if (!powerUpItem.isRemoved && this.character.isColliding(powerUpItem)) {
@@ -103,7 +100,7 @@ class world {
    }
 
    /**
-    * Determines if power-up collisions should be ignored (e.g., during Fear).
+    * Checks if power-up collisions should be skipped.
     * @returns {boolean}
     */
    shouldSkipPowerUpCollisions() {
@@ -111,8 +108,8 @@ class world {
    }
 
    /**
-    * Processes the collection of a power-up: applies effects and plays sound.
-    * @param {Object} powerUpItem - The collected item.
+    * Applies and removes a collected power-up.
+    * @param {Object} powerUpItem - Collected power-up.
     */
    collectPowerUp(powerUpItem) {
       this.applyPowerUpEffect(powerUpItem);
@@ -122,8 +119,8 @@ class world {
    }
 
    /**
-    * Directly modifies character stats based on power-up properties.
-    * @param {Object} powerUpItem - The item containing energy values.
+    * Applies a power-up effect to the player.
+    * @param {Object} powerUpItem - Power-up with effect values.
     */
    applyPowerUpEffect(powerUpItem) {
       this.character.energy += powerUpItem.lifeAmount;
@@ -131,62 +128,7 @@ class world {
    }
 
    /**
-    * Checks if a specific enemy is close enough to the player to initiate an attack.
-    * @param {Object} enemy - The enemy instance.
-    * @returns {boolean} True if the player is within the enemy's stop distance.
-    */
-   isEnemyInAttackRange(enemy) {
-      if (this.character.isFearCollisionDisabled?.()) {
-         return false;
-      }
-
-      if (!enemy || enemy.isDying || enemy.isRemoved) {
-         return false;
-      }
-
-      return this.character.isColliding(enemy, this.enemyStopDistance);
-   }
-
-   /**
-    * Updates status for all enemies: checks for health, triggers
-    * attack states based on range, and resets hit flags if animations
-    * finished.
-    */
-   updateEnemyStates() {
-      this.level.enemies.forEach((enemy) => {
-         enemy.checkDeath();
-         enemy.isAttacking = this.isEnemyInAttackRange(enemy);
-         this.resetEnemyHit(enemy);
-      });
-   }
-
-   /**
-    * Resets internal attack flags for enemies so they can strike
-    * multiple times across different animation cycles.
-    * @param {Object} enemy - The enemy instance.
-    */
-   resetEnemyHit(enemy) {
-      if (enemy.attackAnimationCompleted) {
-         enemy.hasAppliedAttackHit = false;
-         enemy.attackAnimationCompleted = false;
-      }
-
-      if (!enemy.isAttacking) {
-         enemy.hasAppliedAttackHit = false;
-      }
-   }
-
-   /**
-    * Filters out enemies that have been marked for removal (after death).
-    */
-   removeRemovedEnemies() {
-      this.level.enemies = this.level.enemies.filter(
-         (enemy) => !enemy.isRemoved,
-      );
-   }
-
-   /**
-    * Filters out power-ups that have already been collected by the player.
+    * Removes collected power-ups from the level.
     */
    removeCollectedPowerUps() {
       this.level.powerUps = this.level.powerUps.filter(
@@ -195,8 +137,7 @@ class world {
    }
 
    /**
-    * Stops the game loop and triggers the Game Over sequence if the
-    * character has been removed from the game.
+    * Ends the game if the player is removed.
     */
    stopGameIfPlayerIsRemoved() {
       if (this.character.isRemoved && !this.isGameStopped) {
@@ -207,114 +148,8 @@ class world {
    }
 
    /**
-    * Starts the interval responsible for enemy movement AI.
-    */
-   moveEnemiesTowardsPlayer() {
-      this.enemyMoveInterval = setInterval(() => {
-         this.runEnemyMovementTick();
-      }, 1000 / 60);
-   }
-
-   /**
-    * Executes one step of enemy movement.
-    * Respects time scaling and checks if the game is active.
-    */
-   runEnemyMovementTick() {
-      if (this.shouldSkipEnemyMovement()) {
-         return;
-      }
-
-      this.level.enemies.forEach((enemy) => this.moveEnemy(enemy));
-   }
-
-   /**
-    * Checks if enemy movement should be frozen (Game Over or Slow Motion).
-    * @returns {boolean}
-    */
-   shouldSkipEnemyMovement() {
-      return (
-         this.isGameStopped ||
-         !gameSettings.shouldRunTick("world-enemy-movement")
-      );
-   }
-
-   /**
-    * AI logic for a single enemy. Moves toward the player if aggro is active
-    * and respects the stop distance for attacking.
-    * Handles rock collision during movement.
-    * @param {Object} enemy - The enemy instance.
-    */
-   moveEnemy(enemy) {
-      if (enemy.isDying || enemy.isRemoved) return this.stopEnemy(enemy);
-      this.updateEnemyAggro(enemy);
-      if (!enemy.isAggro || enemy.isAttacking) return this.stopEnemy(enemy);
-      if (enemy.x - this.character.x > this.enemyStopDistance)
-         return this.walkEnemyLeft(enemy);
-      if (this.character.x - enemy.x > this.enemyStopDistance)
-         return this.walkEnemyRight(enemy);
-      this.stopEnemy(enemy);
-   }
-
-   /**
-    * Checks if an enemy should become aggressive based on player proximity.
-    * Triggers boss-specific audio if the endboss is activated.
-    * @param {Object} enemy - The enemy instance.
-    */
-   updateEnemyAggro(enemy) {
-      if (enemy.isAggro) return;
-      enemy.isAggro =
-         this.character.x >= enemy.x - this.enemyActivationDistance;
-      if (enemy.isAggro && enemy instanceof endboss) {
-         this.startBossFightAudio();
-      }
-   }
-
-   /**
-    * Starts boss aggro sound and boss fight music.
-    */
-   startBossFightAudio() {
-      playEffect(audioLibrary.effects.boss.aggro);
-      Music.pause();
-      Music = new Audio(audioLibrary.music.bossFight);
-      Music.muted = isMuted;
-      Music.volume = 0.5;
-      Music.loop = true;
-      Music.play();
-   }
-
-   /**
-    * Initiates walking left for an enemy, checking for terrain obstacles.
-    * @param {Object} enemy - The enemy instance.
-    */
-   walkEnemyLeft(enemy) {
-      enemy.isWalking = true;
-      if (!this.isBlockedByRock(enemy, -enemy.speed)) {
-         enemy.moveLeft();
-      }
-   }
-
-   /**
-    * Initiates walking right for an enemy, checking for terrain obstacles.
-    * @param {Object} enemy - The enemy instance.
-    */
-   walkEnemyRight(enemy) {
-      enemy.isWalking = true;
-      if (!this.isBlockedByRock(enemy, enemy.speed)) {
-         enemy.moveRight();
-      }
-   }
-
-   /**
-    * Stops the walking animation and movement for an enemy.
-    * @param {Object} enemy - The enemy instance.
-    */
-   stopEnemy(enemy) {
-      enemy.isWalking = false;
-   }
-
-   /**
-    * Triggers visual effects (like Slow Motion) when an object (e.g., boss)
-    * begins its death sequence.
+    * Starts slow motion when the endboss starts dying.
+    * @param {Object} object - Object that started dying.
     */
    handleObjectStartedDying(object) {
       if (object instanceof endboss) {
@@ -323,7 +158,8 @@ class world {
    }
 
    /**
-    * Triggers win conditions and music when the endboss finishes its death animation.
+    * Starts the win state when the endboss finished dying.
+    * @param {Object} object - Object that finished dying.
     */
    handleObjectFinishedDying(object) {
       if (object instanceof endboss) {
@@ -338,81 +174,22 @@ class world {
    }
 
    /**
-    * Checks if a movable object would hit a rock at its next position.
-    * Rocks block horizontal movement but allow standing on top.
-    * @param {Object} mo - The movable object.
-    * @param {number} speed - The intended movement delta.
-    * @returns {boolean} True if blocked.
-    */
-   isBlockedByRock(mo, speed) {
-      if (this.ignoresRockCollision(mo)) {
-         return false;
-      }
-
-      let nextX = mo.x + speed;
-      return this.level.rocks.some((rock) =>
-         this.wouldCollideWithRock(mo, rock, nextX),
-      );
-   }
-
-   /**
-    * Checks if an object is exempt from rock collision (e.g., Boss or Feared player).
-    * @param {Object} mo - The movable object.
+    * Checks if a rock blocks horizontal movement.
+    * @param {Object} movableObject - Moving object.
+    * @param {number} speed - Intended horizontal movement.
     * @returns {boolean}
     */
-   ignoresRockCollision(mo) {
-      return mo.isFearCollisionDisabled?.() || mo instanceof endboss;
+   isBlockedByRock(movableObject, speed) {
+      return this.collision.isBlockedByRock(movableObject, speed);
    }
 
    /**
-    * Detailed collision math for rocks.
-    * Ignores collisions if the object is high enough to be on the surface.
-    * @param {Object} mo - Movable object.
-    * @param {Object} rock - Rock object.
-    * @param {number} nextX - The X coordinate to test.
-    * @returns {boolean}
+    * Gets the rock ground Y for a movable object.
+    * @param {Object} movableObject - Object to check.
+    * @returns {number|null}
     */
-   wouldCollideWithRock(mo, rock, nextX) {
-      if (mo.y + mo.height <= rock.getSurfaceY() + 1) {
-         return false;
-      }
-
-      return (
-         rock.overlapsX(mo, nextX) &&
-         mo.y < rock.getHitboxBottom() &&
-         mo.y + mo.height > rock.getHitboxY()
-      );
-   }
-
-   /**
-    * Calculates the Y coordinate of the highest rock surface beneath
-    * a movable object. Used for gravity/landing logic.
-    * @param {Object} mo - The movable object.
-    * @returns {number|null} The lowest Y value (highest point) or null if no rock.
-    */
-   getRockGroundY(mo) {
-      let rockYs = this.level.rocks
-         .filter((rock) => this.canLandOnRock(mo, rock))
-         .map((rock) => rock.getTopYFor(mo));
-      return rockYs.length ? Math.min(...rockYs) : null;
-   }
-
-   /**
-    * Checks if a movable object can land on or is already standing on a rock.
-    * @param {Object} mo - The movable object.
-    * @param {Object} rock - The rock instance.
-    * @returns {boolean}
-    */
-   canLandOnRock(mo, rock) {
-      if (!rock.overlapsX(mo)) {
-         return false;
-      }
-
-      let surfaceY = rock.getSurfaceY();
-      let nextBottom = mo.y + mo.height + mo.speedY;
-      let isStanding = Math.abs(mo.y - rock.getTopYFor(mo)) < 1;
-      let isLanding = mo.y + mo.height <= surfaceY && nextBottom >= surfaceY;
-      return isStanding || isLanding;
+   getRockGroundY(movableObject) {
+      return this.collision.getRockGroundY(movableObject);
    }
 
    /**
@@ -443,55 +220,7 @@ class world {
    }
 
    /**
-    * Central drawing loop using requestAnimationFrame.
-    * Clears canvas and renders layers depending on game state.
-    */
-   draw() {
-      if (this.isDestroyed) {
-         return;
-      }
-
-      this.clearCanvas();
-
-      if (this.isGameStopped) {
-         this.drawGameEndScreen();
-      } else {
-         this.drawCameraLayer();
-         this.drawUi();
-      }
-
-      requestAnimationFrame(this.draw.bind(this));
-   }
-
-   /**
-    * Determines which end screen to show based on whether the
-    * boss was defeated or the player died.
-    */
-   drawGameEndScreen() {
-      if (this.isEndbossDefeated) {
-         return this.drawReplayButtonScreen();
-      }
-
-      this.drawGameOverScreen();
-   }
-
-   /**
-    * Draws the win screen with the replay button.
-    */
-   drawReplayButtonScreen() {
-      this.gameOverScreen.drawWin(this.ctx, this.canvas);
-   }
-
-   /**
-    * Renders the dedicated Game Over screen (black background).
-    */
-   drawGameOverScreen() {
-      this.gameOverScreen.draw(this.ctx, this.canvas);
-   }
-
-   /**
-    * Attaches a click listener to the canvas to handle UI interactions
-    * at the end of the game.
+    * Adds the canvas click listener for the end screen.
     */
    registerGameOverClick() {
       this.gameOverClickHandler = this.handleGameOverClick.bind(this);
@@ -499,7 +228,8 @@ class world {
    }
 
    /**
-    * Checks if a click on the canvas was on the repeat/restart button.
+    * Handles replay clicks on the end screen.
+    * @param {MouseEvent} event - Canvas click event.
     */
    handleGameOverClick(event) {
       if (!this.isGameStopped) {
@@ -514,8 +244,9 @@ class world {
    }
 
    /**
-    * Maps global mouse coordinates to coordinates relative to the
-    * canvas internal resolution.
+    * Converts browser click coordinates to canvas coordinates.
+    * @param {MouseEvent} event - Canvas click event.
+    * @returns {{x: number, y: number}}
     */
    getCanvasClickPoint(event) {
       let rect = this.canvas.getBoundingClientRect();
@@ -526,210 +257,11 @@ class world {
    }
 
    /**
-    * Wipes the canvas for the next frame.
-    */
-   clearCanvas() {
-      this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-   }
-
-   /**
-    * Applies camera translation, draws the world, and then resets
-    * the transformation for UI rendering.
-    */
-   drawCameraLayer() {
-      this.ctx.translate(Math.round(this.cameraX), 0);
-      this.drawWorldObjects();
-      this.resetCamera();
-   }
-
-   /**
-    * Renders all game world entities (Background, Enemies, Rocks, Player).
-    */
-   drawWorldObjects() {
-      this.level.skies.forEach((skyObject) => skyObject.draw(this.ctx));
-      this.addObjectsToMap(this.level.clouds);
-      this.addObjectsToMap(this.level.groundObjects);
-      this.addToMap(this.character);
-      this.addObjectsToMap(this.level.powerUps);
-      this.addObjectsToMap(this.level.enemies);
-      this.drawEnemyHealthbars();
-      this.addObjectsToMap(this.level.rocks);
-   }
-
-   /**
-    * Reverses the camera translation to align the coordinate system
-    * with the screen for UI elements.
-    */
-   resetCamera() {
-      this.ctx.translate(-Math.round(this.cameraX), 0);
-   }
-
-   /**
-    * Draws non-moving UI components like the healthbar and power-up count.
-    */
-   drawUi() {
-      this.drawHealthbar();
-      this.powerUpCounter.draw(this.ctx);
-   }
-
-   /**
-    * Synchronizes the UI healthbar with the character's energy and draws it.
-    */
-   drawHealthbar() {
-      this.healthbar.setHealth(this.character.energy);
-      this.healthbar.draw(this.ctx);
-   }
-
-   /**
-    * Renders individual healthbars for all active enemies
-    * to show damage progress.
-    */
-   drawEnemyHealthbars() {
-      this.level.enemies.forEach((enemy) => {
-         if (this.shouldDrawEnemyHealthbar(enemy)) {
-            this.drawEnemyHealthbar(enemy);
-         }
-      });
-   }
-
-   /**
-    * Logic to decide if an enemy bar should be rendered (not dead/removed).
-    * @returns {boolean}
-    */
-   shouldDrawEnemyHealthbar(enemy) {
-      return !enemy.isRemoved && !enemy.isDying && enemy.energy > 0;
-   }
-
-   /**
-    * Draws a healthbar that follows an enemy's position.
-    * @param {Object} enemy - The enemy target.
-    */
-   drawEnemyHealthbar(enemy) {
-      let bar = this.getEnemyHealthbar(enemy);
-      bar.followObject(enemy);
-      bar.setHealth(enemy.energy);
-      bar.draw(this.ctx);
-   }
-
-   /**
-    * Retrieves an existing healthbar instance from an enemy or creates
-    * a new one if it's the first time it's being hit.
-    * @returns {Object} The healthbar instance.
-    */
-   getEnemyHealthbar(enemy) {
-      if (!enemy.healthbar) {
-         enemy.healthbar = this.createEnemyHealthbar(enemy);
-      }
-
-      return enemy.healthbar;
-   }
-
-   /**
-    * Factory method for enemy healthbars. Adjusts size based on enemy scale.
-    * Adds side arrow decorations for the endboss.
-    * @returns {Object} A new healthbar.
-    */
-   createEnemyHealthbar(enemy) {
-      let width = Math.min(160, Math.max(70, enemy.width * 0.6));
-      let maxHealth = enemy.maxEnergy ?? enemy.energy;
-      let bar = new healthbar(enemy.x, enemy.y - 12, width, 8, maxHealth);
-      bar.hasSideArrows = enemy instanceof endboss;
-      return bar;
-   }
-
-   /**
-    * Helper to batch-process a collection of objects for drawing.
-    * @param {Array} objects - Collection of drawable objects.
-    */
-   addObjectsToMap(objects) {
-      if (!Array.isArray(objects)) {
-         return;
-      }
-
-      objects.forEach((o) => {
-         this.addToMap(o);
-      });
-   }
-
-   /**
-    * Draws a single movable object. Handles flipping the image
-    * based on the 'otherDirection' state.
-    */
-   addToMap(mo) {
-      if (!mo?.img || mo.isRemoved) {
-         return;
-      }
-
-      if (mo.otherDirection) {
-         this.flipImage(mo);
-      } else {
-         this.ctx.drawImage(mo.img, mo.x, mo.y, mo.width, mo.height);
-      }
-
-      this.drawHitboxIfEnabled(mo);
-   }
-
-   /**
-    * Mirror-renders an image horizontally for left-facing movement.
-    */
-   flipImage(mo) {
-      this.ctx.save();
-      this.ctx.scale(-1, 1);
-      this.ctx.drawImage(mo.img, -mo.x - mo.width, mo.y, mo.width, mo.height);
-      this.ctx.restore();
-   }
-
-   /**
-    * Debug tool: Draws a red frame around objects if hitbox
-    * visualization is enabled in settings.
-    */
-   drawHitboxIfEnabled(mo) {
-      if (!this.canDrawHitbox(mo)) {
-         return;
-      }
-
-      this.drawRedFrame(mo);
-   }
-
-   /**
-    * Checks settings and object type for hitbox visibility.
-    */
-   canDrawHitbox(mo) {
-      return gameSettings.hitboxShown && this.isHitboxObject(mo);
-   }
-
-   /**
-    * Filters objects that should have visible hitboxes (Main entities).
-    */
-   isHitboxObject(mo) {
-      return (
-         mo instanceof player ||
-         mo instanceof golem ||
-         mo instanceof reaper ||
-         mo instanceof minotaur ||
-         mo instanceof endboss
-      );
-   }
-
-   /**
-    * Actually draws the red debug rectangle.
-    * @param {Object} mo - Movable object.
-    */
-   drawRedFrame(mo) {
-      this.ctx.save();
-      this.ctx.strokeStyle = "red";
-      this.ctx.lineWidth = 2;
-      this.ctx.strokeRect(mo.x, mo.y, mo.width, mo.height);
-      this.ctx.restore();
-   }
-
-   /**
-    * Properly shuts down game world intervals and event listeners
-    * to prevent memory leaks and background execution.
+    * Stops intervals and event listeners.
     */
    destroy() {
       this.isDestroyed = true;
-      clearInterval(this.enemyMoveInterval);
+      this.enemyController.destroy();
       clearInterval(this.gameStateInterval);
       this.canvas.removeEventListener("click", this.gameOverClickHandler);
    }
