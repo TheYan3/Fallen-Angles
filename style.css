@@ -266,7 +266,7 @@ canvas {
    }
 
    .header {
-      display: none;
+      width: min(80%, 760px);
    }
 
    .keybinds {
