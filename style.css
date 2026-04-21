@@ -165,6 +165,7 @@ canvas {
 }
 
 .mobile-control-hint {
+   display: none;
    width: min(100%, 760px);
    margin: 12px 0 0;
    color: white;
@@ -229,13 +230,19 @@ canvas {
    }
 }
 
-@media (orientation: landscape) {
+@media (hover: none) and (pointer: coarse) {
    .mobile-control-hint {
-      display: none;
+      display: block;
    }
+}
 
+@media (hover: none) and (pointer: coarse) and (orientation: landscape) {
    .mobile-control-row {
       display: flex;
+   }
+
+   .mobile-control-hint {
+      display: none;
    }
 }
 
