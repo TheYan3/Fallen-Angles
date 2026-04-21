@@ -84,7 +84,6 @@ http://localhost:8000
 
 ```text
 .
-├── Abilities/          # Spezialfähigkeiten des Bosses
 ├── Levels/             # Level-Konfiguration und Objekt-Spawns
 ├── audio/              # Musik und Soundeffekte
 ├── font/               # Eingebundene Schriftdateien
@@ -93,7 +92,7 @@ http://localhost:8000
 ├── models/             # Spielklassen für Welt, Spieler, Gegner, UI und Objekte
 ├── impressum.html      # Impressumsseite
 ├── index.html          # Einstiegspunkt des Spiels
-├── script.js           # Menü, Musik, Fullscreen und Mobile-Controls
+├── script.js           # Menü, Musik, Mute und Mobile-Controls
 └── style.css           # Layout, Menü, Canvas- und Mobile-Styles
 ```
 
@@ -101,19 +100,25 @@ http://localhost:8000
 
 -  `index.html`: Bindet alle Skripte, Styles und die Spieloberfläche ein.
 -  `js/game.js`: Initialisiert Canvas, Tastatur und Spielwelt.
--  `script.js`: Steuert Menü, Musik, Mute, Fullscreen und Mobile-Controls.
+-  `script.js`: Steuert Menü, Musik, Mute und Mobile-Controls.
+-  `js/fullscreen-controller.js`: Steuert Fullscreen-Umschaltung und Button-Zustand.
+-  `js/responsive-canvas.js`: Passt das Canvas in Mobile-Landscape-Ansichten ein.
 -  `js/settings.js`: Enthält globale Canvas-, Speed-, Pause- und Slow-Motion-Einstellungen.
 -  `js/animation-library.js`: Zentrale Registrierung der Animationspfade.
 -  `js/audio-library.js`: Zentrale Registrierung aller Musik- und Soundpfade.
 -  `Levels/level1.js`: Erstellt Gegner, Wolken, Hintergrundebenen, Felsen und Power-ups.
--  `models/world.class.js`: Zentrale Spielwelt mit Render-Loop, Kollisionen, Gegnerbewegung, Game-Over-Logik und Kamera.
--  `models/animated-object.class.js`: Gemeinsame Animationslogik für Frame-Wechsel, Hurt- und Death-Animationen.
--  `models/movable-Object.class.js`: Bewegung, Schwerkraft, Kollisionen, Trefferlogik und Lebenszustand.
--  `models/player.class.js`: Spielerwerte, Bewegung, Sprunglogik und Auswahl der Spieleranimationen.
--  `models/player-attack.class.js`: Angriffszustand, Angriffscooldown und Angriffsanimationen des Spielers.
--  `models/player-status-effects.class.js`: Status-Effekte des Spielers, aktuell der Fear-Effekt.
--  `models/endboss.class.js`: Bosswerte, Bossanimationen, Spezialfähigkeiten und Spawn-Logik.
--  `models/keyboard.class.js`: Tastaturzustand für Bewegung, Angriff, Sprung und Sprint.
+-  `models/Abilities/`: Enthält Bossfähigkeiten und den Ability-Koordinator.
+-  `models/world/world.class.js`: Zentrale Spielwelt mit Game-Loop, Game-Over-Logik und Kamera.
+-  `models/world/world-renderer.class.js`: Zeichnet Welt, UI, Healthbars und Debug-Hitboxen.
+-  `models/world/enemy-controller.class.js`: Steuert Gegnerbewegung, Aggro und Angriffszustände.
+-  `models/world/world-collision.class.js`: Kapselt Fels-Kollisionen und Lande-Logik.
+-  `models/base/animated-object.class.js`: Gemeinsame Animationslogik für Frame-Wechsel, Hurt- und Death-Animationen.
+-  `models/base/movable-Object.class.js`: Bewegung, Schwerkraft, Kollisionen, Trefferlogik und Lebenszustand.
+-  `models/player/player.class.js`: Spielerwerte, Bewegung, Sprunglogik und Auswahl der Spieleranimationen.
+-  `models/player/player-attack.class.js`: Angriffszustand, Angriffscooldown und Angriffsanimationen des Spielers.
+-  `models/player/player-status-effects.class.js`: Status-Effekte des Spielers, aktuell der Fear-Effekt.
+-  `models/enemies/endboss.class.js`: Bosswerte, Bossanimationen, Spezialfähigkeiten und Spawn-Logik.
+-  `models/input/keyboard.class.js`: Tastaturzustand für Bewegung, Angriff, Sprung und Sprint.
 
 ## Architekturüberblick
 
