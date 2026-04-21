@@ -1,78 +1,3 @@
-/**
- * Generates a full array of image paths for a sequence.
- * Handles frame padding (000, 001, etc.).
- * @param {string} rootPath - Base directory.
- * @param {string} sequenceFolder - Folder of the animation (e.g., 'Idle').
- * @param {string} prefix - File name start.
- * @param {number} lastFrame - Final frame number.
- */
-function buildAnimationFrames(rootPath, sequenceFolder, prefix, lastFrame) {
-   return Array.from({ length: lastFrame + 1 }, (_, index) => {
-      let frameNumber = String(index).padStart(3, "0");
-      return `${rootPath}/${sequenceFolder}/${prefix}${frameNumber}.png`;
-   });
-}
-
-/**
- * Simpler path generator for sequences without nested folders.
- */
-function buildSimpleFrames(rootPath, prefix, lastFrame) {
-   return Array.from({ length: lastFrame + 1 }, (_, index) => {
-      let frameNumber = String(index).padStart(3, "0");
-      return `${rootPath}/${prefix}${frameNumber}.png`;
-   });
-}
-
-/**
- * Replaces placeholder skin tags with actual skin names in paths.
- */
-function resolveTemplate(template, skinName) {
-   return template.replaceAll("{skin}", skinName);
-}
-
-/**
- * Iterates through sequence definitions to build a full skin library.
- */
-function buildSkinAnimations(basePath, skinName, sequenceDefinitions) {
-   let skinPath = resolveTemplate(basePath, skinName);
-   let animations = {};
-
-   Object.entries(sequenceDefinitions).forEach(([key, definition]) => {
-      animations[key] = buildAnimationSequence(skinPath, skinName, definition);
-   });
-
-   return animations;
-}
-
-/**
- * Helper to build a single animation sequence.
- */
-function buildAnimationSequence(skinPath, skinName, definition) {
-   return buildAnimationFrames(
-      skinPath,
-      resolveTemplate(definition.folder, skinName),
-      resolveTemplate(definition.prefix, skinName),
-      definition.lastFrame,
-   );
-}
-
-/**
- * Orchestrates the creation of animation libraries for multiple skins of one entity.
- */
-function buildEntityAnimations(basePath, skinNames, sequenceDefinitions) {
-   let entityAnimations = {};
-
-   skinNames.forEach((skinName) => {
-      entityAnimations[skinName] = buildSkinAnimations(
-         basePath,
-         skinName,
-         sequenceDefinitions,
-      );
-   });
-
-   return entityAnimations;
-}
-
 const animationLibrary = {
    powerup: {
       flameFeather: buildSimpleFrames("img/Powerup", "flame_feather", 17),
@@ -396,3 +321,78 @@ const animationLibrary = {
       },
    ),
 };
+
+/**
+ * Generates a full array of image paths for a sequence.
+ * Handles frame padding (000, 001, etc.).
+ * @param {string} rootPath - Base directory.
+ * @param {string} sequenceFolder - Folder of the animation (e.g., 'Idle').
+ * @param {string} prefix - File name start.
+ * @param {number} lastFrame - Final frame number.
+ */
+function buildAnimationFrames(rootPath, sequenceFolder, prefix, lastFrame) {
+   return Array.from({ length: lastFrame + 1 }, (_, index) => {
+      let frameNumber = String(index).padStart(3, "0");
+      return `${rootPath}/${sequenceFolder}/${prefix}${frameNumber}.png`;
+   });
+}
+
+/**
+ * Simpler path generator for sequences without nested folders.
+ */
+function buildSimpleFrames(rootPath, prefix, lastFrame) {
+   return Array.from({ length: lastFrame + 1 }, (_, index) => {
+      let frameNumber = String(index).padStart(3, "0");
+      return `${rootPath}/${prefix}${frameNumber}.png`;
+   });
+}
+
+/**
+ * Replaces placeholder skin tags with actual skin names in paths.
+ */
+function resolveTemplate(template, skinName) {
+   return template.replaceAll("{skin}", skinName);
+}
+
+/**
+ * Iterates through sequence definitions to build a full skin library.
+ */
+function buildSkinAnimations(basePath, skinName, sequenceDefinitions) {
+   let skinPath = resolveTemplate(basePath, skinName);
+   let animations = {};
+
+   Object.entries(sequenceDefinitions).forEach(([key, definition]) => {
+      animations[key] = buildAnimationSequence(skinPath, skinName, definition);
+   });
+
+   return animations;
+}
+
+/**
+ * Helper to build a single animation sequence.
+ */
+function buildAnimationSequence(skinPath, skinName, definition) {
+   return buildAnimationFrames(
+      skinPath,
+      resolveTemplate(definition.folder, skinName),
+      resolveTemplate(definition.prefix, skinName),
+      definition.lastFrame,
+   );
+}
+
+/**
+ * Orchestrates the creation of animation libraries for multiple skins of one entity.
+ */
+function buildEntityAnimations(basePath, skinNames, sequenceDefinitions) {
+   let entityAnimations = {};
+
+   skinNames.forEach((skinName) => {
+      entityAnimations[skinName] = buildSkinAnimations(
+         basePath,
+         skinName,
+         sequenceDefinitions,
+      );
+   });
+
+   return entityAnimations;
+}
