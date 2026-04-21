@@ -15,16 +15,28 @@ function createLevel1() {
    );
 }
 
+/**
+ * Creates the enemy list for level one.
+ * @returns {MovableObject[]}
+ */
 function createEnemies() {
    return [new golem(), new minotaur(), new reaper(), new endboss()];
 }
 
+/**
+ * Creates shuffled cloud objects.
+ * @returns {cloud[]}
+ */
 function createClouds() {
    return getCloudPaths()
       .sort(() => Math.random() - 0.5)
       .map((path) => new cloud(path));
 }
 
+/**
+ * Returns available cloud image paths.
+ * @returns {string[]}
+ */
 function getCloudPaths() {
    return [
       "img/Background/PNG/game_background_1/layers/clouds_2.png",
@@ -33,22 +45,43 @@ function getCloudPaths() {
    ];
 }
 
+/**
+ * Creates repeating sky layers.
+ * @returns {sky[]}
+ */
 function createSkies() {
    return [-719, 0, 719, 719 * 2, 719 * 3].map((x) => new sky(x));
 }
 
+/**
+ * Creates all repeating ground layers.
+ * @returns {groundObjects[]}
+ */
 function createGroundObjects() {
    return getGroundPositions().flatMap((x) => createGroundPair(x));
 }
 
+/**
+ * Returns x positions for repeated background tiles.
+ * @returns {number[]}
+ */
 function getGroundPositions() {
    return [-719, 0, 719, 719 * 2, 719 * 3];
 }
 
+/**
+ * Creates both ground image layers for one x position.
+ * @param {number} x - Tile x position.
+ * @returns {groundObjects[]}
+ */
 function createGroundPair(x) {
    return getGroundPaths().map((path) => new groundObjects(path, x));
 }
 
+/**
+ * Returns ground image paths.
+ * @returns {string[]}
+ */
 function getGroundPaths() {
    return [
       "img/Background/PNG/game_background_1/layers/rocks_1.png",
@@ -93,7 +126,7 @@ function createSecondRock(enemies) {
    return createSafeRock(
       "img/Barrier/PNG/middle_lane_rocks2/middle_lane_rock2_2.png",
       1000,
-      2800,
+      1800,
       enemies,
       true,
    );
@@ -156,6 +189,11 @@ function rangesOverlap(startA, endA, startB, endB) {
    return startA < endB && endA > startB;
 }
 
+/**
+ * Creates the level power-ups.
+ * @param {number} levelEndX - Last usable x position.
+ * @returns {powerUp[]}
+ */
 function createPowerUps(levelEndX) {
    return [0, 1, 2].map((index) => {
       return new powerUp(
@@ -165,6 +203,12 @@ function createPowerUps(levelEndX) {
    });
 }
 
+/**
+ * Returns a random power-up x position in one lane.
+ * @param {number} index - Lane index.
+ * @param {number} levelEndX - Last usable x position.
+ * @returns {number}
+ */
 function getRandomPowerUpX(index, levelEndX) {
    let minX = 220;
    let maxX = levelEndX - 220;
@@ -174,6 +218,10 @@ function getRandomPowerUpX(index, levelEndX) {
    return laneStart + Math.random() * (laneEnd - laneStart);
 }
 
+/**
+ * Returns a reachable random power-up y position.
+ * @returns {number}
+ */
 function getRandomPowerUpY() {
    let groundY = gameSettings.canvasHeight - 110;
    let jumpHeight = getPlayerJumpHeight();
@@ -182,6 +230,10 @@ function getRandomPowerUpY() {
    return minY + Math.random() * (maxY - minY);
 }
 
+/**
+ * Estimates the player's max jump height.
+ * @returns {number}
+ */
 function getPlayerJumpHeight() {
    let jumpSpeed = 17;
    let gravity = 0.6;

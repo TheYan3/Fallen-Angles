@@ -145,21 +145,39 @@ class MovableObject extends drawableObjects {
       this.advanceDelayedAnimation(images);
    }
 
+   /**
+    * Shows the current frame without advancing.
+    * @param {string[]} images - Animation frames.
+    */
    showCurrentAnimationFrame(images) {
       let path = images[this.currentImage];
       this.img = this.imageCache[path];
    }
 
+   /**
+    * Checks if the current frame should stay visible.
+    * @param {number} frameDelay - Delay in ticks.
+    * @returns {boolean}
+    */
    shouldKeepAnimationFrame(frameDelay) {
       return this.animationTick < frameDelay;
    }
 
+   /**
+    * Advances to the next delayed frame.
+    * @param {string[]} images - Animation frames.
+    */
    advanceDelayedAnimation(images) {
       this.currentImage = (this.currentImage + 1) % images.length;
       this.markFinishedAttackCycle(images);
       this.animationTick = 0;
    }
 
+   /**
+    * Selects the enemy animation by state.
+    * @param {string[]} waitingImages - Idle animation frames.
+    * @returns {string[]}
+    */
    getEnemyAnimationImages(waitingImages) {
       if (this.isHurt) return this.IMAGES_HURT;
       if (this.isAttacking) return this.IMAGES_ATTACKING;

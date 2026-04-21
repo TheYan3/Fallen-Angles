@@ -3,6 +3,9 @@ class golem extends MovableObject {
    animationSpeed = 8000 / 60;
    attackFrameDelay = 0;
 
+   /**
+    * Creates a golem enemy and starts its systems.
+    */
    constructor() {
       super();
       this.setAnimations();
@@ -11,6 +14,9 @@ class golem extends MovableObject {
       this.startSystems();
    }
 
+   /**
+    * Assigns golem animation sets.
+    */
    setAnimations() {
       let animations = animationLibrary.golem[this.DEFAULT_SKIN];
 
@@ -22,6 +28,9 @@ class golem extends MovableObject {
       this.IMAGES_RUN = animations.running;
    }
 
+   /**
+    * Sets golem stats and spawn position.
+    */
    setupStats() {
       this.otherDirection = true;
       this.damage = 5;
@@ -29,6 +38,9 @@ class golem extends MovableObject {
       this.x = 300 + Math.random() * 2000;
    }
 
+   /**
+    * Preloads all golem animation images.
+    */
    loadAnimationImages() {
       this.loadImage(this.IMAGES_WAITING[0]);
       this.loadImages(this.IMAGES_WAITING);
@@ -39,11 +51,17 @@ class golem extends MovableObject {
       this.loadImages(this.IMAGES_RUN);
    }
 
+   /**
+    * Starts golem gravity and animation.
+    */
    startSystems() {
       this.applyGravity();
       this.animation();
    }
 
+   /**
+    * Runs the golem animation loop.
+    */
    animation() {
       setInterval(() => {
          if (!gameSettings.shouldRunTick(`${this.timeScaleId}-animation`)) {
@@ -54,10 +72,17 @@ class golem extends MovableObject {
       }, this.animationSpeed);
    }
 
+   /**
+    * Returns the current golem animation.
+    * @returns {string[]}
+    */
    getCurrentAnimationImages() {
       return this.getEnemyAnimationImages(this.IMAGES_WAITING);
    }
 
+   /**
+    * Plays the current golem state animation.
+    */
    playStateAnimation() {
       this.playEnemyStateAnimation(this.IMAGES_WAITING);
    }

@@ -2,6 +2,9 @@ class minotaur extends MovableObject {
    DEFAULT_SKIN = "Minotaur_01";
    attackFrameDelay = 3;
 
+   /**
+    * Creates a minotaur enemy and starts its systems.
+    */
    constructor() {
       super();
       this.setAnimations();
@@ -10,6 +13,9 @@ class minotaur extends MovableObject {
       this.startSystems();
    }
 
+   /**
+    * Assigns minotaur animation sets.
+    */
    setAnimations() {
       let animations = animationLibrary.minotaur[this.DEFAULT_SKIN];
 
@@ -21,6 +27,9 @@ class minotaur extends MovableObject {
       this.IMAGES_RUN = [];
    }
 
+   /**
+    * Sets minotaur stats and spawn position.
+    */
    setupStats() {
       this.otherDirection = true;
       this.damage = 10;
@@ -28,6 +37,9 @@ class minotaur extends MovableObject {
       this.x = 400 + Math.random() * 1400;
    }
 
+   /**
+    * Preloads all minotaur animation images.
+    */
    loadAnimationImages() {
       this.loadImage(this.IMAGES_WAITING[0]);
       this.loadImages(this.IMAGES_WAITING);
@@ -37,12 +49,18 @@ class minotaur extends MovableObject {
       this.loadImages(this.IMAGES_WALKING);
    }
 
+   /**
+    * Starts minotaur gravity, animation and movement.
+    */
    startSystems() {
       this.applyGravity();
       this.animation();
       this.moveLeft();
    }
 
+   /**
+    * Runs the minotaur animation loop.
+    */
    animation() {
       setInterval(() => {
          if (!gameSettings.shouldRunTick(`${this.timeScaleId}-animation`)) {
@@ -53,10 +71,17 @@ class minotaur extends MovableObject {
       }, this.animationSpeed);
    }
 
+   /**
+    * Returns the current minotaur animation.
+    * @returns {string[]}
+    */
    getCurrentAnimationImages() {
       return this.getEnemyAnimationImages(this.IMAGES_WAITING);
    }
 
+   /**
+    * Plays the current minotaur state animation.
+    */
    playStateAnimation() {
       this.playEnemyStateAnimation(this.IMAGES_WAITING);
    }

@@ -3,6 +3,9 @@ class reaper extends MovableObject {
    animationSpeed = 5000 / 60;
    attackFrameDelay = 2;
 
+   /**
+    * Creates a reaper enemy and starts its systems.
+    */
    constructor() {
       super();
       this.setAnimations();
@@ -11,6 +14,9 @@ class reaper extends MovableObject {
       this.startSystems();
    }
 
+   /**
+    * Assigns reaper animation sets.
+    */
    setAnimations() {
       let animations = animationLibrary.reaper[this.DEFAULT_SKIN];
 
@@ -22,6 +28,9 @@ class reaper extends MovableObject {
       this.IMAGES_RUN = animations.running;
    }
 
+   /**
+    * Sets reaper stats and spawn position.
+    */
    setupStats() {
       this.otherDirection = true;
       this.damage = 5;
@@ -29,6 +38,9 @@ class reaper extends MovableObject {
       this.x = 600 + Math.random() * 800;
    }
 
+   /**
+    * Preloads all reaper animation images.
+    */
    loadAnimationImages() {
       this.loadImage(this.IMAGES_WAITING[0]);
       this.loadImages(this.IMAGES_WAITING);
@@ -39,12 +51,18 @@ class reaper extends MovableObject {
       this.loadImages(this.IMAGES_RUN);
    }
 
+   /**
+    * Starts reaper gravity, animation and movement.
+    */
    startSystems() {
       this.applyGravity();
       this.animation();
       this.moveLeft();
    }
 
+   /**
+    * Runs the reaper animation loop.
+    */
    animation() {
       setInterval(() => {
          if (!gameSettings.shouldRunTick(`${this.timeScaleId}-animation`)) {
@@ -55,10 +73,17 @@ class reaper extends MovableObject {
       }, this.animationSpeed);
    }
 
+   /**
+    * Returns the current reaper animation.
+    * @returns {string[]}
+    */
    getCurrentAnimationImages() {
       return this.getEnemyAnimationImages(this.IMAGES_WAITING);
    }
 
+   /**
+    * Plays the current reaper state animation.
+    */
    playStateAnimation() {
       this.playEnemyStateAnimation(this.IMAGES_WAITING);
    }

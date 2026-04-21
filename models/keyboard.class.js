@@ -7,6 +7,9 @@ class keyboard {
    ATTACK = false;
    RUN = false;
 
+   /**
+    * Registers keyboard listeners.
+    */
    constructor() {
       window.addEventListener("keydown", (event) => {
          this.setKeyState(event.key, event.code, true);
@@ -17,17 +20,33 @@ class keyboard {
       });
    }
 
+   /**
+    * Updates all matching key states.
+    * @param {string} key - Pressed key value.
+    * @param {string} code - Physical key code.
+    * @param {boolean} isPressed - Whether the key is pressed.
+    */
    setKeyState(key, code, isPressed) {
       this.setMovementKeyState(key, isPressed);
       this.setActionKeyState(key, code, isPressed);
       this.setRunKeyState(key, isPressed);
    }
 
+   /**
+    * Updates movement key states.
+    * @param {string} key - Pressed key value.
+    * @param {boolean} isPressed - Whether the key is pressed.
+    */
    setMovementKeyState(key, isPressed) {
       this.setHorizontalKeyState(key, isPressed);
       this.setVerticalKeyState(key, isPressed);
    }
 
+   /**
+    * Updates left and right keys.
+    * @param {string} key - Pressed key value.
+    * @param {boolean} isPressed - Whether the key is pressed.
+    */
    setHorizontalKeyState(key, isPressed) {
       if (key === "ArrowLeft" || key === "a" || key === "A") {
          this.LEFT = isPressed;
@@ -38,6 +57,11 @@ class keyboard {
       }
    }
 
+   /**
+    * Updates up and down keys.
+    * @param {string} key - Pressed key value.
+    * @param {boolean} isPressed - Whether the key is pressed.
+    */
    setVerticalKeyState(key, isPressed) {
       if (key === "ArrowUp" || key === "w" || key === "W") {
          this.UP = isPressed;
@@ -48,6 +72,12 @@ class keyboard {
       }
    }
 
+   /**
+    * Updates jump and attack keys.
+    * @param {string} key - Pressed key value.
+    * @param {string} code - Physical key code.
+    * @param {boolean} isPressed - Whether the key is pressed.
+    */
    setActionKeyState(key, code, isPressed) {
       if (code === "Space" || key === " ") {
          this.SPACE = isPressed;
@@ -58,6 +88,11 @@ class keyboard {
       }
    }
 
+   /**
+    * Updates the run key.
+    * @param {string} key - Pressed key value.
+    * @param {boolean} isPressed - Whether the key is pressed.
+    */
    setRunKeyState(key, isPressed) {
       if (key === "Shift") {
          this.RUN = isPressed;

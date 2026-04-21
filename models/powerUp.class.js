@@ -4,6 +4,11 @@ class powerUp extends MovableObject {
    animationSpeed = 8000 / 60;
    lifeAmount = 50;
 
+   /**
+    * Creates a collectible power-up.
+    * @param {number} x - Horizontal position.
+    * @param {number} y - Vertical position.
+    */
    constructor(x, y) {
       super();
       this.IMAGES_IDLE = animationLibrary.powerup.flameFeather;
@@ -14,6 +19,9 @@ class powerUp extends MovableObject {
       this.animate();
    }
 
+   /**
+    * Starts the idle animation loop.
+    */
    animate() {
       setInterval(() => {
          if (!gameSettings.shouldRunTick(`${this.timeScaleId}-animation`)) {
@@ -24,6 +32,9 @@ class powerUp extends MovableObject {
       }, this.animationSpeed);
    }
 
+   /**
+    * Plays the idle animation while collectable.
+    */
    playIdleAnimation() {
       if (this.isRemoved) {
          return;
@@ -33,6 +44,9 @@ class powerUp extends MovableObject {
       this.playAnimation(this.IMAGES_IDLE);
    }
 
+   /**
+    * Marks the power-up as collected.
+    */
    collect() {
       if (this.isRemoved) {
          return;
