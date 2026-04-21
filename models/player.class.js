@@ -6,7 +6,6 @@ class player extends MovableObject {
    y = -100;
    world;
    keyboard;
-   lastAnimation = null;
    isAttacking = false;
    attackKeyHandled = false;
    currentAttackAnimation = null;
@@ -186,13 +185,6 @@ class player extends MovableObject {
       }
 
       return this.IMAGES_ATTACKING;
-   }
-
-   /**
-    * Calls the base class update state to handle frame index resets.
-    */
-   updateAnimationState(images) {
-      super.updateAnimationState(images);
    }
 
    /**
