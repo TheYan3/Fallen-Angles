@@ -8,19 +8,19 @@ Das Projekt ist ohne Build-System umgesetzt und läuft direkt im Browser mit HTM
 
 ## Features
 
-- Canvas-basiertes 2D-Gameplay mit Side-Scrolling-Kamera
-- Spielbarer Charakter mit Idle-, Lauf-, Sprint-, Sprung-, Angriffs-, Treffer- und Sterbeanimationen
-- Mehrere Gegnertypen: Golem, Minotaur, Reaper und Endboss
-- Gegner-KI mit Aggro-Reichweite, Angriffsdistanz und Hindernisprüfung
-- Bosskampf mit eigener Musik, Slow-Motion beim Besiegen und Spezialfähigkeiten
-- Power-ups, die Lebensenergie und maximale Gesundheit erhöhen
-- Healthbar für Spieler und Gegner
-- Game-Over- und Replay-Flow
-- Soundeffekte, Titelmusik, Ingame-Musik und Bosskampf-Musik
-- Mute-Funktion mit Speicherung in `localStorage`
-- Fullscreen-Modus
-- Tastatursteuerung und Touch-/Mobile-Controls
-- Responsives Layout für Desktop und mobile Landscape-Ansicht
+-  Canvas-basiertes 2D-Gameplay mit Side-Scrolling-Kamera
+-  Spielbarer Charakter mit Idle-, Lauf-, Sprint-, Sprung-, Angriffs-, Treffer- und Sterbeanimationen
+-  Mehrere Gegnertypen: Golem, Minotaur, Reaper und Endboss
+-  Gegner-KI mit Aggro-Reichweite, Angriffsdistanz und Hindernisprüfung
+-  Bosskampf mit eigener Musik, Slow-Motion beim Besiegen und Spezialfähigkeiten
+-  Power-ups, die Lebensenergie und maximale Gesundheit erhöhen
+-  Healthbar für Spieler und Gegner
+-  Game-Over- und Replay-Flow
+-  Soundeffekte, Titelmusik, Ingame-Musik und Bosskampf-Musik
+-  Mute-Funktion mit Speicherung in `localStorage`
+-  Fullscreen-Modus
+-  Tastatursteuerung und Touch-/Mobile-Controls
+-  Responsives Layout für Desktop und mobile Landscape-Ansicht
 
 ## Gameplay
 
@@ -30,31 +30,31 @@ Normale Gegner werden aktiv, sobald der Spieler nahe genug ist. Der Endboss star
 
 ## Steuerung
 
-| Aktion | Tastatur | Mobile |
-| --- | --- | --- |
-| Nach links bewegen | `A` oder `Pfeil links` | Linker Pfeil-Button |
-| Nach rechts bewegen | `D` oder `Pfeil rechts` | Rechter Pfeil-Button |
-| Springen | `Leertaste` | Pfeil-hoch-Button |
-| Angreifen | `W` oder `Pfeil hoch` | Schwert-Button |
-| Rennen | `Shift` halten | Bewegungsbutton ca. 1 Sekunde halten |
-| Fullscreen | Toolbar-Button | Toolbar-Button |
-| Ton an/aus | Mute-Button | Mute-Button |
+| Aktion              | Tastatur                | Mobile                               |
+| ------------------- | ----------------------- | ------------------------------------ |
+| Nach links bewegen  | `A` oder `Pfeil links`  | Linker Pfeil-Button                  |
+| Nach rechts bewegen | `D` oder `Pfeil rechts` | Rechter Pfeil-Button                 |
+| Springen            | `Leertaste`             | Pfeil-hoch-Button                    |
+| Angreifen           | `W` oder `Pfeil hoch`   | Schwert-Button                       |
+| Rennen              | `Shift` halten          | Bewegungsbutton ca. 1 Sekunde halten |
+| Fullscreen          | Toolbar-Button          | Toolbar-Button                       |
+| Ton an/aus          | Mute-Button             | Mute-Button                          |
 
 ## Technologien
 
-- HTML5
-- CSS3
-- Vanilla JavaScript
-- Canvas API
-- Web Audio über native `Audio`-Objekte
-- `localStorage` für persistente Sound-Einstellungen
+-  HTML5
+-  CSS3
+-  Vanilla JavaScript
+-  Canvas API
+-  Web Audio über native `Audio`-Objekte
+-  `localStorage` für persistente Sound-Einstellungen
 
 Es werden keine npm-Pakete und kein Bundler benötigt.
 
 ## Voraussetzungen
 
-- Moderner Browser mit Canvas-Unterstützung
-- Optional: lokaler Webserver für konsistentes Laden von Assets und Audio
+-  Moderner Browser mit Canvas-Unterstützung
+-  Optional: lokaler Webserver für konsistentes Laden von Assets und Audio
 
 ## Projekt Starten
 
@@ -96,26 +96,26 @@ http://localhost:8000
 
 ## Wichtige Dateien
 
-- `index.html`: Bindet alle Skripte, Styles und die Spieloberfläche ein.
-- `js/game.js`: Initialisiert Canvas, Tastatur und Spielwelt.
-- `js/page.js`: Steuert Menü, Musik, Mute, Fullscreen und Mobile-Controls.
-- `js/settings.js`: Enthält globale Canvas-, Speed- und Slow-Motion-Einstellungen.
-- `Levels/level1.js`: Erstellt Gegner, Wolken, Hintergrundebenen, Felsen und Power-ups.
-- `models/world.class.js`: Zentrale Spielwelt mit Render-Loop, Kollisionen, Gegnerbewegung, Game-Over-Logik und Kamera.
-- `models/player.class.js`: Spielerbewegung, Angriffe, Animationen, Fear-Zustand und Kamera-Following.
-- `models/endboss.class.js`: Bosswerte, Bossanimationen, Spezialfähigkeiten und Spawn-Logik.
-- `models/keyboard.class.js`: Tastaturzustand für Bewegung, Angriff, Sprung und Sprint.
+-  `index.html`: Bindet alle Skripte, Styles und die Spieloberfläche ein.
+-  `js/game.js`: Initialisiert Canvas, Tastatur und Spielwelt.
+-  `js/page.js`: Steuert Menü, Musik, Mute, Fullscreen und Mobile-Controls.
+-  `js/settings.js`: Enthält globale Canvas-, Speed- und Slow-Motion-Einstellungen.
+-  `Levels/level1.js`: Erstellt Gegner, Wolken, Hintergrundebenen, Felsen und Power-ups.
+-  `models/world.class.js`: Zentrale Spielwelt mit Render-Loop, Kollisionen, Gegnerbewegung, Game-Over-Logik und Kamera.
+-  `models/player.class.js`: Spielerbewegung, Angriffe, Animationen, Fear-Zustand und Kamera-Following.
+-  `models/endboss.class.js`: Bosswerte, Bossanimationen, Spezialfähigkeiten und Spawn-Logik.
+-  `models/keyboard.class.js`: Tastaturzustand für Bewegung, Angriff, Sprung und Sprint.
 
 ## Architekturüberblick
 
 Das Spiel nutzt eine objektorientierte Struktur:
 
-- `world` verwaltet Canvas, Level, Kamera, Game Loop, UI und Kollisionen.
-- `Level` bündelt Gegner, Power-ups, Hintergründe, Felsen und Levelgrenzen.
-- `MovableObject` dient als Basisklasse für bewegliche Spielfiguren mit Animation, Kollision, Schwerkraft und Trefferlogik.
-- `player`, `golem`, `minotaur`, `reaper` und `endboss` spezialisieren Bewegung, Werte und Animationen.
-- `Abilities` koordiniert die Bossfähigkeiten `teleportAbility`, `healAbility` und `fearAbility`.
-- UI-Klassen wie `healthbar`, `powerUpCounter`, `gameover` und `repeatButton` zeichnen Status- und Endbildschirme auf das Canvas.
+-  `world` verwaltet Canvas, Level, Kamera, Game Loop, UI und Kollisionen.
+-  `Level` bündelt Gegner, Power-ups, Hintergründe, Felsen und Levelgrenzen.
+-  `MovableObject` dient als Basisklasse für bewegliche Spielfiguren mit Animation, Kollision, Schwerkraft und Trefferlogik.
+-  `player`, `golem`, `minotaur`, `reaper` und `endboss` spezialisieren Bewegung, Werte und Animationen.
+-  `Abilities` koordiniert die Bossfähigkeiten `teleportAbility`, `healAbility` und `fearAbility`.
+-  UI-Klassen wie `healthbar`, `powerUpCounter`, `gameover` und `repeatButton` zeichnen Status- und Endbildschirme auf das Canvas.
 
 Die Spiellogik läuft über Intervalle und `requestAnimationFrame`. `gameSettings.timeScale` erlaubt Slow-Motion-Effekte, indem einzelne Ticks reduziert ausgeführt werden.
 
@@ -127,12 +127,12 @@ Vor einer Veröffentlichung sollte geprüft werden, ob alle verwendeten Sprites,
 
 ## Entwicklungshinweise
 
-- Die Skript-Reihenfolge in `index.html` ist wichtig, weil die Klassen global geladen werden.
-- Neue Levelobjekte werden aktuell in `Levels/level1.js` erzeugt.
-- Neue Animationen sollten in `js/animation-library.js` registriert und danach in der jeweiligen Klasse geladen werden.
-- `gameSettings.hitboxShown` kann für Debugging aktiviert werden.
-- Mobile Controls erscheinen in Landscape-Ansicht.
-- Der Canvas verwendet intern eine Auflösung von `720 x 480`.
+-  Die Skript-Reihenfolge in `index.html` ist wichtig, weil die Klassen global geladen werden.
+-  Neue Levelobjekte werden aktuell in `Levels/level1.js` erzeugt.
+-  Neue Animationen sollten in `js/animation-library.js` registriert und danach in der jeweiligen Klasse geladen werden.
+-  `gameSettings.hitboxShown` kann für Debugging aktiviert werden.
+-  Mobile Controls erscheinen in Landscape-Ansicht.
+-  Der Canvas verwendet intern eine Auflösung von `720 x 480`.
 
 ## Deployment
 
@@ -140,10 +140,12 @@ Das Projekt ist eine statische Website. Für eine Veröffentlichung reicht ein H
 
 ## Mögliche Erweiterungen
 
-- Weitere Level und Levelauswahl
-- Startbildschirm mit Schwierigkeitsgrad
-- Speichern von Highscores oder Bestzeiten
-- Pausenmenü
-- Bessere Trennung zwischen Assetdaten und Spiellogik
-- Zentrale Verwaltung aller Intervalle beim Neustart
-- Automatisierte Tests für Kollisions- und Bewegungslogik
+-  Weitere Level und Levelauswahl
+-  Story
+-  Startbildschirm mit Schwierigkeitsgrad
+-  Speichern von Highscores oder Bestzeiten
+-  Pausenmenü
+-  Abilitys für Enemys
+-  Bessere Trennung zwischen Assetdaten und Spiellogik
+-  Zentrale Verwaltung aller Intervalle beim Neustart
+-  Automatisierte Tests für Kollisions- und Bewegungslogik

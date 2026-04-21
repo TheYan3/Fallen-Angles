@@ -5,13 +5,23 @@ class gameover extends drawableObjects {
    height = 300;
    buttonGap = 12;
    repeatButton = new repeatButton();
+   winImage;
 
    /**
-    * Initializes the gameover screen and loads the 'game over' image.
+    * Initializes the gameover screen and loads the result screen images.
     */
    constructor() {
       super();
       this.loadImage("img/gameover.png");
+      this.loadWinImage();
+   }
+
+   /**
+    * Loads the win screen image separately from the game over image.
+    */
+   loadWinImage() {
+      this.winImage = new Image();
+      this.winImage.src = "img/YOU_WIn.png";
    }
 
    /**
@@ -20,7 +30,16 @@ class gameover extends drawableObjects {
     */
    draw(ctx, canvas) {
       this.drawBlackScreen(ctx, canvas);
-      this.drawCenteredImage(ctx, canvas);
+      this.drawCenteredImage(ctx, canvas, this.img);
+      this.drawRepeatButton(ctx, canvas);
+   }
+
+   /**
+    * Renders the win sequence with the same layout as the game over screen.
+    */
+   drawWin(ctx, canvas) {
+      this.drawBlackScreen(ctx, canvas);
+      this.drawCenteredImage(ctx, canvas, this.winImage);
       this.drawRepeatButton(ctx, canvas);
    }
 
@@ -33,12 +52,12 @@ class gameover extends drawableObjects {
    }
 
    /**
-    * Renders the 'game over' image in the center of the screen.
+    * Renders a result image in the center of the screen.
     */
-   drawCenteredImage(ctx, canvas) {
+   drawCenteredImage(ctx, canvas, image) {
       let x = (canvas.width - this.width) / 2;
       let y = this.getImageY(canvas);
-      ctx.drawImage(this.img, x, y, this.width, this.height);
+      ctx.drawImage(image, x, y, this.width, this.height);
    }
 
    /**
@@ -73,7 +92,12 @@ class gameover extends drawableObjects {
     * Checks if all required image assets for the screen are loaded.
     */
    isImageReady() {
-      return super.isImageReady() && this.repeatButton.isImageReady();
+      return (
+         super.isImageReady() &&
+         this.winImage?.complete &&
+         this.winImage.naturalWidth > 0 &&
+         this.repeatButton.isImageReady()
+      );
    }
 
    /**

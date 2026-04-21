@@ -449,12 +449,10 @@ class world {
    }
 
    /**
-    * Draws the world frozen in place with the replay button on top.
+    * Draws the win screen with the replay button.
     */
    drawReplayButtonScreen() {
-      this.drawCameraLayer();
-      this.drawUi();
-      this.gameOverScreen.drawRepeatButton(this.ctx, this.canvas);
+      this.gameOverScreen.drawWin(this.ctx, this.canvas);
    }
 
    /**
