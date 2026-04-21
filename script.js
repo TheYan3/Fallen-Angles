@@ -1,8 +1,6 @@
 let movementHoldTimer;
 let Music = new Audio(audioLibrary.music.title);
 let isMuted = localStorage.getItem("gameMuted") === "true";
-const mobileLandscapeQuery =
-   "(hover: none) and (pointer: coarse) and (orientation: landscape)";
 const keyboardControlReleaseEvents = [
    "pointerup",
    "pointercancel",
@@ -76,62 +74,6 @@ function preventDoubleTapGameZoom(event) {
       event.preventDefault();
    }
    lastGameTouchEnd = now;
-}
-
-/**
- * Toggles the application between windowed and fullscreen mode.
- * Blurs the active element to prevent unwanted keyboard behavior.
- */
-function toggleFullscreen() {
-   document.activeElement?.blur?.();
-
-   if (document.fullscreenElement) {
-      return document.exitFullscreen();
-   }
-
-   getFullscreenTarget().requestFullscreen();
-}
-
-/**
- * Returns the DOM element that should be used for fullscreen mode.
- * @returns {HTMLElement} The game container element.
- */
-function getFullscreenTarget() {
-   return document.getElementById("gameContainer");
-}
-
-/**
- * Synchronizes the fullscreen button UI with the current document state.
- * Updates the icon and the ARIA label accordingly.
- */
-function updateFullscreenButton() {
-   let fullscreenButton = document.getElementById("fullscreenButton");
-   if (!fullscreenButton) {
-      return;
-   }
-
-   let isFullscreen = document.fullscreenElement === getFullscreenTarget();
-   updateFullscreenButtonText(fullscreenButton, isFullscreen);
-   updateFullscreenButtonLabel(fullscreenButton, isFullscreen);
-}
-
-/**
- * Updates the text content of the fullscreen button based on mode.
- * @param {HTMLElement} fullscreenButton - The button element.
- * @param {boolean} isFullscreen - Whether the app is currently in fullscreen.
- */
-function updateFullscreenButtonText(fullscreenButton, isFullscreen) {
-   fullscreenButton.textContent = isFullscreen ? "↙" : "⛶";
-}
-
-/**
- * Updates the ARIA label of the fullscreen button for accessibility.
- * @param {HTMLElement} fullscreenButton - The button element.
- * @param {boolean} isFullscreen - Whether the app is currently in fullscreen.
- */
-function updateFullscreenButtonLabel(fullscreenButton, isFullscreen) {
-   let label = isFullscreen ? "Exit fullscreen" : "Fullscreen";
-   fullscreenButton.setAttribute("aria-label", label);
 }
 
 /**
@@ -370,80 +312,12 @@ function showGameContainer() {
    updateResponsiveCanvasSize();
 }
 
-/**
- * Fits the canvas into mobile landscape viewports without page scrolling.
- */
-function updateResponsiveCanvasSize() {
-   let canvasElement = document.getElementById("canvas");
-   if (!canvasElement) return;
-
-   if (!shouldFitCanvasToMobileLandscape()) {
-      resetCanvasDisplaySize(canvasElement);
-      return;
-   }
-
-   let size = getCanvasDisplaySize();
-   canvasElement.style.width = `${size.width}px`;
-   canvasElement.style.height = `${size.height}px`;
-}
-
-/**
- * Checks if the mobile landscape canvas sizing should be active.
- * @returns {boolean}
- */
-function shouldFitCanvasToMobileLandscape() {
-   return (
-      document.body.classList.contains("is-playing") &&
-      window.matchMedia(mobileLandscapeQuery).matches
-   );
-}
-
-/**
- * Removes inline canvas display sizing outside mobile landscape mode.
- */
-function resetCanvasDisplaySize(canvasElement) {
-   canvasElement.style.removeProperty("width");
-   canvasElement.style.removeProperty("height");
-}
-
-/**
- * Calculates the largest canvas size that fits into the current viewport.
- * @returns {{width: number, height: number}}
- */
-function getCanvasDisplaySize() {
-   let viewportWidth = window.visualViewport?.width || window.innerWidth;
-   let viewportHeight = window.visualViewport?.height || window.innerHeight;
-   let padding = 16;
-   let availableWidth = Math.max(0, viewportWidth - padding);
-   let availableHeight = Math.max(0, viewportHeight - padding);
-   let aspectRatio = gameSettings.canvasWidth / gameSettings.canvasHeight;
-   let width = Math.min(
-      availableWidth,
-      availableHeight * aspectRatio,
-      gameSettings.canvasWidth,
-   );
-
-   return {
-      width,
-      height: width / aspectRatio,
-   };
-}
-
-/**
- * Recalculates after the browser has applied viewport/orientation changes.
- */
-function queueResponsiveCanvasResize() {
-   requestAnimationFrame(updateResponsiveCanvasSize);
-   setTimeout(updateResponsiveCanvasSize, 200);
-}
-
 if (document.readyState === "loading") {
    document.addEventListener("DOMContentLoaded", updateMuteButtons);
 } else {
    updateMuteButtons();
 }
 
-document.addEventListener("fullscreenchange", updateFullscreenButton);
 document.addEventListener("contextmenu", preventGameBrowserGesture);
 document.addEventListener("selectstart", preventGameBrowserGesture);
 document.addEventListener("dragstart", preventGameBrowserGesture);
@@ -459,6 +333,3 @@ document.addEventListener("touchmove", preventMultiTouchGameGesture, {
 document.addEventListener("touchend", preventDoubleTapGameZoom, {
    passive: false,
 });
-window.addEventListener("resize", queueResponsiveCanvasResize);
-window.addEventListener("orientationchange", queueResponsiveCanvasResize);
-window.visualViewport?.addEventListener("resize", queueResponsiveCanvasResize);
