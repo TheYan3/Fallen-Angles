@@ -93,7 +93,7 @@ http://localhost:8000
 ├── impressum.html      # Impressumsseite
 ├── index.html          # Einstiegspunkt des Spiels
 ├── script.js           # Menü, Musik, Mute und Mobile-Controls
-└── style.css           # Layout, Menü, Canvas- und Mobile-Styles
+└── style.css           # Layout, Menü-Hintergrund, Canvas- und Mobile-Styles
 ```
 
 ## Wichtige Dateien
@@ -103,7 +103,7 @@ http://localhost:8000
 -  `script.js`: Steuert Menü, Musik, Mute und Mobile-Controls.
 -  `js/fullscreen-controller.js`: Steuert Fullscreen-Umschaltung und Button-Zustand.
 -  `js/responsive-canvas.js`: Passt das Canvas in Mobile-Landscape-Ansichten ein.
--  `js/settings.js`: Enthält globale Canvas-, Speed-, Pause- und Slow-Motion-Einstellungen.
+-  `js/settings.js`: Enthält globale Canvas-, Speed-, Audio-, Pause- und Slow-Motion-Einstellungen.
 -  `js/animation-library.js`: Zentrale Registrierung der Animationspfade.
 -  `js/audio-library.js`: Zentrale Registrierung aller Musik- und Soundpfade.
 -  `Levels/level1.js`: Erstellt Gegner, Wolken, Hintergrundebenen, Felsen und Power-ups.
@@ -149,6 +149,8 @@ Vor einer Veröffentlichung sollte geprüft werden, ob alle verwendeten Sprites,
 -  Neue Animationen sollten in `js/animation-library.js` registriert und danach in der jeweiligen Klasse geladen werden.
 -  Neue Sounds sollten in `js/audio-library.js` registriert und danach über `audioLibrary` verwendet werden.
 -  `gameSettings.hitboxShown` kann für Debugging aktiviert werden.
+-  `gameSettings.audioVolume` steuert die zentrale Spiel-Lautstärke.
+-  Der Menü-Hintergrund liegt auf `.menu-screen`, damit `index.html` und `impressum.html` dieselbe Darstellung nutzen.
 -  Mobile Controls erscheinen in Landscape-Ansicht.
 -  Der Canvas verwendet intern eine Auflösung von `720 x 480`.
 
