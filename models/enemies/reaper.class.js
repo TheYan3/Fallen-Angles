@@ -1,4 +1,4 @@
-class reaper extends MovableObject {
+class Reaper extends MovableObject {
    DEFAULT_SKIN = "Reaper_Man_1";
    hitSound = audioLibrary.effects.enemies.reaper.hurt;
    deathSound = audioLibrary.effects.enemies.reaper.death;

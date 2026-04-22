@@ -1,4 +1,4 @@
-class groundObjects extends MovableObject {
+class GroundObject extends MovableObject {
    width = gameSettings.canvasWidth;
    height = gameSettings.canvasHeight;
 

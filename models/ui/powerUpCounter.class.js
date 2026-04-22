@@ -1,4 +1,4 @@
-class powerUpCounter extends drawableObjects {
+class PowerUpCounter extends DrawableObject {
    count = 0;
    x = 20;
    y = 50;

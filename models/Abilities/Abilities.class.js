@@ -7,9 +7,9 @@ class Abilities {
    constructor(owner, options = {}) {
       this.owner = owner;
       this.healthThreshold = options.healthThreshold ?? 50;
-      this.teleport = new teleportAbility(owner);
-      this.heal = new healAbility(owner);
-      this.fear = new fearAbility(owner);
+      this.teleport = new TeleportAbility(owner);
+      this.heal = new HealAbility(owner);
+      this.fear = new FearAbility(owner);
    }
 
    /**

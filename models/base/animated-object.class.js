@@ -1,4 +1,4 @@
-class AnimatedObject extends drawableObjects {
+class AnimatedObject extends DrawableObject {
    currentImage = 0;
    lastAnimation = null;
    animationTick = 0;

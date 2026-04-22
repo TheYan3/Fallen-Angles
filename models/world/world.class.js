@@ -1,4 +1,4 @@
-class world {
+class World {
    character;
    level = createLevel1();
    ctx;
@@ -9,9 +9,9 @@ class world {
    enemyStopDistance = 30;
    isGameStopped = false;
    isEndbossDefeated = false;
-   powerUpCounter = new powerUpCounter();
-   healthbar = new healthbar();
-   gameOverScreen = new gameover();
+   powerUpCounter = new PowerUpCounter();
+   healthbar = new Healthbar();
+   gameOverScreen = new GameOver();
    gameStateInterval;
    gameOverClickHandler;
    isDestroyed = false;
@@ -27,7 +27,7 @@ class world {
       this.ctx = canvas.getContext("2d");
       this.keyboardInput = keyboardInput;
       this.canvas = canvas;
-      this.character = new player(keyboardInput);
+      this.character = new Player(keyboardInput);
       this.renderer = new WorldRenderer(this);
       this.enemyController = new EnemyController(this);
       this.collision = new WorldCollision(this);
@@ -152,7 +152,7 @@ class world {
     * @param {Object} object - Object that started dying.
     */
    handleObjectStartedDying(object) {
-      if (object instanceof endboss) {
+      if (object instanceof Endboss) {
          gameSettings.startSlowMotion();
       }
    }
@@ -162,7 +162,7 @@ class world {
     * @param {Object} object - Object that finished dying.
     */
    handleObjectFinishedDying(object) {
-      if (object instanceof endboss) {
+      if (object instanceof Endboss) {
          this.isEndbossDefeated = true;
          this.isGameStopped = true;
          Music.pause();

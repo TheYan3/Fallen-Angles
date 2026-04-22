@@ -1,7 +1,7 @@
 class WorldCollision {
    /**
     * Creates collision helpers for one world instance.
-    * @param {world} worldInstance - The world with rocks and entities.
+    * @param {World} worldInstance - The world with rocks and entities.
     */
    constructor(worldInstance) {
       this.world = worldInstance;
@@ -32,7 +32,7 @@ class WorldCollision {
    ignoresRockCollision(movableObject) {
       return (
          movableObject.isFearCollisionDisabled?.() ||
-         movableObject instanceof endboss
+         movableObject instanceof Endboss
       );
    }
 

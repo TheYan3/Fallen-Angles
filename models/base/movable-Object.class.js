@@ -82,7 +82,7 @@ class MovableObject extends AnimatedObject {
     * @param {number} floorY - The exact Y coordinate to snap to.
     */
    landOnFloor(floorY) {
-      if (this.speedY > 0 && this instanceof player) {
+      if (this.speedY > 0 && this instanceof Player) {
          playEffect(audioLibrary.effects.character.landing);
       }
       this.y = floorY;

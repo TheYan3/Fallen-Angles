@@ -1,4 +1,4 @@
-class healthbar extends drawableObjects {
+class Healthbar extends DrawableObject {
    health = 100;
    maxHealth = 100;
    baseMaxHealth = 100;

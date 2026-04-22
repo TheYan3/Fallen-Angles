@@ -1,4 +1,4 @@
-class player extends MovableObject {
+class Player extends MovableObject {
    DEFAULT_SKIN = "Fallen_Angels_1";
    hitSound = audioLibrary.effects.character.hit;
    deathSound = audioLibrary.effects.character.death;

@@ -1,4 +1,4 @@
-class fearAbility {
+class FearAbility {
    duration = 2000;
    speedMultiplier = 3;
 

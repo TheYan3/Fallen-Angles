@@ -20,17 +20,17 @@ function createLevel1() {
  * @returns {MovableObject[]}
  */
 function createEnemies() {
-   return [new golem(), new minotaur(), new reaper(), new endboss()];
+   return [new Golem(), new Minotaur(), new Reaper(), new Endboss()];
 }
 
 /**
  * Creates shuffled cloud objects.
- * @returns {cloud[]}
+ * @returns {Cloud[]}
  */
 function createClouds() {
    return getCloudPaths()
       .sort(() => Math.random() - 0.5)
-      .map((path) => new cloud(path));
+      .map((path) => new Cloud(path));
 }
 
 /**
@@ -47,15 +47,15 @@ function getCloudPaths() {
 
 /**
  * Creates repeating sky layers.
- * @returns {sky[]}
+ * @returns {Sky[]}
  */
 function createSkies() {
-   return [-719, 0, 719, 719 * 2, 719 * 3].map((x) => new sky(x));
+   return [-719, 0, 719, 719 * 2, 719 * 3].map((x) => new Sky(x));
 }
 
 /**
  * Creates all repeating ground layers.
- * @returns {groundObjects[]}
+ * @returns {GroundObject[]}
  */
 function createGroundObjects() {
    return getGroundPositions().flatMap((x) => createGroundPair(x));
@@ -72,10 +72,10 @@ function getGroundPositions() {
 /**
  * Creates both ground image layers for one x position.
  * @param {number} x - Tile x position.
- * @returns {groundObjects[]}
+ * @returns {GroundObject[]}
  */
 function createGroundPair(x) {
-   return getGroundPaths().map((path) => new groundObjects(path, x));
+   return getGroundPaths().map((path) => new GroundObject(path, x));
 }
 
 /**
@@ -96,7 +96,7 @@ const ROCK_SPAWN_ATTEMPTS = 50;
 /**
  * Creates all rocks without overlapping enemy spawn positions.
  * @param {MovableObject[]} enemies - Enemies placed in the level.
- * @returns {rock[]} Rocks for the level.
+ * @returns {Rock[]} Rocks for the level.
  */
 function createRocks(enemies) {
    return [createFirstRock(enemies), createSecondRock(enemies)];
@@ -105,7 +105,7 @@ function createRocks(enemies) {
 /**
  * Creates the first rock.
  * @param {MovableObject[]} enemies - Enemies to avoid.
- * @returns {rock} The first rock.
+ * @returns {Rock} The first rock.
  */
 function createFirstRock(enemies) {
    return createSafeRock(
@@ -120,7 +120,7 @@ function createFirstRock(enemies) {
 /**
  * Creates the second rock.
  * @param {MovableObject[]} enemies - Enemies to avoid.
- * @returns {rock} The second rock.
+ * @returns {Rock} The second rock.
  */
 function createSecondRock(enemies) {
    return createSafeRock(
@@ -139,11 +139,11 @@ function createSecondRock(enemies) {
  * @param {number} maxX - Maximum spawn x.
  * @param {MovableObject[]} enemies - Enemies to avoid.
  * @param {boolean} ro - Whether the rock is mirrored.
- * @returns {rock} A new rock.
+ * @returns {Rock} A new Rock.
  */
 function createSafeRock(imagePath, minX, maxX, enemies, ro) {
    let x = getSafeRockX(minX, maxX, enemies);
-   return new rock(imagePath, x, null, ro);
+   return new Rock(imagePath, x, null, ro);
 }
 
 /**
@@ -192,11 +192,11 @@ function rangesOverlap(startA, endA, startB, endB) {
 /**
  * Creates the level power-ups.
  * @param {number} levelEndX - Last usable x position.
- * @returns {powerUp[]}
+ * @returns {PowerUp[]}
  */
 function createPowerUps(levelEndX) {
    return [0, 1, 2].map((index) => {
-      return new powerUp(
+      return new PowerUp(
          getRandomPowerUpX(index, levelEndX),
          getRandomPowerUpY(),
       );

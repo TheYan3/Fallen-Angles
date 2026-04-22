@@ -1,4 +1,4 @@
-class healAbility {
+class HealAbility {
    amount = 50;
 
    /**

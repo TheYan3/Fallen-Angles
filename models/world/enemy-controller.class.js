@@ -3,7 +3,7 @@ class EnemyController {
 
    /**
     * Creates enemy logic for one world instance.
-    * @param {world} worldInstance - The world that owns the enemies.
+    * @param {World} worldInstance - The world that owns the enemies.
     */
    constructor(worldInstance) {
       this.world = worldInstance;
@@ -64,7 +64,7 @@ class EnemyController {
       enemy.isAggro =
          this.world.character.x >=
          enemy.x - this.world.enemyActivationDistance;
-      if (enemy.isAggro && enemy instanceof endboss) {
+      if (enemy.isAggro && enemy instanceof Endboss) {
          this.startBossFightAudio();
       }
    }

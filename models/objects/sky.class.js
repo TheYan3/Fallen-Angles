@@ -1,4 +1,4 @@
-class sky {
+class Sky {
    x = 0;
    y = 0;
    width = gameSettings.canvasWidth;

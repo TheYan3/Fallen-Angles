@@ -1,10 +1,10 @@
-class gameover extends drawableObjects {
+class GameOver extends DrawableObject {
    x = 0;
    y = 0;
    width = 500;
    height = 300;
    buttonGap = 12;
-   repeatButton = new repeatButton();
+   repeatButton = new RepeatButton();
    winImage;
 
    /**

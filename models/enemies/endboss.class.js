@@ -1,4 +1,4 @@
-class endboss extends MovableObject {
+class Endboss extends MovableObject {
    DEFAULT_SKIN = "Wraith_03";
    hitSound = audioLibrary.effects.boss.hurt;
    deathSound = audioLibrary.effects.boss.death;
@@ -178,7 +178,7 @@ class endboss extends MovableObject {
     * Picks a random standard enemy type for the summons.
     */
    createFearSpawnEnemy() {
-      let enemyTypes = [golem, reaper, minotaur];
+      let enemyTypes = [Golem, Reaper, Minotaur];
       let EnemyType = enemyTypes[Math.floor(Math.random() * enemyTypes.length)];
       return new EnemyType();
    }

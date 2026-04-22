@@ -1,7 +1,7 @@
 class WorldRenderer {
    /**
     * Creates a renderer for one world instance.
-    * @param {world} worldInstance - The world to draw.
+    * @param {World} worldInstance - The world to draw.
     */
    constructor(worldInstance) {
       this.world = worldInstance;
@@ -146,7 +146,7 @@ class WorldRenderer {
    /**
     * Gets or creates an enemy healthbar.
     * @param {Object} enemy - Enemy target.
-    * @returns {healthbar}
+    * @returns {Healthbar}
     */
    getEnemyHealthbar(enemy) {
       if (!enemy.healthbar) {
@@ -159,13 +159,13 @@ class WorldRenderer {
    /**
     * Creates an enemy healthbar.
     * @param {Object} enemy - Enemy target.
-    * @returns {healthbar}
+    * @returns {Healthbar}
     */
    createEnemyHealthbar(enemy) {
       let width = Math.min(160, Math.max(70, enemy.width * 0.6));
       let maxHealth = enemy.maxEnergy ?? enemy.energy;
-      let bar = new healthbar(enemy.x, enemy.y - 12, width, 8, maxHealth);
-      bar.hasSideArrows = enemy instanceof endboss;
+      let bar = new Healthbar(enemy.x, enemy.y - 12, width, 8, maxHealth);
+      bar.hasSideArrows = enemy instanceof Endboss;
       return bar;
    }
 
@@ -250,11 +250,11 @@ class WorldRenderer {
     */
    isHitboxObject(movableObject) {
       return (
-         movableObject instanceof player ||
-         movableObject instanceof golem ||
-         movableObject instanceof reaper ||
-         movableObject instanceof minotaur ||
-         movableObject instanceof endboss
+         movableObject instanceof Player ||
+         movableObject instanceof Golem ||
+         movableObject instanceof Reaper ||
+         movableObject instanceof Minotaur ||
+         movableObject instanceof Endboss
       );
    }
 

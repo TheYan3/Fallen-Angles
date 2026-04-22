@@ -11,11 +11,11 @@ class Level {
    /**
     * Stores all objects for one level.
     * @param {MovableObject[]} enemies - Level enemies.
-    * @param {cloud[]} clouds - Moving clouds.
-    * @param {sky[]} skies - Background sky layers.
-    * @param {groundObjects[]} groundObjects - Ground layers.
-    * @param {rock[]} rocks - Rock obstacles.
-    * @param {powerUp[]} powerUps - Collectible power-ups.
+    * @param {Cloud[]} clouds - Moving clouds.
+    * @param {Sky[]} skies - Background sky layers.
+    * @param {GroundObject[]} groundObjects - Ground layers.
+    * @param {Rock[]} rocks - Rock obstacles.
+    * @param {PowerUp[]} powerUps - Collectible power-ups.
     */
    constructor(enemies, clouds, skies, groundObjects, rocks = [], powerUps = []) {
       this.enemies = enemies;

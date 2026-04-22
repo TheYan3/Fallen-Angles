@@ -5,7 +5,7 @@ class PlayerStatusEffects {
 
    /**
     * Creates the status effect controller for a player.
-    * @param {player} owner - Player affected by status effects.
+    * @param {Player} owner - Player affected by status effects.
     */
    constructor(owner) {
       this.owner = owner;

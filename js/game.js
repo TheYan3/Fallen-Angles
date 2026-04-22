@@ -1,6 +1,6 @@
 let canvas;
 let gameWorld;
-let keyboardInput = new keyboard();
+let keyboardInput = new Keyboard();
 
 /**
  * Initializes the canvas and world once.
@@ -9,7 +9,7 @@ function init() {
    if (gameWorld) return;
    canvas = document.getElementById("canvas");
    gameSettings.applyToCanvas(canvas);
-   gameWorld = new world(canvas, keyboardInput);
+   gameWorld = new World(canvas, keyboardInput);
 }
 
 /**

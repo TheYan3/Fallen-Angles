@@ -1,4 +1,4 @@
-class teleportAbility {
+class TeleportAbility {
    range = 1000;
 
    /**

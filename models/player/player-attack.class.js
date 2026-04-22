@@ -4,7 +4,7 @@ class PlayerAttack {
 
    /**
     * Creates the attack controller for a player.
-    * @param {player} owner - Player using this attack state.
+    * @param {Player} owner - Player using this attack state.
     */
    constructor(owner) {
       this.owner = owner;

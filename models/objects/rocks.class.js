@@ -1,4 +1,4 @@
-class rock extends MovableObject {
+class Rock extends MovableObject {
    width = 200;
    height = 130;
    hitboxWidth = 50;

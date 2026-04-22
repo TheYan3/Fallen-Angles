@@ -1,4 +1,4 @@
-class golem extends MovableObject {
+class Golem extends MovableObject {
    DEFAULT_SKIN = "Golem_1";
    hitSound = audioLibrary.effects.enemies.golem.hurt;
    deathSound = audioLibrary.effects.enemies.golem.death;

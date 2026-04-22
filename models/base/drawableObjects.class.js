@@ -1,4 +1,4 @@
-class drawableObjects {
+class DrawableObject {
    x = 100;
    y = gameSettings.canvasHeight - 110;
    img;

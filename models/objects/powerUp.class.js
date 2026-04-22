@@ -1,4 +1,4 @@
-class powerUp extends MovableObject {
+class PowerUp extends MovableObject {
    width = 70;
    height = 70;
    animationSpeed = 8000 / 60;
